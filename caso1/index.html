@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cafetería UPV - Inicio</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body class="home-page">
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <label for="menu-toggle" class="bar-menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </label>
+        <h1 class="title">Inicio</h1>
+        <a href="login.html" class="logout-btn">
+          <img src="img/logout.png" alt="Cerrar Sesión" class="logout-icon" />
+        </a>
+      </header>
+
+      <!-- Al desplegarse el menu de las barras -->
+      <input type="checkbox" id="menu-toggle" class="menu-toggle" />
+      <nav class="bar-nav">
+        <div class="nav-overlay">
+          <ul class="nav-menu">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="#menu">Menú</a></li>
+            <li><a href="#horario">Horario</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+            <li><a href="login.html">Cerrar Sesión</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- Todo el contenido principal -->
+      <main class="main-content">
+        <!-- Las tarjetas del index -->
+        <div class="nav-cards">
+          <div class="card-row">
+            <a href="#menu" class="nav-card">
+              <div class="card-icon">
+                <img src="img/menu.png" alt="Menú" class="icon-img" />
+              </div>
+              <span class="card-label">MENU</span>
+            </a>
+
+            <a href="#horario" class="nav-card">
+              <div class="card-icon">
+                <img src="img/calendar.png" alt="Horario" class="icon-img" />
+              </div>
+              <span class="card-label">HORARIO</span>
+            </a>
+          </div>
+
+          <div class="card-row">
+            <a href="#contacto" class="nav-card">
+              <div class="card-icon">
+                <img src="img/email_read.png" alt="Contacto" class="icon-img" />
+              </div>
+              <span class="card-label">CONTACTO</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Imagen del Jaguar -->
+        <div class="mascot-container">
+          <img
+            src="img/upj1.png"
+            alt="Mascota Jaguar UPV"
+            class="mascot-image"
+          />
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

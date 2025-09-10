@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cafetería UPV - Registro</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body class="register-page">
+    <div class="container">
+      <main class="login-content">
+        <!-- Logo -->
+        <div class="logo-container">
+          <img src="img/logo.png" alt="Logo Jaguar UPV" class="logo-image" />
+        </div>
+
+        <!-- Titulo -->
+        <div class="login-title">
+          <h1>Cafeteria</h1>
+          <h2>UPV</h2>
+        </div>
+
+        <!-- Formulario de Registro -->
+        <form class="login-form">
+          <div class="input-group">
+            <div class="input-icon">
+              <img src="img/email.png" alt="Email" class="icon-img" />
+            </div>
+            <div class="input-content">
+              <label for="reg-email">Correo Institucional</label>
+              <input
+                type="email"
+                id="reg-email"
+                name="email"
+                placeholder="2430013@upv.edu.mx"
+              />
+            </div>
+          </div>
+
+          <div class="input-group">
+            <div class="input-icon">
+              <img src="img/password.png" alt="Contraseña" class="icon-img" />
+            </div>
+            <div class="input-content">
+              <label for="reg-password">Contraseña</label>
+              <input
+                type="password"
+                id="reg-password"
+                name="password"
+                placeholder="************"
+              />
+            </div>
+          </div>
+
+          <div class="input-group">
+            <div class="input-icon">
+              <img
+                src="img/password.png"
+                alt="Confirmar Contraseña"
+                class="icon-img"
+              />
+            </div>
+            <div class="input-content">
+              <label for="confirm-password">Confirmar Contraseña</label>
+              <input
+                type="password"
+                id="confirm-password"
+                name="confirm-password"
+                placeholder="************"
+              />
+            </div>
+          </div>
+
+          <a href="login.html" class="login-button-link">
+            <button type="button" class="login-button">Registrarse</button>
+          </a>
+        </form>
+      </main>
+    </div>
+  </body>
+</html>
