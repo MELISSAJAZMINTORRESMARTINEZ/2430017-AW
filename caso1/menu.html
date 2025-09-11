@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cafetería UPV - Menú</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body class="menu-page">
+    <div class="container">
+      <header class="header">
+        <label for="menu-toggle" class="bar-menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </label>
+        <h1 class="title">Menu<br />Comida</h1>
+        <a href="Login.html" class="logout-btn">
+          <img src="img/logout.png" alt="Cerrar Sesion" class="logout-icon" />
+        </a>
+      </header>
+
+      <input type="checkbox" id="menu-toggle" class="menu-toggle" />
+      <nav class="bar-nav">
+        <div class="nav-overlay">
+          <ul class="nav-menu">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="menu.html">Menú Comida</a></li>
+            <li><a href="postres.html">Menú Postres</a></li>
+            <li><a href="calendar.html">Horario</a></li>
+            <li><a href="contact.html">Contacto</a></li>
+            <li><a href="login.html">Cerrar Sesión</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <main class="menu-content">
+        <div class="search-container">
+          <img src="img/search.png" alt="Buscar" class="search-icon" />
+          <input type="text" placeholder="Buscar comida" class="search-input" />
+        </div>
+
+        <div class="menu-grid">
+          <div class="menu-item">
+            <div class="item-image">
+              <img src="img/flautas.png" alt="Flautas" class="food-img" />
+            </div>
+            <h3 class="item-name">Flautas</h3>
+            <p class="item-price">$30.0</p>
+            <div class="quantity-controls">
+              <button class="quantity-btn minus">-</button>
+              <span class="quantity">1</span>
+              <button class="quantity-btn plus">+</button>
+            </div>
+          </div>
+
+          <div class="menu-item">
+            <div class="item-image">
+              <img src="img/gorditas.png" alt="Gorditas" class="food-img" />
+            </div>
+            <h3 class="item-name">Gorditas</h3>
+            <p class="item-price">$30.0</p>
+            <div class="quantity-controls">
+              <button class="quantity-btn minus">-</button>
+              <span class="quantity">1</span>
+              <button class="quantity-btn plus">+</button>
+            </div>
+          </div>
+
+          <div class="menu-item">
+            <div class="item-image">
+              <img src="img/quesadilla.png" alt="Quesadilla" class="food-img" />
+            </div>
+            <h3 class="item-name">Quesadilla</h3>
+            <p class="item-price">$30.0</p>
+            <div class="quantity-controls">
+              <button class="quantity-btn minus">-</button>
+              <span class="quantity">1</span>
+              <button class="quantity-btn plus">+</button>
+            </div>
+          </div>
+
+          <div class="menu-item">
+            <div class="item-image">
+              <img src="img/salade.png" alt="Ensalada" class="food-img" />
+            </div>
+            <h3 class="item-name">Ensalada</h3>
+            <p class="item-price">$30.0</p>
+            <div class="quantity-controls">
+              <button class="quantity-btn minus">-</button>
+              <span class="quantity">1</span>
+              <button class="quantity-btn plus">+</button>
+            </div>
+          </div>
+
+          <div class="menu-item">
+            <div class="item-image">
+              <img src="img/pizza.png" alt="Pizza" class="food-img" />
+            </div>
+            <h3 class="item-name">Pizza</h3>
+            <p class="item-price">$30.0</p>
+            <div class="quantity-controls">
+              <button class="quantity-btn minus">-</button>
+              <span class="quantity">1</span>
+              <button class="quantity-btn plus">+</button>
+            </div>
+          </div>
+
+          <div class="menu-item">
+            <div class="item-image">
+              <img
+                src="img/hamburguer.png"
+                alt="Hamburguesa"
+                class="food-img"
+              />
+            </div>
+            <h3 class="item-name">Hamburguesa</h3>
+            <p class="item-price">$30.0</p>
+            <div class="quantity-controls">
+              <button class="quantity-btn minus">-</button>
+              <span class="quantity">1</span>
+              <button class="quantity-btn plus">+</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
