@@ -1,9 +1,10 @@
-📌 Aplicaciones Web
-🍓 Autor
+✨ Aplicaciones Web 
+🍓 Autora
 
-Nombre: Melissa Jazmin Torres Martinez
+👩‍💻 Nombre: Melissa Jazmín Torres Martínez
 
-Materia: Aplicaciones Web
+📚 Materia: Aplicaciones Web
 
-Profesor: Dr. Mario Humberto Rodríguez Chávez
+🍎 Profesor: Dr. Mario Humberto Rodríguez Chávez
+
 
