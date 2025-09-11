@@ -1,7 +1,7 @@
 # 👥 Trabajo en Equipo - Caso 1
 
 ![Team Badge](https://img.shields.io/badge/Trabajo-En%20Equipo-green?style=for-the-badge&logo=teams)
-![Status Badge](https://img.shields.io/badge/Status-En%20Proceso-yellow?style=for-the-badge)
+![Status Badge](https://img.shields.io/badge/Status-Terminado-green?style=for-the-badge)
 
 Este directorio contiene el **Caso 1** de la materia **Aplicaciones Web**, realizado en equipo.
 Incluye el enlace al **Figma** y los datos de los participantes.
