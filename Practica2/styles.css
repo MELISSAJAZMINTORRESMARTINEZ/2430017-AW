@@ -34,3 +34,10 @@ nav{
     display: block; /*hace que el enlace en el bloque se vuelva clicable*/
     white-space: nowrap; /*evita que el texto se divida en varias lineas*/
 }
+#nav ul li a:hover{
+    background:#A2C0FF ;
+    color: white; /*cambia el color del texto*/
+    transform: translateY(-3px);/*es una animacion q sube el texto*/
+    box-shadow: 0 4px 8px rgba(37, 36, 60, 0.4); /*sombra al pasar el raton*/
+}
+
