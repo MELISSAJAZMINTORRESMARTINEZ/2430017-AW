@@ -1,8 +1,36 @@
 h1{
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
-nav{
+body{
     background-color: lightblue;
-    border-radius: 10%;
-    text-align: center;
+}
+nav{
+    background: #ffffff; 
+    border-radius: 15px; /*esquinas redondas*/
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /*sombra alrededor*/
+    max-width: 1000px; /*ancho maximo*/
+    margin: 20px auto; /*centrar y margen superior e inferior*/
+    padding: 10px 20px; /*separacion entre bordes*/
+}
+#nav ul{
+    list-style: none; /*elimina viñetas*/
+    margin: 0; /*elimina el margen*/
+    padding: 0; /*igual q el margen, elimina el paddind*/
+    display: flex; /*coloca los elementros de q en filas*/
+    justify-content: space-around; /*espacio entre los items*/
+    flex-wrap: nowrap; /*no deja q se bajen a la otra linea*/
+
+}
+#nav ul li{
+    margin: 0; /*quita los margenes*/
+}
+#nav ul li a{
+    text-decoration: none; /*para q quite el subrayado del link*/
+    color: #333; /*color del texto*/
+    font-weight: bold; /*negrita*/
+    padding: 12px 18px; 
+    border-radius: 10px; /*esquinas redondas en el fondo del link*/
+    transition: all 0.3s ease; /*trasnicion*/
+    display: block; /*hace que el enlace en el bloque se vuelva clicable*/
+    white-space: nowrap; /*evita que el texto se divida en varias lineas*/
 }
