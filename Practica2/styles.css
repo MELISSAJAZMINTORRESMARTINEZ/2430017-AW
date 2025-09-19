@@ -40,4 +40,39 @@ nav{
     transform: translateY(-3px);/*es una animacion q sube el texto*/
     box-shadow: 0 4px 8px rgba(37, 36, 60, 0.4); /*sombra al pasar el raton*/
 }
-
+h2, h3{
+    margin: 10px 0; /*margen arriba y abajo*/
+    font-weight: bold;
+}
+h2 {
+    font-size: 1.4rem; /* mas pequeño q h1*/
+    color: #444; /* Color gris oscuro */
+    border-left: 5px solid #ccc; /* linea vertical a la izq*/
+    padding-left: 8px; /* espacio entre texto y liena */
+}
+h3 {
+    font-size: 1.2rem; /* mas chiquito q h2 */
+    color: #555;
+}
+section{
+    max-width: 900px; /* lim d ancho de las secciones*/
+    background: #fff;
+    margin: 25px auto; /* agrega espacio y centra la seccion*/
+    padding: 20px 25px; /* Eespacio interno*/
+    border-radius: 10px; /* bordes redondos*/
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.08); /* sombra debajo de la seccion*/
+    transition: transform 0.2s ease-in-out; /* animacion*/
+}
+section:hover{
+    transform: translateY(-5px); /* sube la seccion*/
+}
+pre {
+    background:#272822 ;
+    color: #ffffff; 
+    opacity: 0.9; 
+    padding: 12px; /* espacio interno*/
+    border-radius: 6px; 
+    overflow-x: auto; /* si es  */
+    font-size: 0.9rem; /* texto pequeño*/
+    margin: 12px 0; /* arriba y abajo espacio */
+}

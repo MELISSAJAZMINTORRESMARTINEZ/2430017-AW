@@ -11,13 +11,13 @@
 <body>
     <nav id="nav">
         <ul>
-		<li><a href="#seccionUno">Introduccion y contexto</a></li>
-		<li><a href="#seccionDos">Funadametos del lenguaje</a></li>
-		<li><a href="#">Control de flujo</a></l>
-		<li><a href="#">Funciones</a></li>
-		<li><a href="#">Objetos y funciones</a></li>
-        <li><a href="#">Otros temas basicos</a></li>
-	 </ul> 
+            <li><a href="#seccionUno">Introduccion y contexto</a></li>
+            <li><a href="#seccionDos">Funadametos del lenguaje</a></li>
+            <li><a href="#seccionTres">Control de flujo</a></l>
+            <li><a href="#seccionCuatro">Funciones</a></li>
+            <li><a href="#seccionCinco">Objetos y funciones</a></li>
+            <li><a href="#ultima">Otros temas basicos</a></li>
+        </ul>
     </nav>
     <section id="seccionUno">
         <h2><strong>¿Que es JavaScript y sus prinicipales usos en la web?</strong></h2>
@@ -63,17 +63,17 @@
     </section>
 
     <section id="seccionDos">
-        <h1>Fundamentos del lenguaje</h1>
         <h2>Sintaxis basica en JavaScript</h2>
         <p>JavaScript es un lenguaje de programacion que se caracteriza por tener una sintaxis similar a la del
             lenguaje C, lo que lo hace facil de aprender para aquellos que ya estan familiarizados con este lenguaje.
             La sintaxis de JavaScript es bastante flexible y permite a los desarrolladores escribir codigo de manera
             concisa y legible. A continuacion, se presentan algunos conceptos basicos de la sintaxis de JavaScript:</p>
-        
+
         <ul> <!-- lista desordenada -->
             <li><strong>Variables:</strong> En JavaScript, las variables se declaran
                 utilizando las palabras clave <em>var</em>, <em>let</em> o <em>const</em>. Por ejemplo:
-                <pre><code>let nombre = "Juan";</code></pre><!-- pre y code son para mostrar un bloque de cdogio en la pagina web -->
+                <pre><code>let nombre = "Juan";</code></pre>
+                <!-- pre y code son para mostrar un bloque de cdogio en la pagina web -->
             </li>
             <li><strong>Tipos de datos:</strong> En JavaScript existen siete tipos de datos: <em>string, number, bigint,
                     boolean, null, undefined y object</em> Por ejemplo:
@@ -130,7 +130,8 @@
         <p>Los tipos de datos primitivos en JavaScript son los siguientes:</p>
         <ul>
             <li><strong>Number:</strong> numeros, enteros o decimales. Ejemplo
-                <pre><code>let edad = 25; <br>let precio = 19.99</code></pre> <!-- pre y code son para mostrar un bloque de cdogio en la pagina web -->
+                <pre><code>let edad = 25; <br>let precio = 19.99</code></pre>
+                <!-- pre y code son para mostrar un bloque de cdogio en la pagina web -->
             </li>
             <li><strong>String:</strong> texto o cadenas de caracteres. Ejemplo
                 <pre><code>let nombre = "Anda"</code></pre>
@@ -151,6 +152,7 @@
             <li><strong>Symbol:</strong> para crear identificadores unicos. Ejemplo:
                 <pre><code>let simbolo = Symbol("descripcion");</code></pre>
             </li>
+            <img src="download (5).jpeg" alt="pusheen" width="200" height="200 " style="margin: 0 auto;">
         </ul>
 
         <h2>Diferencia entre Array y Object en JavaScript</h2>
@@ -202,8 +204,7 @@
         </p>
     </section>
 
-    <section class="SeccionTres">
-        <h1>Control de flujo</h1>
+    <section id="seccionTres">
         <h2>¿Como funcionan los Condicionales if, else y switch?</h2>
         <p>
         <ul>
@@ -221,6 +222,7 @@
             <pre><code>let dia = 3;<br>switch (dia) {<br>case 1:<br>console.log("Lunes");<br>break;<br>case 2:<br>console.log("Martes");<br>break;<br>case 3:<br>console.log("Miércoles");<br>break;<br>default:<br>console.log("Día no válido");<br>}</code></pre>
             </li>
         </ul>
+        <img src="PUSHEEN.jpeg" alt="pusheen" width="200" height="200 " style="margin: 0 auto;">
         </p>
         <h2>Diferencia entre for, while y do while</h2>
         <p>
@@ -245,8 +247,7 @@
             salir del bulce</p>
     </section>
 
-    <section class="SeccionCuatro">
-        <h1>Funciones</h1>
+    <section id="seccionCuatro">
         <h2>Como se declara una funcion y como se llama?</h2>
         <p>En JavaScript, declarar una funcion significa crear un bloque de codgio que puedes usar varias veces, y
             llamarla es ejecutarla cuando la necesites
@@ -277,6 +278,7 @@
                 lo que puede evitar confusiones en ciertos casos.</li>
             <li><strong>No se pueden usar como constructores:</strong> No se pueden usar con la palabra clave new, lo
                 que puede ayudar a evitar errores accidentales.</li>
+                <img src="pushen - copia.jpeg" alt="un pusheen" width="200" height="200 " style="margin: 0 auto;">
         </ul>
         </p>
         <h2>Scope y como afecta a las variables?</h2>
@@ -286,8 +288,7 @@
             evitar conflictos o errores en el codigo.</p>
     </section>
 
-    <section class="SeccionCinco">
-        <h1>Objetos y funciones</h1>
+    <section id="seccionCinco">
         <h2>Como declarar un objeto y acceder a sus propiedades?</h2>
         <p>En JavaScript, para declarar un objeto solo necesitas usar llavas {} y dentro poner pares clave-valor, donde
             cada clave es el nombre de la propiedad y el valor es lo que guarda esa propiedad. Por ejemplo:
@@ -316,8 +317,7 @@
         </p>
     </section>
 
-    <section class="ultima">
-        <h1>Otros temas basicos</h1>
+    <section id="ultima">
         <h2>Que es el DOM y por que es importante?</h2>
         <p>El Modelo de Objeto de Documento (DOM) es una representacion estructurada en forma de arbol de una pagina web
             que actuca como un puente entre el codigo
@@ -358,7 +358,8 @@
         <ul>
             <li>Presionando F12 o Ctrl+Shift+I (Cmd+Option+I en Mac) y luego seleccionando la pestaña Console.</li>
             <li>Haciendo clic derecho en la pagina, eligiendo <strong>Insepeccionar</strong> y luego yendo a
-                <strong>Console</strong></li>
+                <strong>Console</strong>
+            </li>
         </ul>
         Las ventajas de usar la consola del navegador son:
         <ul>
