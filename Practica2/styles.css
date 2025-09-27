@@ -3,8 +3,7 @@ h1{
 }
 body{
     background-image: url(download\ \(8\)\ \(1\).jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
+        background-size: cover;
     background-position: center; 
     background-attachment: fixed; /*para q no se mueva al scrollear*/
 }

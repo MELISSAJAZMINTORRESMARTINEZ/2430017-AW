@@ -1,0 +1,51 @@
+body {
+  background-color: #dff6fd; /* azul clarito */
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+}
+
+.card {
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.card-header {
+  background-color: #6f86d6;
+}
+
+.registro-alumno .card-header {
+  background-color: #6f86d6;
+}
+
+.lista-alumnos .card-header {
+  background-color: #a8edea;
+}
+
+.btn-azul {
+  background-color: #6f86d6;
+  color: #fff;
+  border: none;
+}
+
+.btn-azul:hover {
+  background-color: #5563b3;
+}
+
+.btn-turquesa {
+  background-color: #48c6ef;
+  color: #fff;
+  border: none;
+}
+
+.btn-turquesa:hover {
+  background-color: #309fbf;
+}
+
+table th {
+  background-color: #d6f5f5;
+  color: #003c4d;
+}
+
+table tbody tr:hover {
+  background-color: #e0f7fa;
+}
