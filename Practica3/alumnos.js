@@ -51,10 +51,6 @@ function guardarAlumno(){
     alert ("Alumno registradro:3");
 
 }
-//inicializa la tablaal inicio
-function inicializarTabla(){
-    actualizarTabla();
-}
 // Funcin para actualizar la tabla HTML
 //si no hay algumos mostramos un msj
 function actualizarTabla(){
