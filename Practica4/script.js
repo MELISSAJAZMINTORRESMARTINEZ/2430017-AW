@@ -1,5 +1,5 @@
 const form = document.getElementById("registro");
-let usuarios =[];
+let usuarios = JSON.parse(localStorage.getItem("usuarios")) || []; 
 
 form.addEventListener("submit", e =>{
     e.preventDefault();
@@ -9,18 +9,17 @@ form.addEventListener("submit", e =>{
     const contraseña = document.getElementById("contraseña").value.trim();
 
     if(!nombre || !correo || !contraseña){
-        alert ("Porfavor ingresa todos los campos");
+        alert("Por favor ingresa todos los campos");
         return;
     }
 
-    const usuario = {correo, contraseña}
-    const vector = {vector: usuarios}
+    const usuario = { correo, contraseña };
 
     usuarios.push(usuario);
 
+    localStorage.setItem("usuarios", JSON.stringify(usuarios)); // guardamos en la misma clave
+
     form.reset();
 
-    localStorage.setItem("Usuario", JSON.stringify(usuarios))
     window.location.href = "inicio.html";
-    console.log(usuarios);
 });
