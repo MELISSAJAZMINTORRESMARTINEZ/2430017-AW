@@ -41,7 +41,6 @@ if (window.location.pathname.includes("dashboard.html")) {
     // usuario actvio
     const usuarioActivo = localStorage.getItem("Correito");
     //msj de bienvenida
-    const bienvenida = document.getElementById("bienvenida");
 
     // recuperamos las tarea desde el localstorage
     let tareas = JSON.parse(localStorage.getItem("tareas_" + usuarioActivo)) || [];
