@@ -2,6 +2,7 @@ const formu = document.getElementById("inicio"); //formulario de inicio de sesio
 let usuarios = JSON.parse(localStorage.getItem("usuarios")) || []; // arreglo de usuario guardado en local storage
 console.log(localStorage.getItem("Correo"));
 
+
 if (localStorage.getItem("Correito")) {//si hay usuarios activos, mostramos un msj de bienvendia
     const textito = document.getElementById("textito");
     if (textito) {
@@ -40,8 +41,6 @@ if (window.location.pathname.includes("dashboard.html")) {
 
     // usuario actvio
     const usuarioActivo = localStorage.getItem("Correito");
-    //msj de bienvenida
-
     // recuperamos las tarea desde el localstorage
     let tareas = JSON.parse(localStorage.getItem("tareas_" + usuarioActivo)) || [];
 
@@ -85,7 +84,7 @@ if (window.location.pathname.includes("dashboard.html")) {
             localStorage.setItem("tareas_" + usuarioActivo, JSON.stringify(tareas));
 
             // mostramos de nuevo
-            Tareas();l
+            Tareas();
             // limpiamos formulario
             formTarea.reset();
         });
@@ -106,7 +105,67 @@ if (window.location.pathname.includes("dashboard.html")) {
     if (tablaTareas) {
         Tareas();
     }
+
+
+const formProyecto = document.getElementById("formProyecto");
+const tablaProyecto = document.getElementById("tablaProyecto");
+let proyectos = JSON.parse(localStorage.getItem("proyectos_" + usuarioActivo)) || [];
+
+function mostrarProyectos() {
+    tablaProyecto.innerHTML = "";
+    proyectos.forEach((proy, index) => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${proy.id}</td>
+            <td>${proy.nombre}</td>
+            <td>${proy.descripcion}</td>
+            <td>${proy.estado}</td>
+            <td>${proy.fecha_inicio}</td>
+            <td>${proy.fecha_fin}</td>
+            <td><button onclick="eliminarProyecto(${index})">Eliminar</button></td>
+        `;
+        tablaProyecto.appendChild(fila);
+    });
 }
+
+if (formProyecto) {
+    formProyecto.addEventListener("submit", e => {
+        e.preventDefault();
+        const id = document.getElementById("id").value.trim();
+        const nombre = document.getElementById("nombre").value.trim();
+        const descripcion = document.getElementById("descripcion").value.trim();
+        const estado = document.getElementById("estado").value;
+        const fecha_inicio = document.getElementById("fecha_inicio").value;
+        const fecha_fin = document.getElementById("fecha_fin").value;
+
+        if (!id || !nombre || !descripcion || !estado || !fecha_inicio || !fecha_fin) {
+            alert("Por favor rellena todos los campos del proyecto");
+            return;
+        }
+
+        proyectos.push({ id, nombre, descripcion, estado, fecha_inicio, fecha_fin });
+        localStorage.setItem("proyectos_" + usuarioActivo, JSON.stringify(proyectos));
+        mostrarProyectos();
+        formProyecto.reset();
+    });
+}
+
+window.eliminarProyecto = function(index) {
+    proyectos.splice(index, 1);
+    localStorage.setItem("proyectos_" + usuarioActivo, JSON.stringify(proyectos));
+    mostrarProyectos();
+    alert("El proyecto ha sido eliminado");
+};
+
+// Inicializar tabla de proyectos al cargar
+if (tablaProyecto) {
+    mostrarProyectos();
+}
+} 
+
+
+
 
 
 

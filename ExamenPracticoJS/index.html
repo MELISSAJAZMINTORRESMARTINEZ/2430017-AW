@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Examen</title>
+</head>
+<body>
+
+    <h2>Forumlario</h2>
+    <form id="form">
+        <label id="nombre">Nombre Completo:</label>
+        <input type="text" id="nombre" placeholder="Ingrese sus nombre" required>
+
+        <p id="nombreincorrecto"></p>
+        <br>
+        <br>
+        <label id="correo">Correo Electronico:</label>
+        <input type="email" id="correo" placeholder="Ingrese su correo" required>
+        
+        <br>
+        <br>
+        <label id="contra">Contraseña:</label>
+        <input type="password" id="contra" maxlength="6" placeholder="Ingrese su contraseña" required>
+   
+        <br>
+        <br>
+        <label id="contraC">Confirmar contraseña:</label>
+        <input type="password" id="contraC" maxlength="6" placeholder="Confirme su contraseña" required>
+
+        <br>
+        <br>
+        <button type="submit">Registrar</button>
+    </form>
+
+    <script src="script.js"></script>
+</body>
+</html>
