@@ -1,33 +1,51 @@
-const form = document.getElementById("form");
+   const form = document.getElementById("formRegistro");
 
-form.addEventListener("submit", e =>{
-    
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
 
-    const nombre = document.getElementById("nombre").value.trim;
-    const correo = document.getElementById("correo").value.trim;
-    const contra = document.getElementById("contra").value.trim;
-    const contraC = document.getElementById("contraC").value.trim;
+      // limpiar errores
+      document.getElementById("errorNombre").textContent = "";
+      document.getElementById("errorCorreo").textContent = "";
+      document.getElementById("errorPassword").textContent = "";
+      document.getElementById("errorConfirmar").textContent = "";
 
-      if(!nombre || !correo || !contra || !contraC){ 
-        alert("Ingresa todos los campos requeridos");
-        return;
-    }
+      const nombre = document.getElementById("nombre").value.trim();
+      const correo = document.getElementById("correo").value.trim();
+      const password = document.getElementById("password").value;
+      const confirmar = document.getElementById("confirmar").value;
+      let valido = true;
 
-    if(!contra || !contraC < 6){
-        alert("La contraseña debe ser menor a 6");
-    } 
-    if(!contra == !contraC){
-        alert("Registro exitoso");
-    } else {
-        alert("las contraseñas no coinciden")
-    }
+      if (nombre === "") {
+        document.getElementById("errorNombre").textContent = "El nombre es obligatorio";
+        valido = false;
+      }
 
-    if(!nombre){
-        
-    }
+      if (correo === "") {
+        document.getElementById("errorCorreo").textContent = "El correo es obligatorio";
+        valido = false;
+      } else if (correo.indexOf("@") === -1 || correo.indexOf(".") === -1) {
+        document.getElementById("errorCorreo").textContent = "Correo no válido";
+        valido = false;
+      }
 
-    
-    
+      if (password === "") {
+        document.getElementById("errorPassword").textContent = "La contraseña es obligatoria";
+        valido = false;
+      } else if (password.length < 6) {
+        document.getElementById("errorPassword").textContent = "Debe tener al menos 6 caracteres";
+        valido = false;
+      }
 
+      if (confirmar === "") {
+        document.getElementById("errorConfirmar").textContent = "Confirma la contraseña";
+        valido = false;
+      } else if (password !== confirmar) {
+        document.getElementById("errorConfirmar").textContent = "Las contraseñas no coinciden";
+        valido = false;
+      }
 
-});
+      if (valido) {
+        alert("¡Registro exitoso!");
+        form.reset();
+      }
+    });
