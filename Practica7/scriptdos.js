@@ -48,7 +48,7 @@ if (window.location.pathname.includes("dashboard.html")) {
   const formProyecto = document.getElementById("formProyecto");
   const tablaProyecto = document.getElementById("tablaProyecto");
 
-  // cargar datos 
+  // cargar datos del almacenamiento local
   let tareas = JSON.parse(localStorage.getItem("tareas_" + usuarioActivo)) || [];
   let proyectos = JSON.parse(localStorage.getItem("proyectos_" + usuarioActivo)) || [];
 
@@ -102,7 +102,7 @@ if (window.location.pathname.includes("dashboard.html")) {
       // validar que no haya campos vacios
       if (Object.values(tarea).some(v => !v)) return alert("completa todos los campos");
 
-      // guardar tarea y actualizar 
+      // guardar tarea y actualizar vista
       tareas.push(tarea);
       localStorage.setItem("tareas_" + usuarioActivo, JSON.stringify(tareas));
       mostrarTareas();
@@ -172,7 +172,7 @@ if (window.location.pathname.includes("dashboard.html")) {
     alert("proyecto eliminado");
   };
 
-  // arrastrar y soltar 
+  // logica de arrastrar y soltar para cambiar estado de tareas
   tablaTareas.addEventListener("dragover", e => e.preventDefault());
   tablaTareas.addEventListener("drop", e => {
     e.preventDefault();
@@ -194,7 +194,43 @@ if (window.location.pathname.includes("dashboard.html")) {
   mostrarProyectos();
 }
 
- const aggBtn= document.getElementById('aggBtn');
+ const addNoteBtn = document.getElementById('addNoteBtn');
     const modal = document.getElementById('modal');
-    const guardaNota = document.getElementById('guardaNota');
-    const notas = document.getElementById('notas');
+    const saveNote = document.getElementById('saveNote');
+    const notesContainer = document.getElementById('notesContainer');
+
+    // Abrir modal
+    addNoteBtn.onclick = () => {
+      modal.style.display = 'flex';
+    };
+
+    // Guardar nota
+    saveNote.onclick = () => {
+      const title = document.getElementById('noteTitle').value;
+      const text = document.getElementById('noteText').value;
+      const date = document.getElementById('noteDate').value;
+
+      if (title && text && date) {
+        const newNote = document.createElement('div');
+        newNote.classList.add('card');
+        newNote.innerHTML = `
+          <h3>${title}</h3>
+          <p>${text}</p>
+          <small>${date}</small>
+        `;
+        notesContainer.appendChild(newNote);
+        modal.style.display = 'none';
+        document.getElementById('noteTitle').value = '';
+        document.getElementById('noteText').value = '';
+        document.getElementById('noteDate').value = '';
+      } else {
+        alert('Completa todos los campos');
+      }
+    };
+
+    // Cerrar modal al hacer click afuera
+    window.onclick = (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    };

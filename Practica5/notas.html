@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="notas.css">
+  <title>Notas</title>
+</head>
+<body>
+
+  <div class="container">
+    <div class="card add-card" id="aggBtn">+</div>
+
+    <div class="notes" id="notas"></div>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <h3>Agregar nota</h3>
+      <input type="text" id="noteTitle" placeholder="Título">
+      <textarea id="noteText" rows="3" placeholder="Contenido"></textarea>
+      <input type="date" id="noteDate">
+      <button id="guardarNota">Guardar</button>
+    </div>
+  </div>
+
+  <script src="scriptdos.js">
+  </script>
+
+</body>
+</html>
