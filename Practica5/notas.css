@@ -61,31 +61,5 @@
 
     .modal-content {
       background: #fff;
-      padding: 20px;
-      border-radius: 15px;
-      width: 300px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
     }
 
-    input, textarea {
-      width: 100%;
-      padding: 8px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-family: inherit;
-    }
-
-    button {
-      background: #cfa3e9;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 10px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #cfa3e9;
-    }
