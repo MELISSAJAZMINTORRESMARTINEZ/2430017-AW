@@ -198,3 +198,8 @@ if (window.location.pathname.includes("dashboard.html")) {
     const modal = document.getElementById('modal');
     const guardaNota = document.getElementById('guardaNota');
     const notas = document.getElementById('notas');
+
+    // Abrir modal
+    aggBtn.onclick = () => {
+      modal.style.display = 'flex';
+    };
