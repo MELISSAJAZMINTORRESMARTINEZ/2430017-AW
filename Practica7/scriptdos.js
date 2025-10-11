@@ -194,43 +194,46 @@ if (window.location.pathname.includes("dashboard.html")) {
   mostrarProyectos();
 }
 
- const addNoteBtn = document.getElementById('addNoteBtn');
-    const modal = document.getElementById('modal');
-    const saveNote = document.getElementById('saveNote');
-    const notesContainer = document.getElementById('notesContainer');
+ // Referencias a elementos
+const botonAgregarNota = document.getElementById('botonAgregarNota');
+const modalNota = document.getElementById('modalNota');
+const botonGuardarNota = document.getElementById('botonGuardarNota');
+const contenedorNotas = document.getElementById('contenedorNotas');
 
-    // Abrir modal
-    addNoteBtn.onclick = () => {
-      modal.style.display = 'flex';
-    };
+// Abrir modal
+botonAgregarNota.onclick = () => {
+  modalNota.style.display = 'flex';
+};
 
-    // Guardar nota
-    saveNote.onclick = () => {
-      const title = document.getElementById('noteTitle').value;
-      const text = document.getElementById('noteText').value;
-      const date = document.getElementById('noteDate').value;
+// Guardar nota
+botonGuardarNota.onclick = () => {
+  const titulo = document.getElementById('tituloNota').value;
+  const texto = document.getElementById('textoNota').value;
+  const fecha = document.getElementById('fechaNota').value;
 
-      if (title && text && date) {
-        const newNote = document.createElement('div');
-        newNote.classList.add('card');
-        newNote.innerHTML = `
-          <h3>${title}</h3>
-          <p>${text}</p>
-          <small>${date}</small>
-        `;
-        notesContainer.appendChild(newNote);
-        modal.style.display = 'none';
-        document.getElementById('noteTitle').value = '';
-        document.getElementById('noteText').value = '';
-        document.getElementById('noteDate').value = '';
-      } else {
-        alert('Completa todos los campos');
-      }
-    };
+  if (titulo && texto && fecha) {
+    const nuevaNota = document.createElement('div');
+    nuevaNota.classList.add('card');
+    nuevaNota.innerHTML = `
+      <h3>${titulo}</h3>
+      <p>${texto}</p>
+      <small>${fecha}</small>
+    `;
+    contenedorNotas.appendChild(nuevaNota);
 
-    // Cerrar modal al hacer click afuera
-    window.onclick = (e) => {
-      if (e.target === modal) {
-        modal.style.display = 'none';
-      }
-    };
+    modalNota.style.display = 'none';
+    document.getElementById('tituloNota').value = '';
+    document.getElementById('textoNota').value = '';
+    document.getElementById('fechaNota').value = '';
+  } else {
+    alert('Completa todos los campos');
+  }
+};
+
+// Cerrar modal al hacer clic fuera
+window.onclick = (e) => {
+  if (e.target === modalNota) {
+    modalNota.style.display = 'none';
+  }
+};
+
