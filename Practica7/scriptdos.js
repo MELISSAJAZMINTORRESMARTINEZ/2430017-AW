@@ -31,12 +31,21 @@ if (formu) {
     // guardar correo del usuario activo
     localStorage.setItem("Correito", UCorreo);
 
-    // redirigir al dashboard
-    window.location.href = "dashboard.html";
+    // mostrar alerta de inicio de sesión y redirigir después
+    Swal.fire({
+      title: "Se ha iniciado sesión correctamente",
+      icon: "success",
+      submit: false,
+      timer: 2000, // se cierra automáticamente después de 2 segundos
+      timerProgressBar: true
+    }).then(() => {
+      // redirigir al dashboard
+      window.location.href = "dashboard.html";
+    });
   });
 }
 
-// --- logica del dashboard ---
+// dashboard ---
 if (window.location.pathname.includes("dashboard.html")) {
 
   // obtener correo del usuario activo
@@ -221,12 +230,24 @@ botonGuardarNota.onclick = () => {
     `;
     contenedorNotas.appendChild(nuevaNota);
 
+    Swal.fire({
+      title: "Se ha guardado tu nota",
+      icon: "success",
+      botonGuardarNota: "Aceptar",
+      draggable: true
+    });
+
     modalNota.style.display = 'none';
     document.getElementById('tituloNota').value = '';
     document.getElementById('textoNota').value = '';
     document.getElementById('fechaNota').value = '';
   } else {
-    alert('Completa todos los campos');
+    Swal.fire({
+      title: "Campos incompletos",
+      text: "Por favor completa todos los campos",
+      icon: "waring",
+      botonGuardarNota: "Entendido"
+    });
   }
 };
 
