@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Calificaciones</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h2>Calculadora-JS</h2>
+
+  <!-- pide el numero de materias  -->
+  <label for="numMaterias">Cuantas materias quieres ingresar?</label>
+  <input type="number" id="numMaterias" min="1">
+  <button onclick="crearFormulario()">Aceptar</button>
+
+  <!-- de aqui se generan los forms de materias -->
+  <form id="formularioMaterias"></form>
+
+  <div id="resultados"></div>
+
+  <script src="calculadora.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+/* Estilos generales */
+body {
+  font-family: Arial, sans-serif;
+  background: #f7f7f7;
+  padding: 20px;
+}
+
+/* Título */
+h2 {
+  color: #333;
+}
+
+/* Campos de entrada */
+input {
+  margin: 5px;
+}
+
+/* Cada bloque de materia */
+.materia {
+  background: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 3px gray;
+}
+
+/* Botones */
+button {
+  margin-top: 10px;
+  padding: 6px 12px;
+}
+
+/* Resultados finales */
+#resultados {
+  margin-top: 20px;
+  background: #e9f5e9;
+  padding: 10px;
+  border-radius: 8px;
+}
