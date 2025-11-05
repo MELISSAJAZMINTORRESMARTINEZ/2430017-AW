@@ -1,39 +1,78 @@
-/* Estilos generales */
 body {
-  font-family: Arial, sans-serif;
-  background: #f7f7f7;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #f3e8ff, #ede9fe);
   padding: 20px;
+  color: #867493;
 }
 
-/* Título */
 h2 {
-  color: #333;
+  color: #867493;
+  text-align: center;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 3px rgba(90, 60, 150, 0.2);
 }
 
-/* Campos de entrada */
 input {
   margin: 5px;
+  padding: 6px;
+  border: 1px solid #c4b5fd;
+  border-radius: 6px;
+  background: #faf5ff;
+  transition: 0.3s;
 }
 
-/* Cada bloque de materia */
+input:focus {
+  border-color: #a78bfa;
+  box-shadow: 0 0 5px #c4b5fd;
+  outline: none;
+}
+
 .materia {
-  background: white;
-  padding: 10px;
+  background: #ffffff;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(147, 112, 219, 0.2);
+  border-left: 6px solid #a78bfa;
+}
+
+.materia h3 {
+  color: #867493;
   margin-bottom: 10px;
-  border-radius: 8px;
-  box-shadow: 0 0 3px gray;
 }
 
-/* Botones */
 button {
+  background-color: #c4b5fd;
+  color: #3b0764;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
   margin-top: 10px;
-  padding: 6px 12px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 2px 5px rgba(147, 112, 219, 0.3);
 }
 
-/* Resultados finales */
+button:hover {
+  background-color: #a78bfa;
+  transform: scale(1.05);
+}
+
 #resultados {
-  margin-top: 20px;
-  background: #e9f5e9;
-  padding: 10px;
-  border-radius: 8px;
+  margin-top: 25px;
+  background: #ede9fe;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(147, 112, 219, 0.2);
+  border-left: 6px solid #c4b5fd;
+}
+
+#resultados h3 {
+  color: #867493;
+}
+
+#resultados p {
+  color: #867493;
+  font-weight: 500;
 }

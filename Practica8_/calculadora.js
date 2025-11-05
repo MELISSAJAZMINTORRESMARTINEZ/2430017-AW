@@ -4,6 +4,12 @@ function crearFormulario() {
   const contenedor = document.getElementById('formularioMaterias');//busca en el html el contenedro dnd se van a poner los formularios
   contenedor.innerHTML = ''; // lo limpia si ya se habia generado
 
+  if (numMaterias > 100) {
+        alert("No se pueden ingresar más de 100 materias.");
+        return; // Evita que se generen más campos
+      }
+
+
   // bucle para crear los campos de cada materia
   for (let i = 1; i <= numMaterias; i++) {
     const div = document.createElement('div');//crea un div que contendra los inputs de cada materia
@@ -19,7 +25,10 @@ function crearFormulario() {
     `;//insertar dentro del div los inputs necesarios para cada materia
 
     contenedor.appendChild(div);//aagrega el div al contenedor principal
+
+    
   }
+  
 
   //creamos el boton para calcular los promedios
   const boton = document.createElement('button');
@@ -42,6 +51,12 @@ function calcularPromedios() {
     const u3 = parseFloat(document.getElementById(`u3_${i}`).value);
     const u4 = parseFloat(document.getElementById(`u4_${i}`).value);
 
+    if (u1 < 0 || u2 < 0 || u3 < 0 || u4 < 0) {
+          alert("Las calificaciones no pueden ser negativas");
+          return;
+        }
+    
+
     // calcular proemdio
     let promedio = (u1 + u2 + u3 + u4) / 4;
     let estado = "Aprobado";
@@ -51,6 +66,7 @@ function calcularPromedios() {
       promedio = 60;
       estado = "No aprobado";
     }
+  
 
     // agrega el resultado de la materia al final
     resultados += `

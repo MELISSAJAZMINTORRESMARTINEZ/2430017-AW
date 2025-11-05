@@ -1,0 +1,100 @@
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f6f9;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      height: 100vh;
+      background: linear-gradient(180deg, #5bbaba, #3a8b8b);
+      color: white;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 230px;
+      padding-top: 25px;
+      box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+      border-right: 1px solid rgba(255, 255, 255, 0.15);
+      transition: all 0.3s ease-in-out;
+    }
+
+    /* Título e imagen */
+    .sidebar h4 {
+      text-align: center;
+      margin-bottom: 35px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .sidebar img {
+      box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.4);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar img:hover {
+      transform: scale(1.1);
+    }
+
+    /* Links */
+    .sidebar a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 12px 25px;
+      font-size: 15px;
+      border-left: 3px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    /* Efecto hover */
+    .sidebar a:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-left: 3px solid #fff;
+      transform: translateX(3px);
+    }
+
+    /* Separador */
+    .sidebar hr {
+      border-color: rgba(255, 255, 255, 0.3);
+      margin: 20px;
+    }
+
+    /* Cerrar sesión */
+    .sidebar a:last-child {
+      color: #ffeaea;
+    }
+
+    .sidebar a:last-child:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Scroll bonito si hay muchos enlaces */
+    .sidebar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+      background-color: rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+    }
+
+    /* Contenido principal */
+    .content {
+      margin-left: 230px;
+      padding: 20px;
+    }
+
+    .navbar {
+      background-color: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0px 2px 4px rgba(165, 85, 85, 0.1);
+    }
+
+    .card {
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    }
