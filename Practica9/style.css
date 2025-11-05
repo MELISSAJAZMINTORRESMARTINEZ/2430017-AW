@@ -71,18 +71,18 @@ h3 {
 .text-center a:hover {
   text-decoration: underline;
 }
-/* Corrige saltos visuales al mostrar SweetAlert */
+/* esto los uso para el sweet alert y corrgie saltos visuales en el sweet*/
 body.swal2-shown {
   padding-right: 0 !important;
   overflow: hidden !important;
 }
 
-/* Evita que se vea el desplazamiento del fondo */
+/* evita el desplazamiento*/
 .swal2-container {
   z-index: 2000 !important;
 }
 
-/* Ajuste opcional para centrar bien el fondo */
+/* centrar el fondo */
 html, body {
   height: 100%;
   overflow-x: hidden;
