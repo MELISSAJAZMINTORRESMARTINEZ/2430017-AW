@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //busca si hay algun usuario que coincida con el correo y la contraseña ingresados
     const usuarioValido =
+    //ponemos por defecto un usuario 
       usuarios.find((u) => u.email === email && u.password === password) ||
       (email === "admin@correo.com" && password === "admin" ? {nombre: "admin", email: "admin@correo.com"} : null);
 

@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {//esperamos a que el conten
   //ref al cuerpo de la tabla 
   const tabla = document.querySelector("#tablaPacientes tbody");
 
-  //se creo un contador para poder asignar un IND a cada nuevo paciente
+  //se creo un contador para poder asignar un Id
   let id = 1;
 
   btnAgregar.addEventListener("click", () => {
