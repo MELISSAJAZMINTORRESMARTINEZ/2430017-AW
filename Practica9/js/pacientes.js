@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {//esperamos a que el conten
   //ref al cuerpo de la tabla 
   const tabla = document.querySelector("#tablaPacientes tbody");
 
-  //se creo un contador para poder asignar un Id
+  //se creo un contador para poder asignar un I
   let id = 1;
 
   btnAgregar.addEventListener("click", () => {
@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {//esperamos a que el conten
 
         //una pequeña validacion para q los campos sean obligatorios 
         if (!nombre || !curp || !fecha || !sexo) {
-          Swal.showValidationMessage("Por favor, completa los campos obligatorios");
+          alert("Por favor, completa los campos obligatorios");
           return false;
         }
 

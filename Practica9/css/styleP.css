@@ -53,3 +53,6 @@
 .swal2-input, .swal2-select {
     border-radius: 20px !important;
 }
+.btnAgenda{
+  background-color: #2c8888;
+}
