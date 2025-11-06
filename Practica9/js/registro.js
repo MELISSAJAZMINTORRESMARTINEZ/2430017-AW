@@ -1,4 +1,3 @@
-// js/registro.js
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("registroForm");
@@ -11,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = document.getElementById("password").value.trim();
     const confirmar = document.getElementById("confirmar").value.trim();
 
-    // Validaciones básicas
+    // Validaciones simples
     if (!nombre || !email || !password || !confirmar) {
       Swal.fire({
         icon: "warning",
@@ -32,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Verificar si ya existe el usuario
+    // vemos si ya existe el usuario
     const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
     const existe = usuarios.find(u => u.email === email);
 
@@ -46,11 +45,11 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Guardar nuevo usuario
+    // guardar nuevo usuario
     usuarios.push({ nombre, email, password });
     localStorage.setItem("usuarios", JSON.stringify(usuarios));
 
-    // Confirmación con SweetAlert
+    // confirmación con SweetAlert
     Swal.fire({
       icon: "success",
       title: "¡Registro exitoso!",
@@ -60,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
       timerProgressBar: true
     });
 
-    // Limpiar y redirigir
+    // limpiar y redirigir
     form.reset();
     setTimeout(() => {
       window.location.href = "index.html";
