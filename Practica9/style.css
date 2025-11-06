@@ -1,5 +1,5 @@
 body {
-  background: linear-gradient(135deg, #e5fdfc, #398383);
+  background: linear-gradient(135deg, #2c8888, #a1e4e4);
   height: 100vh;
   display: flex;
   align-items: center;
@@ -71,11 +71,14 @@ h3 {
 .text-center a:hover {
   text-decoration: underline;
 }
-/* esto los uso para el sweet alert y corrgie saltos visuales en el sweet*/
-body.swal2-shown {
-  padding-right: 0 !important;
-  overflow-x: hidden !important;
+body.swal2-shown .login-card {
+  position: fixed;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
+
 
 /* evita el desplazamiento*/
 .swal2-container {
@@ -86,4 +89,11 @@ body.swal2-shown {
 html, body {
   height: 100%;
   overflow-x: hidden;
+}
+.login-card img {
+  box-shadow: 0px 0px 12px rgba(255, 255, 255, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }

@@ -8,16 +8,18 @@
     /* Sidebar */
     .sidebar {
       height: 100vh;
-      background: linear-gradient(180deg, #5bbaba, #3a8b8b);
+      background: linear-gradient(180deg, #2c8888, #2c8888);
       color: white;
       position: fixed;
       top: 0;
       left: 0;
       width: 230px;
       padding-top: 25px;
-      box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
-      border-right: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 4px 0 14px rgba(76, 174, 174, 0.3);
       transition: all 0.3s ease-in-out;
+      backdrop-filter: blur(6px);
+
+
     }
 
     /* Título e imagen */
@@ -26,60 +28,72 @@
       margin-bottom: 35px;
       font-weight: 600;
       letter-spacing: 0.5px;
+      color: #ffffff;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     }
 
     .sidebar img {
-      box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.4);
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      transition: transform 0.3s ease;
+      box-shadow: 0px 0px 12px rgba(255, 255, 255, 0.6);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      background-color: rgba(255, 255, 255, 0.25);
+      border-radius: 50%;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
 
     .sidebar img:hover {
-      transform: scale(1.1);
+      transform: scale(1.12) rotate(3deg);
+      box-shadow: 0px 0px 18px rgba(255, 255, 255, 0.8);
     }
 
     /* Links */
     .sidebar a {
       display: block;
-      color: white;
+      color: #f8ffff;
       text-decoration: none;
       padding: 12px 25px;
       font-size: 15px;
-      border-left: 3px solid transparent;
+      border-left: 4px solid transparent;
       transition: all 0.3s ease;
+      margin: 3px 8px;
+      border-radius: 10px;
     }
 
     /* Efecto hover */
     .sidebar a:hover {
-      background-color: rgba(255, 255, 255, 0.15);
-      border-left: 3px solid #fff;
-      transform: translateX(3px);
+      background: rgba(255, 255, 255, 0.25);
+      border-left: 4px solid #e0fafa;
+      transform: translateX(5px);
+      box-shadow: 0 3px 10px rgba(255, 255, 255, 0.25);
     }
 
     /* Separador */
     .sidebar hr {
-      border-color: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.4);
       margin: 20px;
     }
 
     /* Cerrar sesión */
     .sidebar a:last-child {
-      color: #ffeaea;
+      color: #fff8f8;
+      font-weight: 500;
     }
 
     .sidebar a:last-child:hover {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.25);
+      border-left: 4px solid #ffffff;
     }
 
-    /* Scroll bonito si hay muchos enlaces */
+    /* Scroll bonito */
     .sidebar::-webkit-scrollbar {
       width: 6px;
     }
 
     .sidebar::-webkit-scrollbar-thumb {
-      background-color: rgba(255, 255, 255, 0.3);
+      background-color: rgba(255, 255, 255, 0.4);
       border-radius: 10px;
     }
+
+
 
     /* Contenido principal */
     .content {
