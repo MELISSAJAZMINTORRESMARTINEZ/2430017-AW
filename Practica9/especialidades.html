@@ -48,10 +48,10 @@
         <nav class="navbar navbar-expand-lg navbar-light mb-4">
             <div class="container-fluid d-flex justify-content-between align-items-center">
                 <span class="navbar-brand mb-0 h4 fw-bold text-secondary">
-                   <i class="fa-solid fa-user-doctor me-2 text-info"></i></i>Control de Medicos
+                   <i class="fa-solid fa-stethoscope me-2"></i>Especialidades Medicas
                 </span>
                 <button id="btnAgregarMedico" class="btn btn-success text-white fw-semibold">
-                    <i class="fa-solid fa-user-plus me-2"></i>Agregar Medico
+                    <i class="fa-solid fa-user-plus me-2"></i>Agregar Especialidad
                 </button>
             </div>
         </nav>
@@ -63,17 +63,9 @@
                     <table id="tablaPacientes" class="table table-hover align-middle text-center">
                         <thead class="table-info">
                             <tr>
-                                <th>IdMedico</th>
-                                <th>Nombre Completo</th>
-                                <th>Cedula Profesional</th>
-                                <th>Fecha de Nacimiento</th>
-                                <th>Especialidad</th>
-                                <th>Teléfono</th>
-                                <th>Correo Electrónico</th>
-                                <th>Horario de Atencion</th>
-                                <th>Fecha Ingreso</th>
-                                <th>Estatus</th>
-                                <th>Acciones</th>
+                                <th>Id Especialidad</th>
+                                <th>Nombre Especialidad</th>
+                                <th>Descripcion</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -87,7 +79,7 @@
 
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/medicos.js"></script>
+    <script src="js/especialidad.js"></script>
 </body>
 
 </html>
