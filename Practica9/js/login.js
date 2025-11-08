@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const usuarioValido =
     //ponemos por defecto un usuario 
       usuarios.find((u) => u.email === email && u.password === password) ||
-      (email === "admin@correo.com" && password === "admin" ? {nombre: "admin", email: "admin@correo.com"} : null);
+      (email === "admin@correo.com" && password === "pusheen" ? {nombre: "admin", email: "admin@correo.com"} : null);
 
 
 
