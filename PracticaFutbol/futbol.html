@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <h2>Registro de Equipo de Futbol Varonil</h2>
+    <form action="futbol.php" method="post">
+        <label>Nombre:</label>
+        <input type="text" name="nombre" id="nombre">
+
+        <label>Apellido:</label>
+        <input type="text" name="apellido" id="apellido">
+
+        <label>Correo:</label>
+        <input type="email" name="correo" id="correo">
+
+        <label>Telefono</label>
+        <input type="number" name="telefono" id="telefono">
+
+        <label for="sexo">Sexo:</label>
+        <select name="sexo" id="sexo">
+            <option value="masculino">Masculino</option>
+            <option value="femenino" id="femenino" name="femenino">Femenino</option>
+        </select>
+
+        <label for="numero_dorsal">Numero Dorsal:</label>
+        <input type="number" name="numero_dorsal" id="numero_dorsal" min="1">
+
+        <label for="nombre_equipo">Nombre Equipo:</label>
+        <input type="text" name="nombre_equipo" id="nombre_equipo">
+
+        <br>
+        <br>
+
+        <div>
+            <button type="submit">Guardar</button>
+        </div>
+    </form>
+
+</body>
+
+</html>
