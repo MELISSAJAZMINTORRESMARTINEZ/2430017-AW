@@ -5,13 +5,19 @@ $port = "3306";
 $dbname = "futbol";
 $user = "root";
 $pass = "";
-$sexo = "femenino";
 
 try {
-    // Conexión 
     $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8";
     $pdo = new PDO($dsn, $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $nombre = $_POST['nombre'];
+    $apellido = $_POST['apellido'];
+    $correo = $_POST['correo'];
+    $telefono = $_POST['telefono'];
+    $sexo = $_POST['sexo'];
+    $numero_dorsal = $_POST['numero_dorsal'];
+    $nombre_equipo = $_POST['nombre_equipo'];
 
 
     $sql = "INSERT INTO registro
@@ -21,11 +27,6 @@ try {
 
     $stmt = $pdo->prepare($sql);
 
-
-    if($sexo === "femenino"){
-        echo "no se puede agregar a alguien mujer";
-
-    }
 
 
     $stmt->bindParam(':nombre', $_POST['nombre']);
@@ -39,9 +40,7 @@ try {
 
     $stmt->execute();
 
-    echo "<h3 style='color:green;'>Se agrego, creo</h3>";
-
+    echo "<h2>Se agrego, creo</h2>";
 } catch (PDOException $e) {
-    echo "<h3 style='color:red;'>nimdo, no se pudo" . $e->getMessage() . "</h3>";
+    echo "<h2>nimdo, no se pudo " . $e->getMessage() . "</h2>";
 }
-?>
