@@ -19,6 +19,11 @@ try {
     $numero_dorsal = $_POST['numero_dorsal'];
     $nombre_equipo = $_POST['nombre_equipo'];
 
+    if (($sexo) === "femenino") {
+        echo "<h3>No se puede agregar a alguien del sexo femenino.</h3>";
+        exit; 
+    }
+
 
     $sql = "INSERT INTO registro
             (nombre, apellido, correo, telefono, sexo, numero_dorsal, nombre_equipo)

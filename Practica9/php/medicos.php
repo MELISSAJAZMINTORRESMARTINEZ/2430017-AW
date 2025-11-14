@@ -13,32 +13,30 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Preparar la consulta SQL
-    $sql = "INSERT INTO usuarios
-            (IdUsuario, Usuario, ContrasenaHash, Rol, IdMedico, Activo, UltimoAcceso)
-            VALUES 
-            (:idUsuario, :usuario, :contrasena, :rol, :idMedico, :activo, :ultimoAcceso)";
+    $sql = "INSERT INTO controlmedicos
+(IdMedico, NombreCompleto, CedulaProfesional, EspecialidadId, Telefono, CorreoElectronico, HorarioAtencion, FechaIngreso, Estatus)
+VALUES 
+(:idMedico, :nombreCompleto, :cedulaProfesional, :especialidad, :telefono, :correo, :horario, :fechaIngreso, :estatus)";
 
-    $stmt = $pdo->prepare($sql);
 
-    // Enlazar parámetros (usa $_POST con los mismos nombres de tus inputs)
-    $stmt->bindParam(':idUsuario', $_POST['idUsuario']);
-    $stmt->bindParam(':usuario', $_POST['usuario']);
-    
-    // 🔒 Encriptar la contraseña antes de guardar
-    $hash = password_hash($_POST['contrasena'], PASSWORD_DEFAULT);
-    $stmt->bindParam(':contrasena', $hash);
-    
-    $stmt->bindParam(':rol', $_POST['rol']);
-    $stmt->bindParam(':idMedico', $_POST['idMedico']);
-    $stmt->bindParam(':activo', $_POST['activo']);
-    $stmt->bindParam(':ultimoAcceso', $_POST['ultimoAcceso']);
+  $stmt = $pdo->prepare($sql);
 
-    // Ejecutar
-    $stmt->execute();
+$stmt->bindParam(':idMedico', $_POST['idMedico']);
+$stmt->bindParam(':nombreCompleto', $_POST['nombreCompleto']);
+$stmt->bindParam(':cedulaProfesional', $_POST['cedulaProfesional']);
+$stmt->bindParam(':especialidad', $_POST['especialidad']);
+$stmt->bindParam(':telefono', $_POST['telefono']);
+$stmt->bindParam(':correo', $_POST['correo']);
+$stmt->bindParam(':horario', $_POST['horario']);
+$stmt->bindParam(':fechaIngreso', $_POST['fechaIngreso']);
+$stmt->bindParam(':estatus', $_POST['estatus']);
 
-    echo "<h3 style='color:green;'>✅ Usuario agregado correctamente.</h3>";
+$stmt->execute();
+
+
+    echo "<h3 style='color:green;'>Medico agreagdo correctamente.</h3>";
 
 } catch (PDOException $e) {
-    echo "<h3 style='color:red;'>❌ Error al guardar usuario: " . $e->getMessage() . "</h3>";
+    echo "<h3 style='color:red;' Error al guardar medico: " . $e->getMessage() . "</h3>";
 }
 ?>

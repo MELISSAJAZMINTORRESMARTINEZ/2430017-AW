@@ -116,16 +116,17 @@
           </div>
 
           <div class="mb-3">
-            <label for="especialidad" class="form-label">Especialidad</label>
-            <select id="especialidad" name="especialidad" class="form-select" required>
-              <option value="">Selecciona Especialidad</option>
-              <option>Cardiología</option>
-              <option>Pediatría</option>
-              <option>Dermatología</option>
-              <option>Ginecología</option>
-              <option>Medicina General</option>
-              <option>Neurología</option>
-            </select>
+            <label for="especialidadId" class="form-label">Especialidad</label>
+           <select id="especialidadId" name="especialidad" class="form-select" required>
+  <option value="">Selecciona Especialidad</option>
+  <option value="1">Cardiología</option>
+  <option value="2">Pediatría</option>
+  <option value="3">Dermatología</option>
+  <option value="4">Ginecología</option>
+  <option value="5">Medicina General</option>
+  <option value="6">Neurología</option>
+</select>
+
           </div>
 
           <div class="mb-3">
@@ -152,13 +153,13 @@
             <label for="estatus" class="form-label">Estatus</label>
             <select id="estatus" name="estatus" class="form-select" required>
               <option value="">Selecciona</option>
-              <option>Si</option>
-              <option>No</option>
+              <option>Activo</option>
+              <option>No Activo</option>
             </select>
           </div>
         </div>
 
-        <!-- 🔹 Botones dentro del form -->
+        <!-- Botones dentro del form -->
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
           <button type="submit" class="btn btn-success">Guardar</button>
