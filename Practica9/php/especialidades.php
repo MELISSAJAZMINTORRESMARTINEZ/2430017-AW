@@ -1,105 +1,105 @@
 <?php
-header("Content-Type: application/json; charset=utf-8");
+header("Content-Type: application/json; charset=utf-8"); // aqui establezco que la respuesta sera json
 
-// Configuración
-$host = "localhost";
-$port = "3306";
-$dbname = "clinica";
-$user = "root";
-$pass = "";
+// configuracion
+$host = "localhost"; // aqui guardo el host
+$port = "3306"; // aqui pongo el puerto
+$dbname = "clinica"; // aqui va el nombre de la base de datos
+$user = "root"; // usuario para conectar
+$pass = ""; // contrasena para conectar
 
 try {
-    $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8";
-    $pdo = new PDO($dsn, $user, $pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8"; // aqui armo el dsn para la conexion
+    $pdo = new PDO($dsn, $user, $pass); // aqui creo la instancia pdo
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // aqui activo los errores de excepcion
 
 } catch (PDOException $e) {
-    echo json_encode(["error" => "Error de conexión: " . $e->getMessage()]);
-    exit;
+    echo json_encode(["error" => "Error de conexion: " . $e->getMessage()]); // si falla la conexion muestro el error
+    exit; // aqui detengo todo
 }
 
-// LISTAR especialidades
-if (isset($_GET["accion"]) && $_GET["accion"] == "lista") {
+// listar especialidades
+if (isset($_GET["accion"]) && $_GET["accion"] == "lista") { // aqui reviso si pidieron la lista de especialidades
     try {
-        $stmt = $pdo->query("SELECT * FROM especialidades ORDER BY IdEspecialidad ASC");
-        $datos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode($datos);
+        $stmt = $pdo->query("SELECT * FROM especialidades ORDER BY IdEspecialidad ASC"); // aqui hago la consulta
+        $datos = $stmt->fetchAll(PDO::FETCH_ASSOC); // aqui obtengo todos los datos en arreglo
+        echo json_encode($datos); // aqui regreso los datos en json
     } catch (PDOException $e) {
-        echo json_encode(["error" => $e->getMessage()]);
+        echo json_encode(["error" => $e->getMessage()]); // si algo falla muestro el error
     }
-    exit;
+    exit; // aqui termino
 }
 
-// POST - Crear, Actualizar o Eliminar
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+// post - crear, actualizar o eliminar
+if ($_SERVER["REQUEST_METHOD"] === "POST") { // aqui verifico si la solicitud es post
     
-    $accion = $_POST["accion"] ?? "agregar";
+    $accion = $_POST["accion"] ?? "agregar"; // aqui obtengo la accion o por defecto agregar
     
-    // AGREGAR especialidad
+    // agregar especialidad
     if ($accion === "agregar") {
         if (!isset($_POST["IdEspecialidad"], $_POST["nombreEspecialidad"], $_POST["descripcion"])) {
-            echo "ERROR: Campos incompletos";
+            echo "ERROR: campos incompletos"; // aqui reviso que vengan todos los campos
             exit;
         }
 
         $sql = "INSERT INTO especialidades (IdEspecialidad, NombreEspecialidad, Descripcion)
-                VALUES (:IdEspecialidad, :nombreEspecialidad, :descripcion)";
+                VALUES (:IdEspecialidad, :nombreEspecialidad, :descripcion)"; // aqui preparo el insert
         
         try {
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindParam(':IdEspecialidad', $_POST['IdEspecialidad']);
-            $stmt->bindParam(':nombreEspecialidad', $_POST['nombreEspecialidad']);
-            $stmt->bindParam(':descripcion', $_POST['descripcion']);
-            $stmt->execute();
-            echo "OK";
+            $stmt = $pdo->prepare($sql); // aqui preparo la sentencia
+            $stmt->bindParam(':IdEspecialidad', $_POST['IdEspecialidad']); // aqui vinculo el id
+            $stmt->bindParam(':nombreEspecialidad', $_POST['nombreEspecialidad']); // aqui vinculo el nombre
+            $stmt->bindParam(':descripcion', $_POST['descripcion']); // aqui vinculo la descripcion
+            $stmt->execute(); // aqui ejecuto el insert
+            echo "OK"; // si todo sale bien mando ok
         } catch (PDOException $e) {
-            echo "ERROR: " . $e->getMessage();
+            echo "ERROR: " . $e->getMessage(); // aqui muestro error si falla
         }
     }
     
-    // EDITAR especialidad
+    // editar especialidad
     elseif ($accion === "editar") {
         if (!isset($_POST["IdEspecialidad"], $_POST["nombreEspecialidad"], $_POST["descripcion"])) {
-            echo "ERROR: Campos incompletos";
+            echo "ERROR: campos incompletos"; // aqui reviso los campos
             exit;
         }
 
         $sql = "UPDATE especialidades 
                 SET NombreEspecialidad = :nombreEspecialidad, 
                     Descripcion = :descripcion
-                WHERE IdEspecialidad = :IdEspecialidad";
+                WHERE IdEspecialidad = :IdEspecialidad"; // aqui preparo el update
         
         try {
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindParam(':IdEspecialidad', $_POST['IdEspecialidad']);
-            $stmt->bindParam(':nombreEspecialidad', $_POST['nombreEspecialidad']);
-            $stmt->bindParam(':descripcion', $_POST['descripcion']);
-            $stmt->execute();
-            echo "OK";
+            $stmt = $pdo->prepare($sql); // aqui preparo la sentencia
+            $stmt->bindParam(':IdEspecialidad', $_POST['IdEspecialidad']); // aqui vinculo el id
+            $stmt->bindParam(':nombreEspecialidad', $_POST['nombreEspecialidad']); // aqui vinculo nombre
+            $stmt->bindParam(':descripcion', $_POST['descripcion']); // aqui vinculo descripcion
+            $stmt->execute(); // ejecuto el update
+            echo "OK"; // aqui confirmo
         } catch (PDOException $e) {
-            echo "ERROR: " . $e->getMessage();
+            echo "ERROR: " . $e->getMessage(); // aqui muestro error
         }
     }
     
-    // ELIMINAR especialidad
+    // eliminar especialidad
     elseif ($accion === "eliminar") {
         if (!isset($_POST["IdEspecialidad"])) {
-            echo "ERROR: ID no proporcionado";
+            echo "ERROR: id no proporcionado"; // aqui valido que mandaron el id
             exit;
         }
 
-        $sql = "DELETE FROM especialidades WHERE IdEspecialidad = :IdEspecialidad";
+        $sql = "DELETE FROM especialidades WHERE IdEspecialidad = :IdEspecialidad"; // aqui preparo el delete
         
         try {
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindParam(':IdEspecialidad', $_POST['IdEspecialidad']);
-            $stmt->execute();
-            echo "OK";
+            $stmt = $pdo->prepare($sql); // preparo sentencia
+            $stmt->bindParam(':IdEspecialidad', $_POST['IdEspecialidad']); // vinculo id
+            $stmt->execute(); // ejecuto el delete
+            echo "OK"; // confirmo eliminacion
         } catch (PDOException $e) {
-            echo "ERROR: " . $e->getMessage();
+            echo "ERROR: " . $e->getMessage(); // muestro error
         }
     }
     
-    exit;
+    exit; // aqui termino el proceso post
 }
 ?>

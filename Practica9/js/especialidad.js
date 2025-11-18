@@ -120,14 +120,6 @@ function guardarEspecialidad(formData) {
                 });
             }
         })
-        .catch(error => {
-            console.error("Error:", error);
-            Swal.fire({
-                icon: "error",
-                title: "Error en la petición",
-                text: "No se pudo guardar la especialidad"
-            });
-        });
 }
 
 // Función para abrir modal de edición con datos

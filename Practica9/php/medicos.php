@@ -1,19 +1,27 @@
 <?php
-// Parámetros de conexión
+// se definen los datos para conectar a la base de datos
 $host = "localhost";
 $port = "3306";
 $dbname = "clinica";
 $user = "root";
 $pass = "";
 
+// iniciamos un bloque try para capturar errores
 try {
-    // Conexión PDO
+
+    // armamos la cadena de conexion usando pdo
     $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8";
+
+    // creamos la conexion usando pdo
     $pdo = new PDO($dsn, $user, $pass);
+
+    // configuramos pdo para lanzar errores si algo sale mal
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    // validamos si llega una peticion get y si accion es lista
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'lista') {
         
+        // consulta sql para obtener medicos y su especialidad
         $sql = "SELECT 
                     cm.IdMedico,
                     cm.NombreCompleto,
@@ -29,38 +37,64 @@ try {
                 LEFT JOIN especialidades e ON cm.EspecialidadId = e.IdEspecialidad
                 ORDER BY cm.IdMedico DESC";
         
+        // se ejecuta la consulta directamente porque no lleva parametros
         $stmt = $pdo->query($sql);
+
+        // se obtienen todos los resultados como arreglo asociativo
         $medicos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
+        // indicamos que la respuesta sera json
         header('Content-Type: application/json');
+
+        // convertimos los datos a json y los imprimimos
         echo json_encode($medicos);
+
+        // detenemos la ejecucion
         exit;
     }
 
+    // aqui revisamos si quiere obtener un solo medico por id
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'obtener') {
         
+        // consulta con parametro
         $sql = "SELECT * FROM controlmedicos WHERE IdMedico = :id";
+
+        // preparamos la consulta
         $stmt = $pdo->prepare($sql);
+
+        // vinculamos el parametro :id con el valor recibido por get
         $stmt->bindParam(':id', $_GET['id']);
+
+        // ejecutamos la consulta
         $stmt->execute();
         
+        // obtenemos un solo registro
         $medico = $stmt->fetch(PDO::FETCH_ASSOC);
         
+        // indicamos que la salida sera json
         header('Content-Type: application/json');
+
+        // imprimimos el json
         echo json_encode($medico);
+
+        // terminamos
         exit;
     }
 
-
+    // aqui revisamos si es post y no existe el campo idMedicoEditar
+    // eso significa que es un registro nuevo
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['idMedicoEditar'])) {
         
+        // consulta insert para agregar medico
         $sql = "INSERT INTO controlmedicos
                 (IdMedico, NombreCompleto, CedulaProfesional, EspecialidadId, Telefono, CorreoElectronico, HorarioAtencion, FechaIngreso, Estatus)
                 VALUES 
                 (:idMedico, :nombreCompleto, :cedulaProfesional, :especialidad, :telefono, :correo, :horario, :fechaIngreso, :estatus)";
 
+        // preparamos la consulta
         $stmt = $pdo->prepare($sql);
 
+        // vinculamos cada dato con lo que viene del formulario
         $stmt->bindParam(':idMedico', $_POST['idMedico']);
         $stmt->bindParam(':nombreCompleto', $_POST['nombreCompleto']);
         $stmt->bindParam(':cedulaProfesional', $_POST['cedulaProfesional']);
@@ -71,14 +105,18 @@ try {
         $stmt->bindParam(':fechaIngreso', $_POST['fechaIngreso']);
         $stmt->bindParam(':estatus', $_POST['estatus']);
 
+        // insertamos el registro
         $stmt->execute();
 
-        echo "OK - Médico guardado correctamente";
+        // mensaje si todo salio bien
+        echo "OK - medico guardado";
         exit;
     }
 
+    // si es post y existe idMedicoEditar, entonces es un update
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idMedicoEditar'])) {
         
+        // consulta update
         $sql = "UPDATE controlmedicos SET
                 NombreCompleto = :nombreCompleto,
                 CedulaProfesional = :cedulaProfesional,
@@ -90,8 +128,10 @@ try {
                 Estatus = :estatus
                 WHERE IdMedico = :idMedico";
 
+        // preparamos la consulta
         $stmt = $pdo->prepare($sql);
 
+        // vinculamos los parametros
         $stmt->bindParam(':idMedico', $_POST['idMedicoEditar']);
         $stmt->bindParam(':nombreCompleto', $_POST['nombreCompleto']);
         $stmt->bindParam(':cedulaProfesional', $_POST['cedulaProfesional']);
@@ -102,24 +142,38 @@ try {
         $stmt->bindParam(':fechaIngreso', $_POST['fechaIngreso']);
         $stmt->bindParam(':estatus', $_POST['estatus']);
 
+        // ejecutamos el update
         $stmt->execute();
 
-        echo "OK - Médico actualizado correctamente";
+        // mensaje si todo ok
+        echo "OK - medico actualizado";
         exit;
     }
 
+    // aqui revisamos si se mando un get con accion eliminar
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'eliminar') {
         
+        // consulta para borrar
         $sql = "DELETE FROM controlmedicos WHERE IdMedico = :id";
+
+        // preparamos la consulta
         $stmt = $pdo->prepare($sql);
+
+        // vinculamos el id recibido
         $stmt->bindParam(':id', $_GET['id']);
+
+        // ejecutamos el delete
         $stmt->execute();
 
-        echo "OK - Médico eliminado correctamente";
+        // mensaje de exito
+        echo "OK - medico eliminado";
         exit;
     }
 
+// si ocurre un error en cualquier parte del try
 } catch (PDOException $e) {
+
+    // mostramos el error
     echo "Error: " . $e->getMessage();
 }
 ?>

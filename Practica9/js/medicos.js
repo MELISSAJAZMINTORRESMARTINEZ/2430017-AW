@@ -1,46 +1,45 @@
-document.addEventListener("DOMContentLoaded", function () {
-    cargarMedicos();
+document.addEventListener("DOMContentLoaded", function () { // aqui espero a que la pagina cargue
+    cargarMedicos(); // aqui apenas carga la pagina, muestro la lista de medicos
 
-    const form = document.querySelector("#formMedicos");
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        guardarMedico(new FormData(form));
+    const form = document.querySelector("#formMedicos"); // aqui agarro el formulario donde escribo los datos
+    form.addEventListener("submit", function (e) { // aqui reviso cuando le doy guardar
+        e.preventDefault(); // aqui evito que la pagina se recargue sola
+        guardarMedico(new FormData(form)); // aqui mando los datos para guardarlos
     });
 
-    // Resetear formulario cuando se cierra el modal
+    // aqui dejo el formulario limpio cuando cierro el modal
     document.getElementById('modalMedico').addEventListener('hidden.bs.modal', function () {
-        document.querySelector("#formMedicos").reset();
-        document.getElementById('modalMedicoLabel').innerHTML = '<i class="fa-solid fa-user-md me-2"></i>Agregar Médico';
+        document.querySelector("#formMedicos").reset(); // limpio todo el formulario
+        document.getElementById('modalMedicoLabel').innerHTML = '<i class="fa-solid fa-user-md me-2"></i>agregar medico'; // pongo el titulo normal
         
-        // Remover campo oculto si existe
+        // aqui quito el campo escondido si estaba editando antes
         const inputEditar = document.querySelector('input[name="idMedicoEditar"]');
-        if (inputEditar) inputEditar.remove();
+        if (inputEditar) inputEditar.remove(); // lo borro
         
-        // Habilitar campo ID
-        document.getElementById('idMedico').disabled = false;
+        document.getElementById('idMedico').disabled = false; // aqui vuelvo a activar el campo id
     });
 });
 
 
-function cargarMedicos() {
-    fetch("php/medicos.php?accion=lista")
-        .then(response => response.json())
+function cargarMedicos() { // aqui cargo todos los medicos que estan guardados
+    fetch("php/medicos.php?accion=lista") // pido la lista al archivo php
+        .then(response => response.json()) // convierto lo que manda php a formato entendible
         .then(data => {
-            const tbody = document.querySelector("#tablaMedicos tbody");
-            tbody.innerHTML = "";
+            const tbody = document.querySelector("#tablaMedicos tbody"); // aqui agarro el cuerpo de la tabla
+            tbody.innerHTML = ""; // la dejo vacia para volver a llenarla
 
-            if (data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="10" class="text-center text-muted">No hay médicos registrados</td></tr>';
+            if (data.length === 0) { // si no hay medicos registrados
+                tbody.innerHTML = '<tr><td colspan="10" class="text-center text-muted">no hay medicos registrados</td></tr>';
                 return;
             }
 
-            data.forEach(m => {
+            data.forEach(m => { // aqui recorro cada medico uno por uno
                 const fila = `
                 <tr>
                     <td>${m.IdMedico}</td>
                     <td>${m.NombreCompleto}</td>
                     <td>${m.CedulaProfesional}</td>
-                    <td>${m.NombreEspecialidad ?? "Sin especialidad"}</td>
+                    <td>${m.NombreEspecialidad ?? "sin especialidad"}</td>
                     <td>${m.Telefono}</td>
                     <td>${m.CorreoElectronico}</td>
                     <td>${m.HorarioAtencion}</td>
@@ -59,70 +58,70 @@ function cargarMedicos() {
                         </button>
                     </td>
                 </tr>`;
-                tbody.innerHTML += fila;
+                tbody.innerHTML += fila; // aqui voy agregando cada medico a la tabla
             });
         })
         .catch(err => {
-            console.error("Error cargando médicos:", err);
+            console.error("error cargando medicos:", err); // si algo falla 
             Swal.fire({
                 icon: "error",
-                title: "Error al cargar",
-                text: "No se pudieron cargar los médicos"
+                title: "error al cargar",
+                text: "no se pudieron cargar los medicos"
             });
         });
 }
 
 
-function guardarMedico(formData) {
+function guardarMedico(formData) { // aqui guardo o actualizo un medico
     fetch("php/medicos.php", {
-        method: "POST",
-        body: formData
+        method: "POST", // lo envio como post
+        body: formData // mando todo lo que escribi en el formulario
     })
-        .then(response => response.text())
+        .then(response => response.text()) // convierto lo que responde php a texto
         .then(respuesta => {
-            if (respuesta.includes("OK")) {
+            if (respuesta.includes("OK")) { // si todo salio bien
                 Swal.fire({
                     icon: "success",
-                    title: respuesta.includes("actualizado") ? "Médico actualizado" : "Médico guardado",
+                    title: respuesta.includes("actualizado") ? "medico actualizado" : "medico guardado",
                     timer: 1800,
                     showConfirmButton: false
                 });
 
-                document.querySelector("#formMedicos").reset();
+                document.querySelector("#formMedicos").reset(); // limpio el formulario
 
-                const modal = bootstrap.Modal.getInstance(document.getElementById("modalMedico"));
-                modal.hide();
+                const modal = bootstrap.Modal.getInstance(document.getElementById("modalMedico")); // agarro el modal
+                modal.hide(); // lo cierro
 
-                cargarMedicos();
+                cargarMedicos(); // vuelvo a cargar la tabla
             } else {
                 Swal.fire({
                     icon: "error",
-                    title: "Error",
+                    title: "error",
                     text: respuesta
                 });
             }
         })
         .catch(error => {
-            console.error("Error:", error);
+            console.error("error:", error);
             Swal.fire({
                 icon: "error",
-                title: "Error en la petición",
-                text: "No se pudo guardar el médico"
+                title: "error en la peticion",
+                text: "no se pudo guardar el medico"
             });
         });
 }
 
 
-function editarMedico(id) {
-    fetch(`php/medicos.php?accion=obtener&id=${id}`)
-        .then(response => response.json())
+function editarMedico(id) { // aqui cuando quiero editar un medico
+    fetch(`php/medicos.php?accion=obtener&id=${id}`) // aqui pido los datos de el medico
+        .then(response => response.json()) // paso lo que me mando php a json
         .then(medico => {
-            // Cambiar título del modal
-            document.getElementById('modalMedicoLabel').innerHTML = '<i class="fa-solid fa-user-edit me-2"></i>Editar Médico';
+
+            document.getElementById('modalMedicoLabel').innerHTML = '<i class="fa-solid fa-user-edit me-2"></i>editar medico'; // cambio titulo
             
-            // Llenar el formulario
+            // aqui lleno todos los campos con los datos que ya tenia
             document.getElementById('idMedico').value = medico.IdMedico;
-            document.getElementById('idMedico').disabled = true; // No permitir cambiar el ID
+            document.getElementById('idMedico').disabled = true; // no dejo cambiar el id
             document.getElementById('nombreCompleto').value = medico.NombreCompleto;
             document.getElementById('cedulaProfesional').value = medico.CedulaProfesional;
             document.getElementById('especialidad').value = medico.EspecialidadId;
@@ -132,7 +131,7 @@ function editarMedico(id) {
             document.getElementById('fechaIngreso').value = medico.FechaIngreso;
             document.getElementById('estatus').value = medico.Estatus;
             
-            // Agregar campo oculto para saber que es una edición
+            // aqui pongo un campo escondido para saber que estaba editando
             let inputEditar = document.querySelector('input[name="idMedicoEditar"]');
             if (!inputEditar) {
                 inputEditar = document.createElement('input');
@@ -140,61 +139,60 @@ function editarMedico(id) {
                 inputEditar.name = 'idMedicoEditar';
                 document.getElementById('formMedicos').appendChild(inputEditar);
             }
-            inputEditar.value = medico.IdMedico;
+            inputEditar.value = medico.IdMedico; // aqui le pongo el id
             
-            // Abrir modal
-            const modal = new bootstrap.Modal(document.getElementById('modalMedico'));
+            const modal = new bootstrap.Modal(document.getElementById('modalMedico')); // muestro el modal
             modal.show();
         })
         .catch(error => {
-            console.error("Error al cargar médico:", error);
+            console.error("error al cargar medico:", error);
             Swal.fire({
                 icon: "error",
-                title: "Error",
-                text: "No se pudo cargar la información del médico"
+                title: "error",
+                text: "no se pudo cargar la informacion del medico"
             });
         });
 }
 
 
-function eliminarMedico(id, nombre) {
+function eliminarMedico(id, nombre) { // aqui cuando quiero borrar un medico
     Swal.fire({
-        title: '¿Estás seguro?',
-        text: `Se eliminará al médico: ${nombre}`,
+        title: 'estas seguro?',
+        text: `se eliminara al medico: ${nombre}`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Sí, eliminar',
-        cancelButtonText: 'Cancelar'
+        confirmButtonText: 'si, eliminar',
+        cancelButtonText: 'cancelar'
     }).then((result) => {
-        if (result.isConfirmed) {
-            fetch(`php/medicos.php?accion=eliminar&id=${id}`)
+        if (result.isConfirmed) { // si confirme que si quiero borrar
+            fetch(`php/medicos.php?accion=eliminar&id=${id}`) // aqui lo borro
                 .then(response => response.text())
                 .then(respuesta => {
                     if (respuesta.includes("OK")) {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Eliminado',
-                            text: 'El médico ha sido eliminado correctamente',
+                            title: 'eliminado',
+                            text: 'el medico ha sido eliminado correctamente',
                             timer: 1800,
                             showConfirmButton: false
                         });
-                        cargarMedicos();
+                        cargarMedicos(); // cargo otra vez la tabla
                     } else {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Error',
+                            title: 'error',
                             text: respuesta
                         });
                     }
                 })
                 .catch(error => {
-                    console.error("Error:", error);
+                    console.error("error:", error);
                     Swal.fire({
                         icon: 'error',
-                        title: 'Error',
-                        text: 'No se pudo eliminar el médico'
+                        title: 'error',
+                        text: 'no se pudo eliminar el medico'
                     });
                 });
         }

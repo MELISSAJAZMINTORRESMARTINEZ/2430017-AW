@@ -1,5 +1,24 @@
-// Requiere: SweetAlert2
+//inicializar calendario
 document.addEventListener('DOMContentLoaded', function () {
+
+  const calendarEl = document.getElementById('calendar');
+
+  const calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    locale: 'es',
+    height: 'auto',
+
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
+  });
+
+  calendar.render();
+
+
+//boton para agregar cita
   const btnAgregar = document.getElementById('btnAgenda');
 
   btnAgregar.addEventListener('click', () => {
@@ -22,11 +41,28 @@ document.addEventListener('DOMContentLoaded', function () {
       cancelButtonText: 'Cancelar',
       customClass: { popup: 'custom-alert' }
     }).then(result => {
-      // ✅ No hace nada funcional: simplemente se cierra el modal.
-      // Si presiona "Agregar" o "Cancelar", no se guarda ni muestra alerta.
-      if (result.isConfirmed || result.isDismissed) {
-        // Modal se cierra automáticamente, sin acción adicional.
+
+      if (result.isConfirmed) {
+
+        // obtener datos
+        const pac = document.getElementById('paciente').value;
+        const fecha = document.getElementById('fecha').value;
+        const hora = document.getElementById('hora').value;
+
+        if (!pac || !fecha || !hora) {
+          Swal.fire("Error", "Debe llenar los campos obligatorios.", "error");
+          return;
+        }
+
+        // agregar evento al calendario
+        calendar.addEvent({
+          title: pac,
+          start: `${fecha}T${hora}`,
+        });
+
+        Swal.fire("Éxito", "Cita agregada correctamente.", "success");
       }
     });
   });
+
 });
