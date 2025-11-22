@@ -1,0 +1,106 @@
+/* Estilo personalizado para SweetAlert */
+.swal2-popup.custom-alert {
+  width: 350px !important; /* más pequeño */
+  border-radius: 20px !important; 
+  background: #f8ffff !important; /* color suave */
+  box-shadow: 0px 6px 15px rgba(44, 136, 136, 0.3) !important;
+  font-family: 'Poppins', sans-serif !important;
+}
+.swal2-html-container{
+    border-radius: 100px;
+}
+
+.swal2-title {
+  color: #2c8888 !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+}
+
+.swal2-html-container {
+  font-size: 15px !important;
+  color: #444 !important;
+}
+
+.swal2-confirm {
+   border-radius: 20px !important;
+  background-color: #2c8888 !important;
+  color: #fff !important;
+  font-size: 14px !important;
+  padding: 8px 25px !important;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15) !important;
+  transition: all 0.3s ease !important;
+}
+
+.swal2-confirm:hover {
+  background-color: #256e6e !important;
+  box-shadow: 0 3px 10px rgba(44, 136, 136, 0.3) !important;
+}
+/* Botón cancelar */
+.swal2-cancel {
+  border-radius: 20px !important;
+  background-color: #9ea5a8 !important;
+  color: #fff !important;
+  font-size: 14px !important;
+  padding: 8px 25px !important;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15) !important;
+  transition: all 0.3s ease !important;
+}
+
+.swal2-cancel:hover {
+  background-color: #7d8589 !important;
+  transform: translateY(-2px);
+}
+.swal2-input, .swal2-select {
+    border-radius: 20px !important;
+}
+/* --- SweetAlert personalizado --- */
+.swal2-popup.custom-alert {
+  width: 380px !important; /* más compacto */
+  padding: 25px !important;
+  border-radius: 20px !important;
+  background: #f9fefe !important;
+  box-shadow: 0px 6px 18px rgba(44, 136, 136, 0.25) !important;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* título más suave */
+.swal2-title {
+  font-size: 1.3rem !important;
+  font-weight: 600 !important;
+  color: #2c8888 !important;
+}
+
+/* inputs */
+.swal2-input, .swal2-select {
+  border-radius: 12px !important;
+  border: 1px solid #b7e0e0 !important;
+  padding: 10px !important;
+  font-size: 0.9rem !important;
+  box-shadow: none !important;
+  width: 90% !important;
+  margin: 6px auto !important;
+}
+
+/* botones */
+.swal2-confirm {
+  background-color: #2c8888 !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  padding: 8px 18px !important;
+}
+
+.swal2-cancel {
+  border-radius: 10px !important;
+  padding: 8px 18px !important;
+}
+
+/* animación */
+.swal2-show {
+  animation: fadeInUp 0.35s ease both;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+

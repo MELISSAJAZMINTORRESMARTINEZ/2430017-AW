@@ -1,0 +1,169 @@
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f6f9;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      height: 100vh;
+      background: linear-gradient(180deg, #2c8888, #2c8888);
+      color: white;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 230px;
+      padding-top: 25px;
+      box-shadow: 4px 0 14px rgba(76, 174, 174, 0.3);
+      transition: all 0.3s ease-in-out;
+      backdrop-filter: blur(6px);
+      overflow-y: scroll;
+      /* O usa 'auto' si prefieres que aparezca solo cuando sea necesario */
+      scrollbar-width: none;
+      /* Oculta la barra en Firefox */
+      -ms-overflow-style: none;
+      /* Oculta la barra en Internet Explorer y Edge */
+    }
+
+    /* Oculta la barra en navegadores basados en WebKit (Chrome, Safari, Opera) */
+    .sidebar::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Título e imagen */
+    .sidebar h4 {
+      text-align: center;
+      margin-bottom: 35px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .sidebar img {
+      box-shadow: 0px 0px 12px rgba(255, 255, 255, 0.6);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      background-color: rgba(255, 255, 255, 0.25);
+      border-radius: 50%;
+    }
+
+    /* Links */
+    .sidebar a {
+      display: block;
+      color: #f8ffff;
+      text-decoration: none;
+      padding: 12px 25px;
+      font-size: 15px;
+      border-left: 4px solid transparent;
+      transition: all 0.3s ease;
+      margin: 3px 8px;
+      border-radius: 10px;
+    }
+
+    /* Efecto hover */
+    .sidebar a:hover {
+      border-left: 4px solid #e0fafa;
+    }
+
+    /* Separador */
+    .sidebar hr {
+      border-color: rgba(255, 255, 255, 0.4);
+      margin: 20px;
+    }
+
+    /* Cerrar sesión */
+    .sidebar a:last-child {
+      color: #fff8f8;
+      font-weight: 500;
+    }
+
+    .sidebar a:last-child:hover {
+      border-left: 4px solid #ffffff;
+    }
+
+
+    /* Contenido principal */
+    .content {
+      margin-left: 230px;
+      padding: 20px;
+    }
+
+    .navbar {
+      border-radius: 20px;
+      box-shadow: 0px 2px 4px rgba(165, 85, 85, 0.1);
+    }
+
+    .card {
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    #btnAgenda {
+      background-color: #2c8888;
+      border-color: #2c8888;
+    }
+
+    #btnAgenda:hover {
+      background-color: #1c6f6f;
+      /* más oscuro al pasar el mouse */
+    }
+    #btnAgregarMedico{
+      background-color:#2c8888 ;
+      border-color:#2c8888 ;
+
+    }
+    #btnAgregarMedio:hover{
+      background-color:#2c8888;
+    }
+    /* FullCalendar container styling */
+#calendar {
+  max-width: 100%;
+  margin: 0 auto;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Tarjetas y paneles laterales para que combinen con tu estilo */
+.card .fc-toolbar-title {
+  color: #2c8888;
+  font-weight: 700;
+}
+
+/* Ajustes para botones y inputs de FullCalendar */
+.fc .fc-button {
+  border-radius: 12px;
+  background: #2c8888;
+  border: none;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(44,136,136,0.12);
+}
+.fc .fc-button:hover {
+  background: #257070;
+}
+
+/* Lista de próximas citas */
+#upcomingList li {
+  border-left: 3px solid rgba(44,136,136,0.15);
+  padding-left: 10px;
+  margin-bottom: 8px;
+}
+
+/* Tarjetas internas */
+.card {
+  border-radius: 12px;
+}
+
+/* Responsive: en pantallas pequeñas mostrar panel lateral abajo */
+@media (max-width: 991px) {
+  .col-lg-9, .col-lg-3 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  #calendar { margin-bottom: 20px; }
+}
+
+/* Mantener tipografía consistente */
+.swal2-popup {
+  font-family: 'Poppins', sans-serif;
+}
