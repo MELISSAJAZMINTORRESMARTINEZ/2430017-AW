@@ -2,11 +2,11 @@
 header("Content-Type: application/json; charset=utf-8"); // aqui establezco que la respuesta sera json
 
 // configuracion
-$host = "localhost"; // aqui guardo el host
-$port = "3306"; // aqui pongo el puerto
-$dbname = "clinica"; // aqui va el nombre de la base de datos
-$user = "root"; // usuario para conectar
-$pass = ""; // contrasena para conectar
+$host = "localhost";
+$port = "3306";
+$dbname = "clinica";
+$user = "clinica2";
+$pass = "Clini123!";
 
 try {
     $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8"; // aqui armo el dsn para la conexion

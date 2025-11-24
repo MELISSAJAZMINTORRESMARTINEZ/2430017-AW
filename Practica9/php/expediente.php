@@ -3,8 +3,9 @@
 $host = "localhost";
 $port = "3306";
 $dbname = "clinica";
-$user = "clinicausuario";
-$pass = "12";
+$user = "clinica2";
+$pass = "Clini123!";
+
 
 // iniciamos un bloque try para capturar errores
 try {
