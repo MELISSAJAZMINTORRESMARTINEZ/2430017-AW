@@ -62,6 +62,14 @@ function cargarEspecialidades() {
             // agrega eventos a los botones despues de cargarlos
             agregarEventListeners()
         })
+        .catch(err => {
+            console.error("error cargando especialidades", err)
+            Swal.fire({
+                icon: "error",
+                title: "error",
+                text: "no se pudieron cargar las especialidades"
+            })
+        })
 }
 
 

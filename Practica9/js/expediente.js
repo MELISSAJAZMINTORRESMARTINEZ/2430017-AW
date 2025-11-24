@@ -115,6 +115,14 @@ function cargarExpedientes() {
                 tbody.innerHTML += fila; // agrego fila
             });
         })
+        .catch(err => {
+            console.error("error cargando expedientes:", err);
+            Swal.fire({
+                icon: "error",
+                title: "error al cargar",
+                text: "no se pudieron cargar los expedientes"
+            });
+        });
 }
 
 
