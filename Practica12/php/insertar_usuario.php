@@ -3,8 +3,8 @@
 $host = "localhost";
 $port = "3306";
 $dbname = "clinica";
-$user = "root";
-$pass = "";
+$user = "clinicausuario";
+$pass = "12";
 
 try {
     // Conexión PDO

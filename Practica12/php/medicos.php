@@ -2,8 +2,8 @@
 // se definen los datos para conectar a la base de datos
 $host = "localhost";
 $port = "3306";
-$dbname = "clinica";
-$user = "root";
+$user = "clinicausuario";
+$pass = "12";
 $pass = "";
 
 // iniciamos un bloque try para capturar errores
