@@ -73,20 +73,7 @@
               </tr>
             </thead>
             <tbody id="tablaEspecialidades">
-              <!-- Ejemplo de fila con botones -->
-              <tr>
-                <td>1</td>
-                <td>Cardiología</td>
-                <td>Especialidad enfocada en el corazón</td>
-                <td>
-                  <button class="btn btn-sm btn-warning text-white me-2" onclick="editarEspecialidad(1, 'Cardiología', 'Especialidad enfocada en el corazón')" title="Editar">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                  </button>
-                  <button class="btn btn-sm btn-danger" onclick="eliminarEspecialidad(1)" title="Eliminar">
-                    <i class="fa-solid fa-trash"></i>
-                  </button>
-                </td>
-              </tr>
+              
             </tbody>
           </table>
         </div>
@@ -161,13 +148,12 @@
               <label for="editNombreEspecialidad" class="form-label">Nombre Especialidad</label>
               <select id="editNombreEspecialidad" name="nombreEspecialidad" class="form-select" required>
                 <option value="">Selecciona Especialidad</option>
-                <option value="">Selecciona Especialidad</option>
-  <option value="1">Cardiología</option>
-  <option value="2">Pediatría</option>
-  <option value="3">Dermatología</option>
-  <option value="4">Ginecología</option>
-  <option value="5">Medicina General</option>
-  <option value="6">Neurología</option>
+  <option value="Cardiología">Cardiología</option>
+  <option value="Pediatría">Pediatría</option>
+  <option value="Dermatología">Dermatología</option>
+  <option value="Ginecología">Ginecología</option>
+  <option value="Medicina">Medicina General</option>
+  <option value="Neurología">Neurología</option>
               </select>
             </div>
             <div class="mb-3">

@@ -6,53 +6,190 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="icon" type="image/png" href="images/New Patients.png">
-    <link rel="stylesheet" href="css/dashboard.css">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <style>
+        body {
+            background: #f4f6f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 250px;
+            background: linear-gradient(180deg, #2c8888 0%, #1f6060 100%);
+            padding: 20px 0;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .sidebar h4 {
+            color: white;
+            margin-bottom: 30px;
+            padding: 0 15px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 12px 20px;
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar a:hover {
+            background: rgba(255,255,255,0.1);
+            border-left-color: #fff;
+            color: white;
+        }
+
+        .sidebar hr {
+            border-color: rgba(255,255,255,0.2);
+            margin: 20px 15px;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        .stat-card {
+            border-radius: 8px;
+            border: none;
+        }
+
+        .recent-activity {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .activity-item {
+            padding: 12px;
+            border-left: 3px solid #2c8888;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+        }
+
+        .navbar {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 15px 20px;
+        }
+    </style>
 </head>
 
 <body>
 
     <!-- Sidebar -->
-   <div class="sidebar">
-  <h4 class="text-center">
-    <img src="images/otrogatito (2).png" alt="Logo Clínica" width="60" height="60" class="rounded-circle mb-2">
-    <br>Clínica
-  </h4>
+    <div class="sidebar">
+        <h4 class="text-center">
+            <img src="images/otrogatito (2).png" alt="Logo Clínica" width="60" height="60" class="rounded-circle mb-2" 
+                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22%3E%3Ccircle cx=%2230%22 cy=%2230%22 r=%2230%22 fill=%22%23fff%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2224%22%3E🏥%3C/text%3E%3C/svg%3E'">
+            <br>Clínica
+        </h4>
 
-  <div class="sidebar-links">
-    <a href="dash.html"><i class="fa-solid fa-house me-2"></i>Inicio</a>
-    <a href="usuarios.html"><i class="fa-solid fa-stethoscope me-2"></i>Usuario</a>
-    <a href="pacientes.html"><i class="fa-solid fa-user-injured me-2"></i>Control de pacientes</a>
-    <a href="controlAgenda.html"><i class="fa-solid fa-calendar-days me-2"></i>Control de agenda</a>
-    <a href="medicos.html"><i class="fa-solid fa-user-doctor me-2"></i>Control de médicos</a>
-    <a href="reportes.html"><i class="fa-solid fa-chart-line me-2"></i>Reportes</a>
-    <a href="expediente.html"><i class="fa-solid fa-chart-line me-2"></i>Expediente Clínico</a>
-    <a href="pagos.html"><i class="fa-solid fa-money-check-dollar me-2"></i>Pagos</a>
-    <a href="tarifas.html"><i class="fa-solid fa-file-invoice-dollar me-2"></i>Gestor de tarifas</a>
-    <a href="bitacora.html"><i class="fa-solid fa-book me-2"></i>Bitácoras de usuarios</a>
-    <a href="especialidades.html"><i class="fa-solid fa-stethoscope me-2"></i>Especialidades médicas</a>
-  </div>
+        <a href="dash.html"><i class="fa-solid fa-house me-2"></i>Inicio</a>
+        <a href="usuarios.html"><i class="fa-solid fa-user me-2"></i>Usuario</a>
+        <a href="pacientes.html"><i class="fa-solid fa-user-injured me-2"></i>Control de pacientes</a>
+        <a href="controlAgenda.html"><i class="fa-solid fa-calendar-days me-2"></i>Control de agenda</a>
+        <a href="medicos.html"><i class="fa-solid fa-user-doctor me-2"></i>Control de médicos</a>
+        <a href="reportes.html"><i class="fa-solid fa-chart-line me-2"></i>Reportes</a>
+        <a href="expediente.html"><i class="fa-solid fa-folder-open me-2"></i>Expediente Clínico</a>
+        <a href="pagos.html"><i class="fa-solid fa-money-check-dollar me-2"></i>Pagos</a>
+        <a href="tarifas.html"><i class="fa-solid fa-file-invoice-dollar me-2"></i>Gestor de tarifas</a>
+        <a href="bitacora.html"><i class="fa-solid fa-book me-2"></i>Bitácoras de usuarios</a>
+        <a href="especialidades.html"><i class="fa-solid fa-stethoscope me-2"></i>Especialidades médicas</a>
 
-  <hr>
-  <a href="index.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a>
-</div>
-
+        <hr>
+        <a href="index.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a>
+    </div>
 
     <!-- Contenido -->
     <div class="content">
 
         <!-- Navbar superior -->
-        <nav class="navbar navbar-expand-lg navbar-light mb-4">
+        <nav class="navbar navbar-expand-lg mb-4">
             <div class="container-fluid">
-                <span class="navbar-brand mb-0 h5">Panel principal</span>
-
+                <span class="navbar-brand mb-0 h5">Panel Principal</span>
+                <span class="text-muted">23 de Noviembre, 2025</span>
             </div>
         </nav>
+
+        <!-- Tarjetas de estadísticas -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="card stat-card text-white shadow-sm" style="background-color: #2c8888;">
+                    <div class="card-body">
+                        <h6 class="mb-1">Pacientes Hoy</h6>
+                        <h2 class="mb-0">ninguno</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card stat-card text-white shadow-sm" style="background-color: #3a9999;">
+                    <div class="card-body">
+                        <h6 class="mb-1">Citas Pendientes</h6>
+                        <h2 class="mb-0">tampoc tenemos</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card stat-card text-white shadow-sm" style="background-color: #236969;">
+                    <div class="card-body">
+                        <h6 class="mb-1">Médicos Activos</h6>
+                        <h2 class="mb-0">no tenemos</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card stat-card text-white shadow-sm" style="background-color: #1f6060;">
+                    <div class="card-body">
+                        <h6 class="mb-1">Ingresos Hoy</h6>
+                        <h2 class="mb-0">somos pobres:c</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actividad reciente -->
+        <div class="row">
+            <div class="col-12">
+                <div class="recent-activity">
+                    <h5 class="mb-3">Actividad Reciente</h5>
+                    
+                    <div class="activity-item">
+                        <strong>Nueva cita agendada</strong>
+                        <p class="mb-0 text-muted"></p>
+                    </div>
+
+                    <div class="activity-item">
+                        <strong>Paciente registrado</strong>
+                        <p class="mb-0 text-muted"></p>
+                    </div>
+
+                    <div class="activity-item">
+                        <strong>Pago procesado</strong>
+                        <p class="mb-0 text-muted"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 
