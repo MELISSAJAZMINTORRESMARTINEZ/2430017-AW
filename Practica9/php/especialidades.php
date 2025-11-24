@@ -2,9 +2,9 @@
 header("Content-Type: application/json; charset=utf-8"); // aqui establezco que la respuesta sera json
 
 // configuracion
-$host = "localhost";
-$port = "3306";
-$dbname = "clinica";
+$host = "localhost"; // aqui guardo el host
+$port = "3306"; // aqui pongo el puerto
+$dbname = "clinica"; // aqui va el nombre de la base de datos
 $user = "clinica2";
 $pass = "Clini123!";
 
