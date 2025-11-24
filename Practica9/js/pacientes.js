@@ -70,14 +70,6 @@ function cargarPacientes() { // aqui cargo todos los pacientes que estan guardad
                 tbody.innerHTML += fila; // aqui voy agregando cada paciente a la tabla
             });
         })
-        .catch(err => {
-            console.error("error cargando pacientes:", err); // si algo falla 
-            Swal.fire({
-                icon: "error",
-                title: "error al cargar",
-                text: "no se pudieron cargar los pacientes"
-            });
-        });
 }
 
 

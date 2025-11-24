@@ -61,14 +61,6 @@ function cargarTarifas() {
                 tbody.innerHTML += fila; // agrego fila
             });
         })
-        .catch(err => {
-            console.error("error cargando tarifas:", err);
-            Swal.fire({
-                icon: "error",
-                title: "error al cargar",
-                text: "no se pudieron cargar las tarifas"
-            });
-        });
 }
 
 

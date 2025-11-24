@@ -65,14 +65,7 @@ function cargarMedicos() {
                 tbody.innerHTML += fila; // agrego fila
             });
         })
-        .catch(err => {
-            console.error("error cargando medicos:", err);
-            Swal.fire({
-                icon: "error",
-                title: "error al cargar",
-                text: "no se pudieron cargar los medicos"
-            });
-        });
+
 }
 
 
