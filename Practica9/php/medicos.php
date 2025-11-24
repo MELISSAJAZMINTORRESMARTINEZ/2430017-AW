@@ -18,10 +18,10 @@ try {
     // configuramos pdo para lanzar errores si algo sale mal
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // validamos si llega una peticion get y si accion es lista
+    // validamos si llega una peticion GET y si accion es "lista"
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'lista') {
         
-        // consulta sql para obtener medicos y su especialidad
+        // consulta sql para obtener medicos y su especialidad con LEFT JOIN
         $sql = "SELECT 
                     cm.IdMedico,
                     cm.NombreCompleto,
@@ -37,64 +37,61 @@ try {
                 LEFT JOIN especialidades e ON cm.EspecialidadId = e.IdEspecialidad
                 ORDER BY cm.IdMedico DESC";
         
-        // se ejecuta la consulta directamente porque no lleva parametros
+        // ejecuta la consulta directamente porque no lleva parametros
         $stmt = $pdo->query($sql);
 
-        // se obtienen todos los resultados como arreglo asociativo
+        // obtiene todos los resultados
         $medicos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-        // indicamos que la respuesta sera json
+        // indica que se enviará JSON
         header('Content-Type: application/json');
 
-        // convertimos los datos a json y los imprimimos
+        // imprime los datos en json
         echo json_encode($medicos);
 
-        // detenemos la ejecucion
-        exit;
+        exit; // detiene la ejecución del script
     }
 
-    // aqui revisamos si quiere obtener un solo medico por id
+    // obtener un solo médico por ID
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'obtener') {
         
-        // consulta con parametro
+        // consulta con parámetro
         $sql = "SELECT * FROM controlmedicos WHERE IdMedico = :id";
 
-        // preparamos la consulta
+        // prepara la consulta
         $stmt = $pdo->prepare($sql);
 
-        // vinculamos el parametro :id con el valor recibido por get
+        // vincula parámetro
         $stmt->bindParam(':id', $_GET['id']);
 
-        // ejecutamos la consulta
+        // ejecuta consulta
         $stmt->execute();
         
-        // obtenemos un solo registro
+        // obtiene un registro
         $medico = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        // indicamos que la salida sera json
+        // indica formato JSON
         header('Content-Type: application/json');
 
-        // imprimimos el json
+        // imprime el JSON
         echo json_encode($medico);
 
-        // terminamos
         exit;
     }
 
-    // aqui revisamos si es post y no existe el campo idMedicoEditar
-    // eso significa que es un registro nuevo
+    // registrar un nuevo médico (POST sin idMedicoEditar)
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['idMedicoEditar'])) {
         
-        // consulta insert para agregar medico
+        // consulta insert
         $sql = "INSERT INTO controlmedicos
                 (IdMedico, NombreCompleto, CedulaProfesional, EspecialidadId, Telefono, CorreoElectronico, HorarioAtencion, FechaIngreso, Estatus)
                 VALUES 
                 (:idMedico, :nombreCompleto, :cedulaProfesional, :especialidad, :telefono, :correo, :horario, :fechaIngreso, :estatus)";
 
-        // preparamos la consulta
+        // preparar consulta
         $stmt = $pdo->prepare($sql);
 
-        // vinculamos cada dato con lo que viene del formulario
+        // vincular parámetros
         $stmt->bindParam(':idMedico', $_POST['idMedico']);
         $stmt->bindParam(':nombreCompleto', $_POST['nombreCompleto']);
         $stmt->bindParam(':cedulaProfesional', $_POST['cedulaProfesional']);
@@ -105,15 +102,15 @@ try {
         $stmt->bindParam(':fechaIngreso', $_POST['fechaIngreso']);
         $stmt->bindParam(':estatus', $_POST['estatus']);
 
-        // insertamos el registro
+        // ejecutar insert
         $stmt->execute();
 
-        // mensaje si todo salio bien
+        // mensaje final
         echo "OK - medico guardado";
         exit;
     }
 
-    // si es post y existe idMedicoEditar, entonces es un update
+    // actualizar un médico (POST con idMedicoEditar)
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idMedicoEditar'])) {
         
         // consulta update
@@ -128,10 +125,10 @@ try {
                 Estatus = :estatus
                 WHERE IdMedico = :idMedico";
 
-        // preparamos la consulta
+        // preparar consulta
         $stmt = $pdo->prepare($sql);
 
-        // vinculamos los parametros
+        // vincular parámetros
         $stmt->bindParam(':idMedico', $_POST['idMedicoEditar']);
         $stmt->bindParam(':nombreCompleto', $_POST['nombreCompleto']);
         $stmt->bindParam(':cedulaProfesional', $_POST['cedulaProfesional']);
@@ -142,38 +139,36 @@ try {
         $stmt->bindParam(':fechaIngreso', $_POST['fechaIngreso']);
         $stmt->bindParam(':estatus', $_POST['estatus']);
 
-        // ejecutamos el update
+        // ejecutar update
         $stmt->execute();
 
-        // mensaje si todo ok
         echo "OK - medico actualizado";
         exit;
     }
 
-    // aqui revisamos si se mando un get con accion eliminar
+    // eliminar médico
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'eliminar') {
         
-        // consulta para borrar
+        // consulta delete
         $sql = "DELETE FROM controlmedicos WHERE IdMedico = :id";
 
-        // preparamos la consulta
+        // preparar consulta
         $stmt = $pdo->prepare($sql);
 
-        // vinculamos el id recibido
+        // vincular id
         $stmt->bindParam(':id', $_GET['id']);
 
-        // ejecutamos el delete
+        // ejecutar
         $stmt->execute();
 
-        // mensaje de exito
         echo "OK - medico eliminado";
         exit;
     }
 
-// si ocurre un error en cualquier parte del try
+// captura errores de PDO
 } catch (PDOException $e) {
 
-    // mostramos el error
+    // imprime error
     echo "Error: " . $e->getMessage();
 }
 ?>
