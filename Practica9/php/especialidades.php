@@ -2,12 +2,11 @@
 header("Content-Type: application/json; charset=utf-8"); // aqui establezco que la respuesta sera json
 
 // configuracion
-$host = "localhost"; // aqui guardo el host
-$port = "3306"; // aqui pongo el puerto
-$dbname = "clinica"; // aqui va el nombre de la base de datos
-$user = "clinica2";
-$pass = "Clini123!";
-
+$host = "localhost";
+$port = "3306";
+$dbname = "clinica";
+$user = "clinica3";
+$pass = ""; // vacío
 try {
     $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8"; // aqui armo el dsn para la conexion
     $pdo = new PDO($dsn, $user, $pass); // aqui creo la instancia pdo

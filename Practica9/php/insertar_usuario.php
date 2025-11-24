@@ -3,8 +3,8 @@
 $host = "localhost";
 $port = "3306";
 $dbname = "clinica";
-$user = "clinica2";
-$pass = "Clini123!";
+$user = "clinica3";
+$pass = ""; // vacío
 
 
 try {
