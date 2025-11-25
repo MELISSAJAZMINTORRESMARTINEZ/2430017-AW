@@ -37,9 +37,9 @@ try {
     // Ejecutar
     $stmt->execute();
 
-    echo "<h3 style='color:green;'>✅ Usuario agregado correctamente.</h3>";
+    echo "<h3 style='color:green;'>Usuario agregado correctamente.</h3>";
 
 } catch (PDOException $e) {
-    echo "<h3 style='color:red;'>❌ Error al guardar usuario: " . $e->getMessage() . "</h3>";
+    echo "<h3 style='color:red;'>Error al guardar usuario: " . $e->getMessage() . "</h3>";
 }
 ?>
