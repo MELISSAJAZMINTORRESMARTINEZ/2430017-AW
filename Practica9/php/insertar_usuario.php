@@ -21,13 +21,12 @@ try {
     // validamos si llega una peticion GET y si accion es "lista"
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'lista') {
         
-        // consulta sql para obtener usuarios
+        // consulta sql para obtener todos los usuarios
         $sql = "SELECT 
                     IdUsuario,
                     Usuario,
-                    ContrasenaHash,
+                    ContraseñaHash,
                     Rol,
-                    IdMedico,
                     Activo,
                     UltimoAcceso
                 FROM usuarios
@@ -52,15 +51,7 @@ try {
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'obtener') {
         
         // consulta con parámetro
-        $sql = "SELECT 
-                    IdUsuario,
-                    Usuario,
-                    Rol,
-                    IdMedico,
-                    Activo,
-                    UltimoAcceso
-                FROM usuarios 
-                WHERE IdUsuario = :id";
+        $sql = "SELECT * FROM usuarios WHERE IdUsuario = :id";
 
         // prepara la consulta
         $stmt = $pdo->prepare($sql);
@@ -87,47 +78,36 @@ try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['idUsuarioEditar'])) {
         
         // validar que el usuario no exista
-        $sqlCheck = "SELECT COUNT(*) FROM usuarios WHERE Usuario = :usuario";
+        $sqlCheck = "SELECT COUNT(*) FROM usuarios WHERE Usuario = :usuario OR IdUsuario = :idUsuario";
         $stmtCheck = $pdo->prepare($sqlCheck);
         $stmtCheck->bindParam(':usuario', $_POST['usuario']);
+        $stmtCheck->bindParam(':idUsuario', $_POST['idUsuario']);
         $stmtCheck->execute();
         
         if ($stmtCheck->fetchColumn() > 0) {
-            echo "ERROR - el nombre de usuario ya existe";
+            echo "ERROR - el usuario o ID ya existe";
             exit;
         }
-        
-        // validar que el IdUsuario no exista
-        $sqlCheckId = "SELECT COUNT(*) FROM usuarios WHERE IdUsuario = :idUsuario";
-        $stmtCheckId = $pdo->prepare($sqlCheckId);
-        $stmtCheckId->bindParam(':idUsuario', $_POST['idUsuario']);
-        $stmtCheckId->execute();
-        
-        if ($stmtCheckId->fetchColumn() > 0) {
-            echo "ERROR - el ID de usuario ya existe";
-            exit;
-        }
+
+        // hashear la contraseña
+        $contrasenaHash = password_hash($_POST['contrasena'], PASSWORD_DEFAULT);
         
         // consulta insert
         $sql = "INSERT INTO usuarios
-                (IdUsuario, Usuario, ContrasenaHash, Rol, IdMedico, Activo, UltimoAcceso)
+                (IdUsuario, Usuario, ContraseñaHash, Rol, IdMedico, Activo, UltimoAcceso)
                 VALUES 
-                (:idUsuario, :usuario, :contrasena, :rol, :idMedico, :activo, :ultimoAcceso)";
+                (:idUsuario, :usuario, :contrasenaHash, :rol, :idMedico, :activo, :ultimoAcceso)";
 
         // preparar consulta
         $stmt = $pdo->prepare($sql);
 
-        // encriptar la contraseña
-        $hash = password_hash($_POST['contrasena'], PASSWORD_DEFAULT);
-        
-        // manejar valores nulos
-        $idMedico = empty($_POST['idMedico']) ? null : $_POST['idMedico'];
-        $ultimoAcceso = empty($_POST['ultimoAcceso']) ? null : $_POST['ultimoAcceso'];
-
         // vincular parámetros
+        $idMedico = !empty($_POST['idMedico']) ? $_POST['idMedico'] : null;
+        $ultimoAcceso = !empty($_POST['ultimoAcceso']) ? $_POST['ultimoAcceso'] : null;
+        
         $stmt->bindParam(':idUsuario', $_POST['idUsuario']);
         $stmt->bindParam(':usuario', $_POST['usuario']);
-        $stmt->bindParam(':contrasena', $hash);
+        $stmt->bindParam(':contrasenaHash', $contrasenaHash);
         $stmt->bindParam(':rol', $_POST['rol']);
         $stmt->bindParam(':idMedico', $idMedico);
         $stmt->bindParam(':activo', $_POST['activo']);
@@ -144,39 +124,32 @@ try {
     // actualizar un usuario (POST con idUsuarioEditar)
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idUsuarioEditar'])) {
         
-        // validar que el usuario no esté duplicado (excepto el actual)
-        $sqlCheck = "SELECT COUNT(*) FROM usuarios WHERE Usuario = :usuario AND IdUsuario != :idUsuario";
+        // validar que el usuario no exista (excepto el actual)
+        $sqlCheck = "SELECT COUNT(*) FROM usuarios WHERE Usuario = :usuario AND IdUsuario != :idUsuarioEditar";
         $stmtCheck = $pdo->prepare($sqlCheck);
         $stmtCheck->bindParam(':usuario', $_POST['usuario']);
-        $stmtCheck->bindParam(':idUsuario', $_POST['idUsuarioEditar']);
+        $stmtCheck->bindParam(':idUsuarioEditar', $_POST['idUsuarioEditar']);
         $stmtCheck->execute();
         
         if ($stmtCheck->fetchColumn() > 0) {
             echo "ERROR - el nombre de usuario ya existe";
             exit;
         }
-        
-        // manejar valores nulos
-        $idMedico = empty($_POST['idMedico']) ? null : $_POST['idMedico'];
-        $ultimoAcceso = empty($_POST['ultimoAcceso']) ? null : $_POST['ultimoAcceso'];
-        
-        // si se envía una nueva contraseña, la actualizamos
+
+        // si viene contraseña nueva, hashearla
         if (!empty($_POST['contrasena'])) {
-            $hash = password_hash($_POST['contrasena'], PASSWORD_DEFAULT);
+            $contrasenaHash = password_hash($_POST['contrasena'], PASSWORD_DEFAULT);
             
             $sql = "UPDATE usuarios SET
                     Usuario = :usuario,
-                    ContrasenaHash = :contrasena,
+                    ContraseñaHash = :contrasenaHash,
                     Rol = :rol,
                     IdMedico = :idMedico,
                     Activo = :activo,
                     UltimoAcceso = :ultimoAcceso
                     WHERE IdUsuario = :idUsuario";
-            
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindParam(':contrasena', $hash);
         } else {
-            // actualizar sin cambiar la contraseña
+            // si no viene contraseña, no actualizar ese campo
             $sql = "UPDATE usuarios SET
                     Usuario = :usuario,
                     Rol = :rol,
@@ -184,17 +157,25 @@ try {
                     Activo = :activo,
                     UltimoAcceso = :ultimoAcceso
                     WHERE IdUsuario = :idUsuario";
-            
-            $stmt = $pdo->prepare($sql);
         }
 
-        // vincular parámetros comunes
+        // preparar consulta
+        $stmt = $pdo->prepare($sql);
+
+        // vincular parámetros
+        $idMedico = !empty($_POST['idMedico']) ? $_POST['idMedico'] : null;
+        $ultimoAcceso = !empty($_POST['ultimoAcceso']) ? $_POST['ultimoAcceso'] : null;
+        
         $stmt->bindParam(':idUsuario', $_POST['idUsuarioEditar']);
         $stmt->bindParam(':usuario', $_POST['usuario']);
         $stmt->bindParam(':rol', $_POST['rol']);
         $stmt->bindParam(':idMedico', $idMedico);
         $stmt->bindParam(':activo', $_POST['activo']);
         $stmt->bindParam(':ultimoAcceso', $ultimoAcceso);
+        
+        if (!empty($_POST['contrasena'])) {
+            $stmt->bindParam(':contrasenaHash', $contrasenaHash);
+        }
 
         // ejecutar update
         $stmt->execute();

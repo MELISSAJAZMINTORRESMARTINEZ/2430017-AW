@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
     form.addEventListener("submit", function (e) { 
         e.preventDefault(); // evito que la página se recargue
         
-        // validaciones del lado del cliente
+        // validaciones
         if (!validarFormulario()) {
             return;
         }
@@ -26,73 +26,70 @@ document.addEventListener("DOMContentLoaded", function () {
         if (inputEditar) inputEditar.remove();
         
         document.getElementById('idUsuario').disabled = false; // vuelvo a activar el campo ID
+        document.getElementById('contrasena').required = true; // contraseña requerida al agregar
+        document.getElementById('contrasena').placeholder = ''; // limpio placeholder
         
-        // mostrar campo contraseña y hacerlo requerido
-        document.getElementById('grupoContrasena').style.display = 'block';
-        document.getElementById('contrasena').required = true;
-        document.getElementById('infoContrasena').style.display = 'none';
+        // limpiar mensajes de error
+        document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+        document.querySelectorAll('.invalid-feedback').forEach(el => el.remove());
     });
 });
 
 
 // validar formulario
 function validarFormulario() {
-    const usuario = document.getElementById('usuario').value.trim();
-    const contrasena = document.getElementById('contrasena').value;
-    const rol = document.getElementById('rol').value;
-    const activo = document.getElementById('activo').value;
-    const idUsuarioEditar = document.querySelector('input[name="idUsuarioEditar"]');
-
-    // validar usuario (mínimo 3 caracteres)
-    if (usuario.length < 3) {
-        Swal.fire({
-            icon: "warning",
-            title: "validacion",
-            text: "el usuario debe tener al menos 3 caracteres"
-        });
-        return false;
+    let valido = true;
+    
+    // limpiar errores previos
+    document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+    document.querySelectorAll('.invalid-feedback').forEach(el => el.remove());
+    
+    // validar ID Usuario
+    const idUsuario = document.getElementById('idUsuario');
+    if (!idUsuario.disabled && (!idUsuario.value || idUsuario.value <= 0)) {
+        mostrarError(idUsuario, 'el ID debe ser un número mayor a 0');
+        valido = false;
     }
-
-    // validar contraseña solo si es nuevo usuario o si se está cambiando
-    if (!idUsuarioEditar && contrasena.length < 6) {
-        Swal.fire({
-            icon: "warning",
-            title: "validacion",
-            text: "la contraseña debe tener al menos 6 caracteres"
-        });
-        return false;
+    
+    // validar Usuario
+    const usuario = document.getElementById('usuario');
+    if (!usuario.value || usuario.value.trim().length < 3) {
+        mostrarError(usuario, 'el usuario debe tener al menos 3 caracteres');
+        valido = false;
     }
-
-    if (idUsuarioEditar && contrasena && contrasena.length < 6) {
-        Swal.fire({
-            icon: "warning",
-            title: "validacion",
-            text: "la contraseña debe tener al menos 6 caracteres"
-        });
-        return false;
+    
+    // validar Contraseña (solo si es requerida)
+    const contrasena = document.getElementById('contrasena');
+    if (contrasena.required && (!contrasena.value || contrasena.value.length < 6)) {
+        mostrarError(contrasena, 'la contraseña debe tener al menos 6 caracteres');
+        valido = false;
     }
-
-    // validar rol
-    if (!rol) {
-        Swal.fire({
-            icon: "warning",
-            title: "validacion",
-            text: "debes seleccionar un rol"
-        });
-        return false;
+    
+    // validar Rol
+    const rol = document.getElementById('rol');
+    if (!rol.value) {
+        mostrarError(rol, 'debe seleccionar un rol');
+        valido = false;
     }
-
-    // validar activo
-    if (activo === "") {
-        Swal.fire({
-            icon: "warning",
-            title: "validacion",
-            text: "debes seleccionar si el usuario está activo"
-        });
-        return false;
+    
+    // validar Activo
+    const activo = document.getElementById('activo');
+    if (activo.value === '') {
+        mostrarError(activo, 'debe seleccionar si el usuario está activo');
+        valido = false;
     }
+    
+    return valido;
+}
 
-    return true;
+
+// mostrar mensaje de error en un campo
+function mostrarError(campo, mensaje) {
+    campo.classList.add('is-invalid');
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'invalid-feedback';
+    errorDiv.textContent = mensaje;
+    campo.parentNode.appendChild(errorDiv);
 }
 
 
@@ -101,7 +98,7 @@ function cargarUsuarios() {
     fetch("php/usuarios.php?accion=lista") // pido la lista al PHP
         .then(response => response.json()) // convierto respuesta en JSON
         .then(data => {
-            const tbody = document.querySelector("#tablaUsuarios tbody"); 
+            const tbody = document.querySelector("#tablaPacientes tbody"); 
             tbody.innerHTML = ""; // limpio la tabla
 
             if (data.length === 0) { 
@@ -114,20 +111,28 @@ function cargarUsuarios() {
                 <tr>
                     <td>${u.IdUsuario}</td>
                     <td>${u.Usuario}</td>
-                    <td>••••••••</td>
-                    <td><span class="badge bg-info">${u.Rol}</span></td>
-                    <td>${u.IdMedico ?? 'N/A'}</td>
                     <td>
-                        <span class="badge ${u.Activo == 1 ? 'bg-success' : 'bg-secondary'}">
-                            ${u.Activo == 1 ? 'Sí' : 'No'}
+                        <span class="text-muted">
+                            <i class="fa-solid fa-lock me-1"></i>
+                            ${u.ContraseñaHash ? '••••••••' : 'sin contraseña'}
                         </span>
                     </td>
-                    <td>${u.UltimoAcceso ?? 'nunca'}</td>
                     <td>
-                        <button class="btn btn-warning btn-sm me-1" onclick="editarUsuario(${u.IdUsuario})">
+                        <span class="badge ${getBadgeRol(u.Rol)}">
+                            ${u.Rol}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge ${u.Activo == 1 ? 'bg-success' : 'bg-secondary'}">
+                            ${u.Activo == 1 ? 'Activo' : 'Inactivo'}
+                        </span>
+                    </td>
+                    <td>${u.UltimoAcceso || 'nunca'}</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm me-1" onclick="editarUsuario(${u.IdUsuario})" title="Editar">
                             <i class="fa-solid fa-pen"></i>
                         </button>
-                        <button class="btn btn-danger btn-sm" onclick="eliminarUsuario(${u.IdUsuario}, '${u.Usuario}')">
+                        <button class="btn btn-danger btn-sm" onclick="eliminarUsuario(${u.IdUsuario}, '${u.Usuario}')" title="Eliminar">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>
@@ -146,6 +151,23 @@ function cargarUsuarios() {
 }
 
 
+// obtener clase de badge según el rol
+function getBadgeRol(rol) {
+    switch(rol) {
+        case 'Super admin':
+            return 'bg-danger';
+        case 'Medico':
+            return 'bg-primary';
+        case 'Paciente':
+            return 'bg-info';
+        case 'Secretaria':
+            return 'bg-warning text-dark';
+        default:
+            return 'bg-secondary';
+    }
+}
+
+
 // guardar o actualizar usuario
 function guardarUsuario(formData) {
     fetch("php/usuarios.php", {
@@ -159,6 +181,9 @@ function guardarUsuario(formData) {
                 Swal.fire({
                     icon: "success",
                     title: respuesta.includes("actualizado") ? "usuario actualizado" : "usuario guardado",
+                    text: respuesta.includes("actualizado") 
+                        ? "el usuario se actualizó correctamente" 
+                        : "el usuario se registró correctamente",
                     timer: 1800,
                     showConfirmButton: false
                 });
@@ -201,16 +226,16 @@ function editarUsuario(id) {
             document.getElementById('idUsuario').value = usuario.IdUsuario;
             document.getElementById('idUsuario').disabled = true;
             document.getElementById('usuario').value = usuario.Usuario;
-            document.getElementById('rol').value = usuario.Rol;
-            document.getElementById('idMedico').value = usuario.IdMedico ?? '';
-            document.getElementById('activo').value = usuario.Activo;
-            document.getElementById('ultimoAcceso').value = usuario.UltimoAcceso ?? '';
-
-            // ocultar campo contraseña en edición y hacerlo opcional
-            document.getElementById('grupoContrasena').style.display = 'none';
-            document.getElementById('contrasena').required = false;
+            
+            // la contraseña no se muestra y no es requerida al editar
             document.getElementById('contrasena').value = '';
-            document.getElementById('infoContrasena').style.display = 'block';
+            document.getElementById('contrasena').required = false;
+            document.getElementById('contrasena').placeholder = 'dejar en blanco para mantener la actual';
+            
+            document.getElementById('rol').value = usuario.Rol;
+            document.getElementById('idMedico').value = usuario.IdMedico || '';
+            document.getElementById('activo').value = usuario.Activo;
+            document.getElementById('ultimoAcceso').value = usuario.UltimoAcceso || '';
 
             // input oculto para indicar que es edición
             let inputEditar = document.querySelector('input[name="idUsuarioEditar"]');
@@ -237,16 +262,16 @@ function editarUsuario(id) {
 
 
 // eliminar usuario
-function eliminarUsuario(id, nombre) {
+function eliminarUsuario(id, usuario) {
 
     Swal.fire({
-        title: 'estas seguro?',
-        text: `se eliminara al usuario: ${nombre}`,
+        title: '¿estás seguro?',
+        text: `se eliminará al usuario: ${usuario}`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
-        confirmButtonText: 'si, eliminar',
+        confirmButtonText: 'sí, eliminar',
         cancelButtonText: 'cancelar'
     }).then((result) => {
         
