@@ -31,7 +31,6 @@ try {
                     a.EstadoCita,
                     a.Observaciones,
                     a.FechaRegistro,
-                    a.Activo,
                     p.NombreCompleto as NombrePaciente,
                     m.NombreCompleto as NombreMedico
                 FROM controlagenda a
@@ -129,10 +128,10 @@ try {
         // consulta insert
         $sql = "INSERT INTO controlagenda
                 (IdCita, IdPaciente, IdMedico, FechaCita, MotivoConsulta, EstadoCita, 
-                Observaciones, FechaRegistro, Activo)
+                Observaciones, FechaRegistro)
                 VALUES 
                 (:idCita, :idPaciente, :idMedico, :fechaCita, :motivoConsulta, :estatus,
-                :observaciones, :fechaRegistro, :activo)";
+                :observaciones, :fechaRegistro)";
 
         // preparar consulta
         $stmt = $pdo->prepare($sql);
@@ -146,7 +145,6 @@ try {
         $stmt->bindParam(':estatus', $_POST['estatus']);
         $stmt->bindParam(':observaciones', $_POST['observaciones']);
         $stmt->bindParam(':fechaRegistro', $_POST['fechaRegistro']);
-        $stmt->bindParam(':activo', $_POST['activo']);
 
         // ejecutar insert
         $stmt->execute();
@@ -179,7 +177,6 @@ try {
                 EstadoCita = :estatus,
                 Observaciones = :observaciones,
                 FechaRegistro = :fechaRegistro,
-                Activo = :activo
                 WHERE IdCita = :idCita";
 
         // preparar consulta
@@ -194,7 +191,6 @@ try {
         $stmt->bindParam(':estatus', $_POST['estatus']);
         $stmt->bindParam(':observaciones', $_POST['observaciones']);
         $stmt->bindParam(':fechaRegistro', $_POST['fechaRegistro']);
-        $stmt->bindParam(':activo', $_POST['activo']);
 
         // ejecutar update
         $stmt->execute();
