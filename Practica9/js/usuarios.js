@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // carga todos los usuarios en la tabla
 function cargarUsuarios() {
-    fetch("php/insertar_usuarios.php?accion=lista") // pido la lista al PHP
+    fetch("php/insertar_usuario.php?accion=lista") // pido la lista al PHP
         .then(response => response.json()) // convierto respuesta en JSON
         .then(data => {
             const tbody = document.querySelector("#tablaUsuarios tbody"); 
@@ -80,7 +80,7 @@ function cargarUsuarios() {
 
 // guardar o actualizar usuario
 function guardarUsuario(formData) {
-    fetch("php/insertar_usuarios.php", {
+    fetch("php/insertar_usuario.php", {
         method: "POST",
         body: formData
     })
@@ -122,7 +122,7 @@ function guardarUsuario(formData) {
 
 // cargar datos para editar
 function editarUsuario(id) {
-    fetch(`php/insertar_usuarios.php?accion=obtener&id=${id}`)
+    fetch(`php/insertar_usuario.php?accion=obtener&id=${id}`)
         .then(response => response.json())
         .then(usuario => {
 
@@ -184,7 +184,7 @@ function eliminarUsuario(id, nombre) {
         
         if (result.isConfirmed) {
 
-            fetch(`php/usuarios.php?accion=eliminar&id=${id}`)
+            fetch(`php/insertar_usuario.php?accion=eliminar&id=${id}`)
                 .then(response => response.text())
                 .then(respuesta => {
                     
