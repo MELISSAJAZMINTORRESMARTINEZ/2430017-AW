@@ -28,7 +28,7 @@ try {
                     a.IdMedico,
                     a.FechaCita,
                     a.MotivoConsulta,
-                    a.Estatus,
+                    a.EstadoCita,
                     a.Observaciones,
                     a.FechaRegistro,
                     a.Activo,
@@ -128,7 +128,7 @@ try {
 
         // consulta insert
         $sql = "INSERT INTO controlagenda
-                (IdCita, IdPaciente, IdMedico, FechaCita, MotivoConsulta, Estatus, 
+                (IdCita, IdPaciente, IdMedico, FechaCita, MotivoConsulta, EstadoCita, 
                 Observaciones, FechaRegistro, Activo)
                 VALUES 
                 (:idCita, :idPaciente, :idMedico, :fechaCita, :motivoConsulta, :estatus,
@@ -176,7 +176,7 @@ try {
                 IdMedico = :idMedico,
                 FechaCita = :fechaCita,
                 MotivoConsulta = :motivoConsulta,
-                Estatus = :estatus,
+                EstadoCita = :estatus,
                 Observaciones = :observaciones,
                 FechaRegistro = :fechaRegistro,
                 Activo = :activo
