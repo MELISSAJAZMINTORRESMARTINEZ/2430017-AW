@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Control de Usuarios</title>
+  <title>Dashboard</title>
   <link rel="icon" type="image/png" href="images/New Patients.png">
   <link rel="stylesheet" href="css/dashboard.css">
   <link rel="stylesheet" href="css/styleP.css">
@@ -61,20 +61,21 @@
     <div class="card shadow-sm border-0">
       <div class="card-body">
         <div class="table-responsive">
-          <table id="tablaPacientes" class="table table-hover align-middle text-center">
+          <table id="tablaUsuarios" class="table table-hover align-middle text-center">
             <thead class="table-info">
               <tr>
                 <th>IdUsuario</th>
                 <th>Usuario</th>
                 <th>Contraseña</th>
                 <th>Rol</th>
+                <th>Médico</th>
                 <th>Activo</th>
                 <th>Último Acceso</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
-              <!-- Aquí irán los registros -->
+              <!-- Los usuarios se cargan aquí dinámicamente -->
             </tbody>
           </table>
         </div>
@@ -93,78 +94,56 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
 
-        <!--FORMULARIO DENTRO DEL MODAL -->
+        <!-- FORMULARIO DENTRO DEL MODAL (SIN ACTION) -->
         <form id="formUsuarios">
           <div class="modal-body">
             <div class="mb-3">
-              <label for="idUsuario" class="form-label">
-                <i class="fa-solid fa-hashtag me-1"></i>ID Usuario <span class="text-danger">*</span>
-              </label>
+              <label for="idUsuario" class="form-label">Id Usuario</label>
               <input type="number" class="form-control" id="idUsuario" name="idUsuario" required>
             </div>
-            
             <div class="mb-3">
-              <label for="usuario" class="form-label">
-                <i class="fa-solid fa-user me-1"></i>Usuario <span class="text-danger">*</span>
-              </label>
-              <input type="text" class="form-control" id="usuario" name="usuario" required minlength="3">
+              <label for="usuario" class="form-label">Usuario</label>
+              <input type="text" class="form-control" id="usuario" name="usuario" required>
             </div>
-            
             <div class="mb-3">
-              <label for="contrasena" class="form-label">
-                <i class="fa-solid fa-lock me-1"></i>Contraseña <span class="text-danger">*</span>
-              </label>
-              <input type="password" class="form-control" id="contrasena" name="contrasena" required minlength="6">
+              <label for="contrasena" class="form-label">Contraseña</label>
+              <input type="password" class="form-control" id="contrasena" name="contrasena" required>
               <small class="text-muted">Mínimo 6 caracteres</small>
             </div>
-            
             <div class="mb-3">
-              <label for="rol" class="form-label">
-                <i class="fa-solid fa-user-tag me-1"></i>Rol <span class="text-danger">*</span>
-              </label>
+              <label for="rol" class="form-label">Rol</label>
               <select id="rol" name="rol" class="form-select" required>
                 <option value="">Selecciona Rol</option>
-                <option>Super admin</option>
-                <option>Medico</option>
-                <option>Paciente</option>
-                <option>Secretaria</option>
+                <option value="Super admin">Super admin</option>
+                <option value="Medico">Médico</option>
+                <option value="Paciente">Paciente</option>
+                <option value="Secretaria">Secretaria</option>
               </select>
             </div>
-            
             <div class="mb-3">
-              <label for="idMedico" class="form-label">
-                <i class="fa-solid fa-user-doctor me-1"></i>ID Médico
-              </label>
+              <label for="idMedico" class="form-label">Id Médico (opcional)</label>
               <input type="number" class="form-control" id="idMedico" name="idMedico">
               <small class="text-muted">Solo si el usuario es médico</small>
             </div>
-            
             <div class="mb-3">
-              <label for="activo" class="form-label">
-                <i class="fa-solid fa-toggle-on me-1"></i>Activo <span class="text-danger">*</span>
-              </label>
+              <label for="activo" class="form-label">Activo</label>
               <select id="activo" name="activo" class="form-select" required>
                 <option value="">Selecciona</option>
                 <option value="1">Sí</option>
                 <option value="0">No</option>
               </select>
             </div>
-            
             <div class="mb-3">
-              <label for="ultimoAcceso" class="form-label">
-                <i class="fa-solid fa-calendar me-1"></i>Último acceso
-              </label>
+              <label for="ultimoAcceso" class="form-label">Último acceso (opcional)</label>
               <input type="date" class="form-control" id="ultimoAcceso" name="ultimoAcceso">
             </div>
           </div>
 
           <!-- Botones dentro del form -->
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-              <i class="fa-solid fa-times me-1"></i>Cancelar
-            </button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
             <button type="submit" class="btn btn-success">
-              <i class="fa-solid fa-save me-1"></i>Guardar
+              <i class="fa-solid fa-save me-2"></i>Guardar
             </button>
           </div>
         </form>
@@ -174,8 +153,6 @@
 
   <!-- JS Bootstrap -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  
-  <!-- JS del CRUD -->
   <script src="js/usuarios.js"></script>
 </body>
 </html>

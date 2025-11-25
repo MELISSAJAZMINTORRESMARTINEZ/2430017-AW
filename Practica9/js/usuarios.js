@@ -6,12 +6,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector("#formUsuarios"); // obtengo el formulario
     form.addEventListener("submit", function (e) { 
         e.preventDefault(); // evito que la página se recargue
-        
-        // validaciones
-        if (!validarFormulario()) {
-            return;
-        }
-        
         guardarUsuario(new FormData(form)); // envío los datos al PHP
     });
 
@@ -19,78 +13,19 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('modalUsuario').addEventListener('hidden.bs.modal', function () {
         document.querySelector("#formUsuarios").reset(); // limpiar formulario
         document.getElementById('modalUsuarioLabel').innerHTML = 
-            '<i class="fa-solid fa-user-plus me-2"></i>Agregar Usuario'; 
+            '<i class="fa-solid fa-user-plus me-2"></i>agregar usuario'; 
         
         // si había un input oculto de edición, lo elimino
         const inputEditar = document.querySelector('input[name="idUsuarioEditar"]');
         if (inputEditar) inputEditar.remove();
         
         document.getElementById('idUsuario').disabled = false; // vuelvo a activar el campo ID
-        document.getElementById('contrasena').required = true; // contraseña requerida al agregar
-        document.getElementById('contrasena').placeholder = ''; // limpio placeholder
         
-        // limpiar mensajes de error
-        document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
-        document.querySelectorAll('.invalid-feedback').forEach(el => el.remove());
+        // volver la contraseña requerida
+        document.getElementById('contrasena').required = true;
+        document.getElementById('contrasena').placeholder = "";
     });
 });
-
-
-// validar formulario
-function validarFormulario() {
-    let valido = true;
-    
-    // limpiar errores previos
-    document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
-    document.querySelectorAll('.invalid-feedback').forEach(el => el.remove());
-    
-    // validar ID Usuario
-    const idUsuario = document.getElementById('idUsuario');
-    if (!idUsuario.disabled && (!idUsuario.value || idUsuario.value <= 0)) {
-        mostrarError(idUsuario, 'el ID debe ser un número mayor a 0');
-        valido = false;
-    }
-    
-    // validar Usuario
-    const usuario = document.getElementById('usuario');
-    if (!usuario.value || usuario.value.trim().length < 3) {
-        mostrarError(usuario, 'el usuario debe tener al menos 3 caracteres');
-        valido = false;
-    }
-    
-    // validar Contraseña (solo si es requerida)
-    const contrasena = document.getElementById('contrasena');
-    if (contrasena.required && (!contrasena.value || contrasena.value.length < 6)) {
-        mostrarError(contrasena, 'la contraseña debe tener al menos 6 caracteres');
-        valido = false;
-    }
-    
-    // validar Rol
-    const rol = document.getElementById('rol');
-    if (!rol.value) {
-        mostrarError(rol, 'debe seleccionar un rol');
-        valido = false;
-    }
-    
-    // validar Activo
-    const activo = document.getElementById('activo');
-    if (activo.value === '') {
-        mostrarError(activo, 'debe seleccionar si el usuario está activo');
-        valido = false;
-    }
-    
-    return valido;
-}
-
-
-// mostrar mensaje de error en un campo
-function mostrarError(campo, mensaje) {
-    campo.classList.add('is-invalid');
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'invalid-feedback';
-    errorDiv.textContent = mensaje;
-    campo.parentNode.appendChild(errorDiv);
-}
 
 
 // carga todos los usuarios en la tabla
@@ -98,7 +33,7 @@ function cargarUsuarios() {
     fetch("php/usuarios.php?accion=lista") // pido la lista al PHP
         .then(response => response.json()) // convierto respuesta en JSON
         .then(data => {
-            const tbody = document.querySelector("#tablaPacientes tbody"); 
+            const tbody = document.querySelector("#tablaUsuarios tbody"); 
             tbody.innerHTML = ""; // limpio la tabla
 
             if (data.length === 0) { 
@@ -111,28 +46,20 @@ function cargarUsuarios() {
                 <tr>
                     <td>${u.IdUsuario}</td>
                     <td>${u.Usuario}</td>
-                    <td>
-                        <span class="text-muted">
-                            <i class="fa-solid fa-lock me-1"></i>
-                            ${u.ContraseñaHash ? '••••••••' : 'sin contraseña'}
-                        </span>
-                    </td>
-                    <td>
-                        <span class="badge ${getBadgeRol(u.Rol)}">
-                            ${u.Rol}
-                        </span>
-                    </td>
+                    <td>••••••••</td>
+                    <td><span class="badge bg-primary">${u.Rol}</span></td>
+                    <td>${u.NombreMedico ?? (u.IdMedico ? 'ID: ' + u.IdMedico : '-')}</td>
                     <td>
                         <span class="badge ${u.Activo == 1 ? 'bg-success' : 'bg-secondary'}">
                             ${u.Activo == 1 ? 'Activo' : 'Inactivo'}
                         </span>
                     </td>
-                    <td>${u.UltimoAcceso || 'nunca'}</td>
+                    <td>${u.UltimoAcceso ?? 'Nunca'}</td>
                     <td>
-                        <button class="btn btn-warning btn-sm me-1" onclick="editarUsuario(${u.IdUsuario})" title="Editar">
+                        <button class="btn btn-warning btn-sm me-1" onclick="editarUsuario(${u.IdUsuario})">
                             <i class="fa-solid fa-pen"></i>
                         </button>
-                        <button class="btn btn-danger btn-sm" onclick="eliminarUsuario(${u.IdUsuario}, '${u.Usuario}')" title="Eliminar">
+                        <button class="btn btn-danger btn-sm" onclick="eliminarUsuario(${u.IdUsuario}, '${u.Usuario}')">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>
@@ -151,23 +78,6 @@ function cargarUsuarios() {
 }
 
 
-// obtener clase de badge según el rol
-function getBadgeRol(rol) {
-    switch(rol) {
-        case 'Super admin':
-            return 'bg-danger';
-        case 'Medico':
-            return 'bg-primary';
-        case 'Paciente':
-            return 'bg-info';
-        case 'Secretaria':
-            return 'bg-warning text-dark';
-        default:
-            return 'bg-secondary';
-    }
-}
-
-
 // guardar o actualizar usuario
 function guardarUsuario(formData) {
     fetch("php/usuarios.php", {
@@ -181,9 +91,6 @@ function guardarUsuario(formData) {
                 Swal.fire({
                     icon: "success",
                     title: respuesta.includes("actualizado") ? "usuario actualizado" : "usuario guardado",
-                    text: respuesta.includes("actualizado") 
-                        ? "el usuario se actualizó correctamente" 
-                        : "el usuario se registró correctamente",
                     timer: 1800,
                     showConfirmButton: false
                 });
@@ -227,10 +134,10 @@ function editarUsuario(id) {
             document.getElementById('idUsuario').disabled = true;
             document.getElementById('usuario').value = usuario.Usuario;
             
-            // la contraseña no se muestra y no es requerida al editar
+            // la contraseña no se muestra, pero se puede cambiar
             document.getElementById('contrasena').value = '';
             document.getElementById('contrasena').required = false;
-            document.getElementById('contrasena').placeholder = 'dejar en blanco para mantener la actual';
+            document.getElementById('contrasena').placeholder = 'Dejar vacío para no cambiar';
             
             document.getElementById('rol').value = usuario.Rol;
             document.getElementById('idMedico').value = usuario.IdMedico || '';
@@ -262,16 +169,16 @@ function editarUsuario(id) {
 
 
 // eliminar usuario
-function eliminarUsuario(id, usuario) {
+function eliminarUsuario(id, nombre) {
 
     Swal.fire({
-        title: '¿estás seguro?',
-        text: `se eliminará al usuario: ${usuario}`,
+        title: 'estas seguro?',
+        text: `se eliminara al usuario: ${nombre}`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
-        confirmButtonText: 'sí, eliminar',
+        confirmButtonText: 'si, eliminar',
         cancelButtonText: 'cancelar'
     }).then((result) => {
         
