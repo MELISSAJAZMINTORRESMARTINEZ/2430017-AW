@@ -27,13 +27,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         id: cita.IdCita,
                         title: `${cita.NombrePaciente || 'Paciente'} - ${cita.NombreMedico || 'Médico'}`,
                         start: cita.FechaCita,
-                        backgroundColor: cita.Estatus === 'Programada' ? '#28a745' : 
-                                       cita.Estatus === 'Atendida' ? '#007bff' : '#dc3545',
+                        backgroundColor: cita.EstadoCita === 'Programada' ? '#28a745' : 
+                                       cita.EstadoCita === 'Atendida' ? '#007bff' : '#dc3545',
                         extendedProps: {
                             paciente: cita.NombrePaciente,
                             medico: cita.NombreMedico,
                             motivo: cita.MotivoConsulta,
-                            estatus: cita.Estatus
+                            estatus: cita.EstadoCita
                         }
                     }));
                     successCallback(eventos);
@@ -52,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     <p><strong>Paciente:</strong> ${info.event.extendedProps.paciente}</p>
                     <p><strong>Médico:</strong> ${info.event.extendedProps.medico}</p>
                     <p><strong>Motivo:</strong> ${info.event.extendedProps.motivo || 'N/A'}</p>
-                    <p><strong>Estado:</strong> <span class="badge bg-info">${info.event.extendedProps.estatus}</span></p>
                     <p><strong>Fecha:</strong> ${info.event.start.toLocaleDateString('es-MX')}</p>
                 `,
                 showCancelButton: true,
@@ -226,7 +225,7 @@ function cargarProximasCitas() {
 
             // filtrar solo citas futuras y programadas
             const proximasCitas = data
-                .filter(c => new Date(c.FechaCita) >= new Date() && c.Estatus === 'Programada')
+                .filter(c => new Date(c.FechaCita) >= new Date() && c.EstadoCita === 'Programada')
                 .sort((a, b) => new Date(a.FechaCita) - new Date(b.FechaCita))
                 .slice(0, 5);
 
@@ -305,7 +304,7 @@ function editarCita(id) {
             document.getElementById('idMedico').value = cita.IdMedico;
             document.getElementById('fechaCita').value = cita.FechaCita;
             document.getElementById('motivoConsulta').value = cita.MotivoConsulta || '';
-            document.getElementById('estatus').value = cita.Estatus;
+            document.getElementById('estatus').value = cita.EstatoCita;
             document.getElementById('observaciones').value = cita.Observaciones || '';
             document.getElementById('fechaRegistro').value = cita.FechaRegistro || '';
             document.getElementById('activo').value = cita.Activo;

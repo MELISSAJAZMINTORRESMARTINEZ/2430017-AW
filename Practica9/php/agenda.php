@@ -176,7 +176,7 @@ try {
                 MotivoConsulta = :motivoConsulta,
                 EstadoCita = :estatus,
                 Observaciones = :observaciones,
-                FechaRegistro = :fechaRegistro,
+                FechaRegistro = :fechaRegistro
                 WHERE IdCita = :idCita";
 
         // preparar consulta
