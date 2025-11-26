@@ -3,8 +3,8 @@
 $host = "localhost";
 $port = "3306";
 $dbname = "clinica";
-$user = "admin";e
-$pass = "ca99bc649c71b2383154550b34e52d0bb17fe7183054c554"; // aqui va la contraseña
+$user = "admin";
+$pass = "ca99bc649c71b2383154550b34e52d0bb17fe7183054c554"; 
 
 // inicio un bloque try por si algo explota
 try {
