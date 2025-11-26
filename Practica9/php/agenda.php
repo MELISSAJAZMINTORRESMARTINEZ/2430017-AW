@@ -1,27 +1,27 @@
 <?php
-// se definen los datos para conectar a la base de datos
+// aqui defino los datos para conectarme a la base de datos
 $host = "localhost";
 $port = "3306";
 $dbname = "clinica";
-$user = "admin";
-$pass = "ca99bc649c71b2383154550b34e52d0bb17fe7183054c554"; // vacío
+$user = "admin";e
+$pass = "ca99bc649c71b2383154550b34e52d0bb17fe7183054c554"; // aqui va la contraseña
 
-// iniciamos un bloque try para capturar errores
+// inicio un bloque try por si algo explota
 try {
 
-    // armamos la cadena de conexion usando pdo
+    // aqui armo la cadena de conexion usando pdo
     $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8";
 
-    // creamos la conexion usando pdo
+    // aqui creo la conexion con pdo
     $pdo = new PDO($dsn, $user, $pass);
 
-    // configuramos pdo para lanzar errores si algo sale mal
+    // aqui le digo a pdo que si algo sale mal me avise con error
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // validamos si llega una peticion GET y si accion es "lista"
+    // valido si llego una peticion GET y si piden la lista
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'lista') {
         
-        // consulta sql para obtener citas con nombres de paciente y médico
+        // aqui armo la consulta para obtener todas las citas junto a nombres de paciente y medico
         $sql = "SELECT 
                     a.IdCita,
                     a.IdPaciente,
@@ -38,56 +38,58 @@ try {
                 LEFT JOIN controlmedicos m ON a.IdMedico = m.IdMedico
                 ORDER BY a.FechaCita DESC";
         
-        // ejecuta la consulta directamente
+        // ejecuto la consulta directo
         $stmt = $pdo->query($sql);
 
-        // obtiene todos los resultados
+        // aqui saco todos los resultados
         $citas = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-        // indica que se enviará JSON
+        // digo que voy a regresar json
         header('Content-Type: application/json');
 
-        // imprime los datos en json
+        // imprimo el json
         echo json_encode($citas);
 
         exit;
     }
 
-    // obtener una sola cita por ID
+    // aqui valido si piden una sola cita por ID
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'obtener') {
         
-        // consulta con parámetro
+        // consulta con parametro
         $sql = "SELECT * FROM controlagenda WHERE IdCita = :id";
 
-        // prepara la consulta
+        // preparo la consulta
         $stmt = $pdo->prepare($sql);
 
-        // vincula parámetro
+        // vinculo el id que paso por GET
         $stmt->bindParam(':id', $_GET['id']);
 
-        // ejecuta consulta
+        // la ejecuto
         $stmt->execute();
         
-        // obtiene un registro
+        // obtengo el registro
         $cita = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        // indica formato JSON
+        // aviso que mando json
         header('Content-Type: application/json');
 
-        // imprime el JSON
+        // mando el json
         echo json_encode($cita);
 
         exit;
     }
 
-    // validar si existe un paciente
+    // aqui valido si existe un paciente
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'validarPaciente') {
         
+        // consulta para buscar paciente
         $sql = "SELECT IdPaciente, NombreCompleto FROM controlpacientes WHERE IdPaciente = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':id', $_GET['id']);
         $stmt->execute();
         
+        // saco lo que encontro
         $paciente = $stmt->fetch(PDO::FETCH_ASSOC);
         
         header('Content-Type: application/json');
@@ -95,7 +97,7 @@ try {
         exit;
     }
 
-    // validar si existe un médico
+    // aqui valido si existe un medico
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'validarMedico') {
         
         $sql = "SELECT IdMedico, NombreCompleto FROM controlmedicos WHERE IdMedico = :id";
@@ -106,26 +108,26 @@ try {
         $medico = $stmt->fetch(PDO::FETCH_ASSOC);
         
         header('Content-Type: application/json');
-        echo json_encode($medico ?: ['error' => 'Médico no encontrado']);
+        echo json_encode($medico ?: ['error' => 'Medico no encontrado']);
         exit;
     }
 
-    // registrar una nueva cita (POST sin idCitaEditar)
+    // aqui registro una nueva cita (POST sin idCitaEditar)
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['idCitaEditar'])) {
         
-        // validaciones del lado del servidor
+        // valido que paciente y medico no vengan vacios
         if (empty($_POST['idPaciente']) || empty($_POST['idMedico'])) {
-            echo "Error: Paciente y Médico son obligatorios";
+            echo "Error: Paciente y Medico son obligatorios";
             exit;
         }
 
-        // validar que la fecha de cita no sea pasada
+        // valido que no metan una fecha pasada
         if (strtotime($_POST['fechaCita']) < strtotime(date('Y-m-d'))) {
             echo "Error: No se pueden agendar citas en fechas pasadas";
             exit;
         }
 
-        // consulta insert
+        // aqui va el insert
         $sql = "INSERT INTO controlagenda
                 (IdPaciente, IdMedico, FechaCita, MotivoConsulta, EstadoCita, 
                 Observaciones, FechaRegistro)
@@ -133,10 +135,10 @@ try {
                 (:idPaciente, :idMedico, :fechaCita, :motivoConsulta, :estatus,
                 :observaciones, :fechaRegistro)";
 
-        // preparar consulta
+        // preparo
         $stmt = $pdo->prepare($sql);
 
-        // vincular parámetros
+        // vinculo todo
         $stmt->bindParam(':idPaciente', $_POST['idPaciente']);
         $stmt->bindParam(':idMedico', $_POST['idMedico']);
         $stmt->bindParam(':fechaCita', $_POST['fechaCita']);
@@ -145,20 +147,19 @@ try {
         $stmt->bindParam(':observaciones', $_POST['observaciones']);
         $stmt->bindParam(':fechaRegistro', $_POST['fechaRegistro']);
 
-        // ejecutar insert
+        // ejecuto
         $stmt->execute();
 
-        // mensaje final
         echo "OK - cita guardada";
         exit;
     }
 
-    // actualizar una cita (POST con idCitaEditar)
+    // aqui actualizo una cita (POST con idCitaEditar)
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idCitaEditar'])) {
         
-        // validaciones
+        // validaciones basicas
         if (empty($_POST['idPaciente']) || empty($_POST['idMedico'])) {
-            echo "Error: Paciente y Médico son obligatorios";
+            echo "Error: Paciente y Medico son obligatorios";
             exit;
         }
 
@@ -167,7 +168,7 @@ try {
             exit;
         }
 
-        // consulta update
+        // aqui armo el update
         $sql = "UPDATE controlagenda SET
                 IdPaciente = :idPaciente,
                 IdMedico = :idMedico,
@@ -178,10 +179,10 @@ try {
                 FechaRegistro = :fechaRegistro
                 WHERE IdCita = :idCita";
 
-        // preparar consulta
+        // preparo
         $stmt = $pdo->prepare($sql);
 
-        // vincular parámetros
+        // vinculo todo
         $stmt->bindParam(':idCita', $_POST['idCitaEditar']);
         $stmt->bindParam(':idPaciente', $_POST['idPaciente']);
         $stmt->bindParam(':idMedico', $_POST['idMedico']);
@@ -191,36 +192,36 @@ try {
         $stmt->bindParam(':observaciones', $_POST['observaciones']);
         $stmt->bindParam(':fechaRegistro', $_POST['fechaRegistro']);
 
-        // ejecutar update
+        // ejecuto
         $stmt->execute();
 
         echo "OK - cita actualizada";
         exit;
     }
 
-    // eliminar cita
+    // aqui borro una cita
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'eliminar') {
         
-        // consulta delete
+        // consulta para borrar
         $sql = "DELETE FROM controlagenda WHERE IdCita = :id";
 
-        // preparar consulta
+        // preparo
         $stmt = $pdo->prepare($sql);
 
-        // vincular id
+        // vinculo id
         $stmt->bindParam(':id', $_GET['id']);
 
-        // ejecutar
+        // ejecuto
         $stmt->execute();
 
         echo "OK - cita eliminada";
         exit;
     }
 
-// captura errores de PDO
+// aqui agarro cualquier error del try
 } catch (PDOException $e) {
 
-    // imprime error
+    // imprimo el error
     echo "Error: " . $e->getMessage();
 }
 ?>
