@@ -28,7 +28,7 @@ try {
                     a.IdMedico,
                     a.FechaCita,
                     a.MotivoConsulta,
-                    a.Estatus,
+                    a.EstadoCita,
                     a.Observaciones,
                     a.FechaRegistro,
                     p.NombreCompleto as NombrePaciente,
@@ -127,17 +127,16 @@ try {
 
         // consulta insert
         $sql = "INSERT INTO controlagenda
-                (IdCita, IdPaciente, IdMedico, FechaCita, MotivoConsulta, EstadoCita, 
+                (IdPaciente, IdMedico, FechaCita, MotivoConsulta, EstadoCita, 
                 Observaciones, FechaRegistro)
                 VALUES 
-                (:idCita, :idPaciente, :idMedico, :fechaCita, :motivoConsulta, :estatus,
+                (:idPaciente, :idMedico, :fechaCita, :motivoConsulta, :estatus,
                 :observaciones, :fechaRegistro)";
 
         // preparar consulta
         $stmt = $pdo->prepare($sql);
 
         // vincular parámetros
-        $stmt->bindParam(':idCita', $_POST['idCita']);
         $stmt->bindParam(':idPaciente', $_POST['idPaciente']);
         $stmt->bindParam(':idMedico', $_POST['idMedico']);
         $stmt->bindParam(':fechaCita', $_POST['fechaCita']);
@@ -176,7 +175,7 @@ try {
                 MotivoConsulta = :motivoConsulta,
                 EstadoCita = :estatus,
                 Observaciones = :observaciones,
-                FechaRegistro = :fechaRegistro,
+                FechaRegistro = :fechaRegistro
                 WHERE IdCita = :idCita";
 
         // preparar consulta
