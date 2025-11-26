@@ -85,15 +85,17 @@
                 <input type="number" class="form-control" id="idCita" name="idCita" required>
               </div>
               <div class="mb-3">
-                <label for="idPaciente" class="form-label">Id Paciente</label>
+                <label for="idPaciente" class="form-label">Id Paciente *</label>
                 <input type="number" class="form-control" id="idPaciente" name="idPaciente" required>
+                <small class="text-muted">Ingrese el ID y presione fuera del campo</small>
               </div>
               <div class="mb-3">
-                <label for="idMedico" class="form-label">Id Médico</label>
+                <label for="idMedico" class="form-label">Id Médico *</label>
                 <input type="number" class="form-control" id="idMedico" name="idMedico" required>
+                <small class="text-muted">Ingrese el ID y presione fuera del campo</small>
               </div>
               <div class="mb-3">
-                <label for="fechaCita" class="form-label">Fecha Cita</label>
+                <label for="fechaCita" class="form-label">Fecha Cita *</label>
                 <input type="date" class="form-control" id="fechaCita" name="fechaCita" required>
                 <small class="text-muted">No se pueden agendar citas en fechas pasadas</small>
               </div>
@@ -103,7 +105,7 @@
                   placeholder="Describa el motivo de la consulta"></textarea>
               </div>
               <div class="mb-3">
-                <label for="estatus" class="form-label">Estado Cita</label>
+                <label for="estatus" class="form-label">Estado Cita *</label>
                 <select id="estatus" name="estatus" class="form-select" required>
                   <option value="">Selecciona</option>
                   <option value="Programada">Programada</option>
@@ -119,6 +121,14 @@
               <div class="mb-3">
                 <label for="fechaRegistro" class="form-label">Fecha Registro</label>
                 <input type="date" class="form-control" id="fechaRegistro" name="fechaRegistro">
+              </div>
+              <div class="mb-3">
+                <label for="activo" class="form-label">Activo *</label>
+                <select id="activo" name="activo" class="form-select" required>
+                  <option value="">Selecciona</option>
+                  <option value="1">Sí</option>
+                  <option value="0">No</option>
+                </select>
               </div>
             </div>
             
