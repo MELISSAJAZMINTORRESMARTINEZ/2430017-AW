@@ -20,11 +20,12 @@ try {
 
     // validamos si llega una peticion GET y si accion es "lista"
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'lista') {
-        
+
         // consulta sql para obtener usuarios con nombre de médico si aplica
         $sql = "SELECT 
                     u.IdUsuario,
                     u.Usuario,
+                    u.Correo,
                     u.ContrasenaHash,
                     u.Rol,
                     u.IdMedico,
@@ -34,13 +35,13 @@ try {
                 FROM usuarios u
                 LEFT JOIN controlmedicos m ON u.IdMedico = m.IdMedico
                 ORDER BY u.IdUsuario DESC";
-        
+
         // ejecuta la consulta directamente porque no lleva parametros
         $stmt = $pdo->query($sql);
 
         // obtiene todos los resultados
         $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
+
         // indica que se enviará JSON
         header('Content-Type: application/json');
 
@@ -52,7 +53,7 @@ try {
 
     // obtener un solo usuario por ID
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'obtener') {
-        
+
         // consulta con parámetro
         $sql = "SELECT * FROM usuarios WHERE IdUsuario = :id";
 
@@ -64,10 +65,10 @@ try {
 
         // ejecuta consulta
         $stmt->execute();
-        
+
         // obtiene un registro
         $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+
         // indica formato JSON
         header('Content-Type: application/json');
 
@@ -79,13 +80,13 @@ try {
 
     // registrar un nuevo usuario (POST sin idUsuarioEditar)
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['idUsuarioEditar'])) {
-        
+
         // validar que el usuario no exista ya
         $sqlCheck = "SELECT COUNT(*) FROM usuarios WHERE Usuario = :usuario";
         $stmtCheck = $pdo->prepare($sqlCheck);
         $stmtCheck->bindParam(':usuario', $_POST['usuario']);
         $stmtCheck->execute();
-        
+
         if ($stmtCheck->fetchColumn() > 0) {
             echo "Error: El nombre de usuario ya existe";
             exit;
@@ -96,9 +97,9 @@ try {
 
         // consulta insert
         $sql = "INSERT INTO usuarios
-                (IdUsuario, Usuario, ContrasenaHash, Rol, IdMedico, Activo, UltimoAcceso)
+                (IdUsuario, Usuario, Correo, ContrasenaHash, Rol, IdMedico, Activo, UltimoAcceso)
                 VALUES 
-                (:idUsuario, :usuario, :contrasena, :rol, :idMedico, :activo, :ultimoAcceso)";
+                (:idUsuario, :usuario, :correo, :contrasena, :rol, :idMedico, :activo, :ultimoAcceso)";
 
         // preparar consulta
         $stmt = $pdo->prepare($sql);
@@ -106,15 +107,17 @@ try {
         // vincular parámetros
         $stmt->bindParam(':idUsuario', $_POST['idUsuario']);
         $stmt->bindParam(':usuario', $_POST['usuario']);
+        $stmt->bindParam(':correo', $_POST['correo']);
+
         $stmt->bindParam(':contrasena', $hash);
         $stmt->bindParam(':rol', $_POST['rol']);
-        
+
         // IdMedico puede ser NULL
         $idMedico = !empty($_POST['idMedico']) ? $_POST['idMedico'] : null;
         $stmt->bindParam(':idMedico', $idMedico);
-        
+
         $stmt->bindParam(':activo', $_POST['activo']);
-        
+
         // UltimoAcceso puede ser NULL
         $ultimoAcceso = !empty($_POST['ultimoAcceso']) ? $_POST['ultimoAcceso'] : null;
         $stmt->bindParam(':ultimoAcceso', $ultimoAcceso);
@@ -129,13 +132,14 @@ try {
 
     // actualizar un usuario (POST con idUsuarioEditar)
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idUsuarioEditar'])) {
-        
+
         // si se envió una nueva contraseña, actualizarla
         if (!empty($_POST['contrasena'])) {
             $hash = password_hash($_POST['contrasena'], PASSWORD_DEFAULT);
-            
+
             $sql = "UPDATE usuarios SET
                     Usuario = :usuario,
+                    Correo = :correo,
                     ContrasenaHash = :contrasena,
                     Rol = :rol,
                     IdMedico = :idMedico,
@@ -146,6 +150,7 @@ try {
             // si no se envió contraseña, no actualizarla
             $sql = "UPDATE usuarios SET
                     Usuario = :usuario,
+                    Correo = :correo,
                     Rol = :rol,
                     IdMedico = :idMedico,
                     Activo = :activo,
@@ -159,18 +164,20 @@ try {
         // vincular parámetros
         $stmt->bindParam(':idUsuario', $_POST['idUsuarioEditar']);
         $stmt->bindParam(':usuario', $_POST['usuario']);
-        
+         $stmt->bindParam(':correo', $_POST['correo']);
+
+
         if (!empty($_POST['contrasena'])) {
             $stmt->bindParam(':contrasena', $hash);
         }
-        
+
         $stmt->bindParam(':rol', $_POST['rol']);
-        
+
         $idMedico = !empty($_POST['idMedico']) ? $_POST['idMedico'] : null;
         $stmt->bindParam(':idMedico', $idMedico);
-        
+
         $stmt->bindParam(':activo', $_POST['activo']);
-        
+
         $ultimoAcceso = !empty($_POST['ultimoAcceso']) ? $_POST['ultimoAcceso'] : null;
         $stmt->bindParam(':ultimoAcceso', $ultimoAcceso);
 
@@ -183,7 +190,7 @@ try {
 
     // eliminar usuario
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'eliminar') {
-        
+
         // consulta delete
         $sql = "DELETE FROM usuarios WHERE IdUsuario = :id";
 
@@ -200,10 +207,9 @@ try {
         exit;
     }
 
-// captura errores de PDO
+    // captura errores de PDO
 } catch (PDOException $e) {
 
     // imprime error
     echo "Error: " . $e->getMessage();
 }
-?>

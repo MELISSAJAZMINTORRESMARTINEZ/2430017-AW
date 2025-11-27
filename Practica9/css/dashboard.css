@@ -1,123 +1,124 @@
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #f4f6f9;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f4f6f9;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
-    /* Sidebar */
-    .sidebar {
-      height: 100vh;
-      background: linear-gradient(180deg, #2c8888, #2c8888);
-      color: white;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 230px;
-      padding-top: 25px;
-      box-shadow: 4px 0 14px rgba(76, 174, 174, 0.3);
-      transition: all 0.3s ease-in-out;
-      backdrop-filter: blur(6px);
-      overflow-y: scroll;
-      /* O usa 'auto' si prefieres que aparezca solo cuando sea necesario */
-      scrollbar-width: none;
-      /* Oculta la barra en Firefox */
-      -ms-overflow-style: none;
-      /* Oculta la barra en Internet Explorer y Edge */
-    }
+/* Sidebar */
+.sidebar {
+  height: 100vh;
+  background: linear-gradient(180deg, #2c8888, #2c8888);
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 230px;
+  padding-top: 25px;
+  box-shadow: 4px 0 14px rgba(76, 174, 174, 0.3);
+  transition: all 0.3s ease-in-out;
+  backdrop-filter: blur(6px);
+  overflow-y: scroll;
+  /* O usa 'auto' si prefieres que aparezca solo cuando sea necesario */
+  scrollbar-width: none;
+  /* Oculta la barra en Firefox */
+  -ms-overflow-style: none;
+  /* Oculta la barra en Internet Explorer y Edge */
+}
 
-    /* Oculta la barra en navegadores basados en WebKit (Chrome, Safari, Opera) */
-    .sidebar::-webkit-scrollbar {
-      display: none;
-    }
+/* Oculta la barra en navegadores basados en WebKit (Chrome, Safari, Opera) */
+.sidebar::-webkit-scrollbar {
+  display: none;
+}
 
-    /* Título e imagen */
-    .sidebar h4 {
-      text-align: center;
-      margin-bottom: 35px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      color: #ffffff;
-      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    }
+/* Título e imagen */
+.sidebar h4 {
+  text-align: center;
+  margin-bottom: 35px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
 
-    .sidebar img {
-      box-shadow: 0px 0px 12px rgba(255, 255, 255, 0.6);
-      border: 2px solid rgba(255, 255, 255, 0.4);
-      background-color: rgba(255, 255, 255, 0.25);
-      border-radius: 50%;
-    }
+.sidebar img {
+  box-shadow: 0px 0px 12px rgba(255, 255, 255, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+}
 
-    /* Links */
-    .sidebar a {
-      display: block;
-      color: #f8ffff;
-      text-decoration: none;
-      padding: 12px 25px;
-      font-size: 15px;
-      border-left: 4px solid transparent;
-      transition: all 0.3s ease;
-      margin: 3px 8px;
-      border-radius: 10px;
-    }
+/* Links */
+.sidebar a {
+  display: block;
+  color: #f8ffff;
+  text-decoration: none;
+  padding: 12px 25px;
+  font-size: 15px;
+  border-left: 4px solid transparent;
+  transition: all 0.3s ease;
+  margin: 3px 8px;
+  border-radius: 10px;
+}
 
-    /* Efecto hover */
-    .sidebar a:hover {
-      border-left: 4px solid #e0fafa;
-    }
+/* Efecto hover */
+.sidebar a:hover {
+  border-left: 4px solid #e0fafa;
+}
 
-    /* Separador */
-    .sidebar hr {
-      border-color: rgba(255, 255, 255, 0.4);
-      margin: 20px;
-    }
+/* Separador */
+.sidebar hr {
+  border-color: rgba(255, 255, 255, 0.4);
+  margin: 20px;
+}
 
-    /* Cerrar sesión */
-    .sidebar a:last-child {
-      color: #fff8f8;
-      font-weight: 500;
-    }
+/* Cerrar sesión */
+.sidebar a:last-child {
+  color: #fff8f8;
+  font-weight: 500;
+}
 
-    .sidebar a:last-child:hover {
-      border-left: 4px solid #ffffff;
-    }
+.sidebar a:last-child:hover {
+  border-left: 4px solid #ffffff;
+}
 
+/* Contenido principal */
+.content {
+  margin-left: 230px;
+  padding: 20px;
+}
 
-    /* Contenido principal */
-    .content {
-      margin-left: 230px;
-      padding: 20px;
-    }
+.navbar {
+  border-radius: 20px;
+  box-shadow: 0px 2px 4px rgba(165, 85, 85, 0.1);
+}
 
-    .navbar {
-      border-radius: 20px;
-      box-shadow: 0px 2px 4px rgba(165, 85, 85, 0.1);
-    }
+.card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
 
-    .card {
-      border: none;
-      border-radius: 10px;
-      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    }
+#btnAgenda {
+  background-color: #2c8888;
+  border-color: #2c8888;
+}
 
-    #btnAgenda {
-      background-color: #2c8888;
-      border-color: #2c8888;
-    }
+#btnAgenda:hover {
+  background-color: #1c6f6f;
+  /* más oscuro al pasar el mouse */
+}
 
-    #btnAgenda:hover {
-      background-color: #1c6f6f;
-      /* más oscuro al pasar el mouse */
-    }
-    #btnAgregarMedico{
-      background-color:#2c8888 ;
-      border-color:#2c8888 ;
+#btnAgregarMedico {
+  background-color: #2c8888;
+  border-color: #2c8888;
+}
 
-    }
-    #btnAgregarMedio:hover{
-      background-color:#2c8888;
-    }
-    /* FullCalendar container styling */
+#btnAgregarMedio:hover {
+  background-color: #2c8888;
+}
+
+/* FullCalendar container styling */
 #calendar {
   max-width: 100%;
   margin: 0 auto;
@@ -136,15 +137,16 @@
   background: #2c8888;
   border: none;
   color: #fff;
-  box-shadow: 0 4px 10px rgba(44,136,136,0.12);
+  box-shadow: 0 4px 10px rgba(44, 136, 136, 0.12);
 }
+
 .fc .fc-button:hover {
   background: #257070;
 }
 
 /* Lista de próximas citas */
 #upcomingList li {
-  border-left: 3px solid rgba(44,136,136,0.15);
+  border-left: 3px solid rgba(44, 136, 136, 0.15);
   padding-left: 10px;
   margin-bottom: 8px;
 }
@@ -156,14 +158,101 @@
 
 /* Responsive: en pantallas pequeñas mostrar panel lateral abajo */
 @media (max-width: 991px) {
-  .col-lg-9, .col-lg-3 {
+
+  .col-lg-9,
+  .col-lg-3 {
     flex: 0 0 100%;
     max-width: 100%;
   }
-  #calendar { margin-bottom: 20px; }
+
+  #calendar {
+    margin-bottom: 20px;
+  }
 }
 
 /* Mantener tipografía consistente */
 .swal2-popup {
   font-family: 'Poppins', sans-serif;
+}
+/* TARJETAS DEL DASH */
+.dash-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 22px;
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(44, 136, 136, 0.12);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.dash-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 18px rgba(44, 136, 136, 0.25);
+}
+
+.dash-card .icon {
+    background: #2c8888;
+    width: 55px;
+    height: 55px;
+    border-radius: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 24px;
+}
+
+.dash-card h3 {
+    margin: 0;
+    font-weight: 700;
+    color: #2c8888;
+}
+
+.dash-card p {
+    margin: 0;
+    font-size: 14px;
+    color: #6b6b6b;
+}
+
+/* PANEL INFERIOR */
+.dash-panel {
+    background: #fff;
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 4px 10px rgba(44, 136, 136, 0.12);
+}
+
+.dash-panel h5 {
+    font-weight: 600;
+    color: #2c8888;
+    margin-bottom: 15px;
+}
+
+/* LISTA RECIENTE */
+.recent-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.recent-list li {
+    padding: 8px 0;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #333;
+    border-bottom: 1px solid #efefef;
+}
+
+.recent-list li:last-child {
+    border-bottom: none;
+}
+
+/* NOTIFICACIONES */
+.notif {
+    text-align: center;
+    padding: 40px 10px;
+    color: #6b6b6b;
+    font-size: 15px;
 }
