@@ -46,6 +46,8 @@ function cargarUsuarios() {
                 <tr>
                     <td>${u.IdUsuario}</td>
                     <td>${u.Usuario}</td>
+                    <td>${u.Correo}</td>
+
                     <td>••••••••</td>
                     <td><span class="badge bg-primary">${u.Rol}</span></td>
                     <td>${u.NombreMedico ?? (u.IdMedico ? 'ID: ' + u.IdMedico : '-')}</td>
@@ -133,6 +135,9 @@ function editarUsuario(id) {
             document.getElementById('idUsuario').value = usuario.IdUsuario;
             document.getElementById('idUsuario').disabled = true;
             document.getElementById('usuario').value = usuario.Usuario;
+
+            document.getElementById('correo').value = usuario.Correo;
+
             
             // la contraseña no se muestra, pero se puede cambiar
             document.getElementById('contrasena').value = '';
