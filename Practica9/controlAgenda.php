@@ -60,7 +60,7 @@
             
             <?php if (tienePermiso('reportes')): ?>
             <a href="reportes.php"><i class="fa-solid fa-chart-line me-2"></i>Reportes</a>
-            <?php endif; ?>a
+            <?php endif; ?>
             
             <?php if (tienePermiso('expedientes')): ?>
             <a href="expediente.php"><i class="fa-solid fa-notes-medical me-2"></i>Expediente Clínico</a>

@@ -1,22 +1,27 @@
 <?php
-session_start();
-
-// datos para conectar a la base de datos
+// se definen los datos para conectar a la base de datos
 $host = "localhost";
 $port = "3306";
 $dbname = "clinica";
 $user = "admin";
 $pass = "ca99bc649c71b2383154550b34e52d0bb17fe7183054c554";
 
+// iniciamos un bloque try para capturar errores
 try {
-    // conexion con pdo
+
+    // armamos la cadena de conexion usando pdo
     $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8";
+
+    // creamos la conexion usando pdo
     $pdo = new PDO($dsn, $user, $pass);
+
+    // configuramos pdo para lanzar errores si algo sale mal
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // LISTAR TODOS LOS PAGOS
+    // validamos si llega una peticion GET y si accion es "lista"
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'lista') {
         
+        // consulta sql para obtener pagos con información de paciente y cita
         $sql = "SELECT 
                     p.IdPago,
                     p.IdCita,
@@ -27,38 +32,56 @@ try {
                     p.Referencia,
                     p.EstatusPago,
                     pac.NombreCompleto as NombrePaciente,
-                    c.FechaCita,
-                    m.NombreCompleto as NombreMedico
+                    a.FechaCita,
+                    a.MotivoConsulta
                 FROM pagos p
                 LEFT JOIN controlpacientes pac ON p.IdPaciente = pac.IdPaciente
-                LEFT JOIN controlagenda c ON p.IdCita = c.IdCita
-                LEFT JOIN controlmedicos m ON c.IdMedico = m.IdMedico
+                LEFT JOIN controlagenda a ON p.IdCita = a.IdCita
                 ORDER BY p.FechaPago DESC";
         
+        // ejecuta la consulta directamente
         $stmt = $pdo->query($sql);
+
+        // obtiene todos los resultados
         $pagos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
+        // indica que se enviará JSON
         header('Content-Type: application/json');
+
+        // imprime los datos en json
         echo json_encode($pagos);
+
         exit;
     }
 
-    // OBTENER UN PAGO POR ID
+    // obtener un solo pago por ID
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'obtener') {
         
+        // consulta con parámetro
         $sql = "SELECT * FROM pagos WHERE IdPago = :id";
+
+        // prepara la consulta
         $stmt = $pdo->prepare($sql);
+
+        // vincula parámetro
         $stmt->bindParam(':id', $_GET['id']);
+
+        // ejecuta consulta
         $stmt->execute();
         
+        // obtiene un registro
         $pago = $stmt->fetch(PDO::FETCH_ASSOC);
         
+        // indica formato JSON
         header('Content-Type: application/json');
-        echo json_encode($pago ?: ['error' => 'Pago no encontrado']);
+
+        // imprime el JSON
+        echo json_encode($pago);
+
         exit;
     }
 
-    // VALIDAR QUE EXISTE EL PACIENTE
+    // validar si existe un paciente
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'validarPaciente') {
         
         $sql = "SELECT IdPaciente, NombreCompleto FROM controlpacientes WHERE IdPaciente = :id";
@@ -73,56 +96,25 @@ try {
         exit;
     }
 
-    // VALIDAR QUE EXISTE LA CITA Y PERTENECE AL PACIENTE
+    // validar si existe una cita
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'validarCita') {
         
-        $sql = "SELECT 
-                    c.IdCita,
-                    c.IdPaciente,
-                    c.FechaCita,
-                    c.MotivoConsulta,
-                    p.NombreCompleto as NombrePaciente,
-                    m.NombreCompleto as NombreMedico
-                FROM controlagenda c
-                LEFT JOIN controlpacientes p ON c.IdPaciente = p.IdPaciente
-                LEFT JOIN controlmedicos m ON c.IdMedico = m.IdMedico
-                WHERE c.IdCita = :idCita";
-        
-        if (isset($_GET['idPaciente']) && !empty($_GET['idPaciente'])) {
-            $sql .= " AND c.IdPaciente = :idPaciente";
-        }
-        
+        $sql = "SELECT a.IdCita, a.FechaCita, a.MotivoConsulta, p.NombreCompleto 
+                FROM controlagenda a 
+                LEFT JOIN controlpacientes p ON a.IdPaciente = p.IdPaciente
+                WHERE a.IdCita = :id";
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':idCita', $_GET['idCita']);
-        
-        if (isset($_GET['idPaciente']) && !empty($_GET['idPaciente'])) {
-            $stmt->bindParam(':idPaciente', $_GET['idPaciente']);
-        }
-        
+        $stmt->bindParam(':id', $_GET['id']);
         $stmt->execute();
+        
         $cita = $stmt->fetch(PDO::FETCH_ASSOC);
         
         header('Content-Type: application/json');
-        echo json_encode($cita ?: ['error' => 'Cita no encontrada o no pertenece al paciente']);
+        echo json_encode($cita ?: ['error' => 'Cita no encontrada']);
         exit;
     }
 
-    // VERIFICAR SI LA CITA YA TIENE UN PAGO
-    if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'verificarPago') {
-        
-        $sql = "SELECT IdPago, Monto, EstatusPago FROM pagos WHERE IdCita = :idCita";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':idCita', $_GET['idCita']);
-        $stmt->execute();
-        
-        $pagoExistente = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        header('Content-Type: application/json');
-        echo json_encode($pagoExistente ?: ['noPago' => true]);
-        exit;
-    }
-
-    // INSERTAR NUEVO PAGO
+    // registrar un nuevo pago (POST sin idPagoEditar)
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['idPagoEditar'])) {
         
         // validaciones
@@ -131,77 +123,59 @@ try {
             exit;
         }
 
-        if (empty($_POST['monto']) || $_POST['monto'] <= 0) {
+        if ($_POST['monto'] <= 0) {
             echo "Error: El monto debe ser mayor a 0";
             exit;
         }
 
-        // verificar que el paciente existe
-        $sqlPaciente = "SELECT IdPaciente FROM controlpacientes WHERE IdPaciente = :id";
-        $stmtPaciente = $pdo->prepare($sqlPaciente);
-        $stmtPaciente->bindParam(':id', $_POST['idPaciente']);
-        $stmtPaciente->execute();
-        
-        if (!$stmtPaciente->fetch()) {
-            echo "Error: El paciente no existe";
-            exit;
-        }
-
-        // verificar que la cita existe y pertenece al paciente
-        $sqlCita = "SELECT IdCita FROM controlagenda WHERE IdCita = :idCita AND IdPaciente = :idPaciente";
-        $stmtCita = $pdo->prepare($sqlCita);
-        $stmtCita->bindParam(':idCita', $_POST['idCita']);
-        $stmtCita->bindParam(':idPaciente', $_POST['idPaciente']);
-        $stmtCita->execute();
-        
-        if (!$stmtCita->fetch()) {
-            echo "Error: La cita no existe o no pertenece al paciente seleccionado";
-            exit;
-        }
-
-        // verificar que la cita no tenga ya un pago
-        $sqlPagoExiste = "SELECT IdPago FROM pagos WHERE IdCita = :idCita";
-        $stmtPagoExiste = $pdo->prepare($sqlPagoExiste);
-        $stmtPagoExiste->bindParam(':idCita', $_POST['idCita']);
-        $stmtPagoExiste->execute();
-        
-        if ($stmtPagoExiste->fetch()) {
-            echo "Error: Esta cita ya tiene un pago registrado";
-            exit;
-        }
-
-        // insertar pago
+        // consulta insert
         $sql = "INSERT INTO pagos
-                (IdCita, IdPaciente, Monto, MetodoPago, FechaPago, Referencia, EstatusPago)
+                (IdPago, IdCita, IdPaciente, Monto, MetodoPago, FechaPago, Referencia, EstatusPago)
                 VALUES 
-                (:idCita, :idPaciente, :monto, :metodoPago, :fechaPago, :referencia, :estatusPago)";
+                (:idPago, :idCita, :idPaciente, :monto, :metodoPago, :fechaPago, :referencia, :estatusPago)";
 
+        // preparar consulta
         $stmt = $pdo->prepare($sql);
-        
+
+        // vincular parámetros
+        $stmt->bindParam(':idPago', $_POST['idPago']);
         $stmt->bindParam(':idCita', $_POST['idCita']);
         $stmt->bindParam(':idPaciente', $_POST['idPaciente']);
         $stmt->bindParam(':monto', $_POST['monto']);
         $stmt->bindParam(':metodoPago', $_POST['metodoPago']);
         $stmt->bindParam(':fechaPago', $_POST['fechaPago']);
-        $stmt->bindParam(':referencia', $_POST['referencia']);
+        
+        $referencia = !empty($_POST['referencia']) ? $_POST['referencia'] : null;
+        $stmt->bindParam(':referencia', $referencia);
+        
         $stmt->bindParam(':estatusPago', $_POST['estatusPago']);
 
+        // ejecutar insert
         $stmt->execute();
 
+        // mensaje final
         echo "OK - pago guardado";
         exit;
     }
 
-    // ACTUALIZAR PAGO
+    // actualizar un pago (POST con idPagoEditar)
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idPagoEditar'])) {
         
         // validaciones
-        if (empty($_POST['monto']) || $_POST['monto'] <= 0) {
+        if (empty($_POST['idPaciente']) || empty($_POST['idCita'])) {
+            echo "Error: Paciente y Cita son obligatorios";
+            exit;
+        }
+
+        if ($_POST['monto'] <= 0) {
             echo "Error: El monto debe ser mayor a 0";
             exit;
         }
 
+        // consulta update
         $sql = "UPDATE pagos SET
+                IdCita = :idCita,
+                IdPaciente = :idPaciente,
                 Monto = :monto,
                 MetodoPago = :metodoPago,
                 FechaPago = :fechaPago,
@@ -209,34 +183,52 @@ try {
                 EstatusPago = :estatusPago
                 WHERE IdPago = :idPago";
 
+        // preparar consulta
         $stmt = $pdo->prepare($sql);
-        
+
+        // vincular parámetros
         $stmt->bindParam(':idPago', $_POST['idPagoEditar']);
+        $stmt->bindParam(':idCita', $_POST['idCita']);
+        $stmt->bindParam(':idPaciente', $_POST['idPaciente']);
         $stmt->bindParam(':monto', $_POST['monto']);
         $stmt->bindParam(':metodoPago', $_POST['metodoPago']);
         $stmt->bindParam(':fechaPago', $_POST['fechaPago']);
-        $stmt->bindParam(':referencia', $_POST['referencia']);
+        
+        $referencia = !empty($_POST['referencia']) ? $_POST['referencia'] : null;
+        $stmt->bindParam(':referencia', $referencia);
+        
         $stmt->bindParam(':estatusPago', $_POST['estatusPago']);
 
+        // ejecutar update
         $stmt->execute();
 
         echo "OK - pago actualizado";
         exit;
     }
 
-    // ELIMINAR PAGO
+    // eliminar pago
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'eliminar') {
         
+        // consulta delete
         $sql = "DELETE FROM pagos WHERE IdPago = :id";
+
+        // preparar consulta
         $stmt = $pdo->prepare($sql);
+
+        // vincular id
         $stmt->bindParam(':id', $_GET['id']);
+
+        // ejecutar
         $stmt->execute();
 
         echo "OK - pago eliminado";
         exit;
     }
 
+// captura errores de PDO
 } catch (PDOException $e) {
+
+    // imprime error
     echo "Error: " . $e->getMessage();
 }
 ?>
