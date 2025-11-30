@@ -1,4 +1,7 @@
 <?php
+// Incluir el archivo de verificación de sesión al inicio
+session_start();
+
 // aqui defino los datos para conectarme a la base de datos
 $host = "localhost";
 $port = "3306";
@@ -21,7 +24,11 @@ try {
     // valido si llego una peticion GET y si piden la lista
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'lista') {
         
-        // aqui armo la consulta para obtener todas las citas junto a nombres de paciente y medico
+        // Verificar el rol del usuario desde la sesión
+        $rolUsuario = isset($_SESSION['rol']) ? strtolower($_SESSION['rol']) : '';
+        $idMedicoSesion = isset($_SESSION['id_medico']) ? $_SESSION['id_medico'] : null;
+        
+        // Base de la consulta
         $sql = "SELECT 
                     a.IdCita,
                     a.IdPaciente,
@@ -35,11 +42,23 @@ try {
                     m.NombreCompleto as NombreMedico
                 FROM controlagenda a
                 LEFT JOIN controlpacientes p ON a.IdPaciente = p.IdPaciente
-                LEFT JOIN controlmedicos m ON a.IdMedico = m.IdMedico
-                ORDER BY a.FechaCita DESC";
+                LEFT JOIN controlmedicos m ON a.IdMedico = m.IdMedico";
         
-        // ejecuto la consulta directo
-        $stmt = $pdo->query($sql);
+        // Si el usuario es médico, filtrar solo sus citas
+        if ($rolUsuario === 'medico' && $idMedicoSesion) {
+            $sql .= " WHERE a.IdMedico = :idMedico";
+        }
+        
+        $sql .= " ORDER BY a.FechaCita DESC";
+        
+        // ejecuto la consulta
+        if ($rolUsuario === 'medico' && $idMedicoSesion) {
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':idMedico', $idMedicoSesion, PDO::PARAM_INT);
+            $stmt->execute();
+        } else {
+            $stmt = $pdo->query($sql);
+        }
 
         // aqui saco todos los resultados
         $citas = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -56,14 +75,27 @@ try {
     // aqui valido si piden una sola cita por ID
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'obtener') {
         
+        // Verificar el rol del usuario
+        $rolUsuario = isset($_SESSION['rol']) ? strtolower($_SESSION['rol']) : '';
+        $idMedicoSesion = isset($_SESSION['id_medico']) ? $_SESSION['id_medico'] : null;
+        
         // consulta con parametro
-        $sql = "SELECT * FROM controlagenda WHERE IdCita = :id";
+        $sql = "SELECT a.* FROM controlagenda a WHERE a.IdCita = :id";
+        
+        // Si es médico, verificar que la cita sea suya
+        if ($rolUsuario === 'medico' && $idMedicoSesion) {
+            $sql .= " AND a.IdMedico = :idMedico";
+        }
 
         // preparo la consulta
         $stmt = $pdo->prepare($sql);
 
         // vinculo el id que paso por GET
         $stmt->bindParam(':id', $_GET['id']);
+        
+        if ($rolUsuario === 'medico' && $idMedicoSesion) {
+            $stmt->bindParam(':idMedico', $idMedicoSesion, PDO::PARAM_INT);
+        }
 
         // la ejecuto
         $stmt->execute();
@@ -75,7 +107,7 @@ try {
         header('Content-Type: application/json');
 
         // mando el json
-        echo json_encode($cita);
+        echo json_encode($cita ?: ['error' => 'Cita no encontrada o sin permisos']);
 
         exit;
     }
@@ -157,6 +189,10 @@ try {
     // aqui actualizo una cita (POST con idCitaEditar)
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idCitaEditar'])) {
         
+        // Verificar el rol del usuario
+        $rolUsuario = isset($_SESSION['rol']) ? strtolower($_SESSION['rol']) : '';
+        $idMedicoSesion = isset($_SESSION['id_medico']) ? $_SESSION['id_medico'] : null;
+        
         // validaciones basicas
         if (empty($_POST['idPaciente']) || empty($_POST['idMedico'])) {
             echo "Error: Paciente y Medico son obligatorios";
@@ -166,6 +202,21 @@ try {
         if (strtotime($_POST['fechaCita']) < strtotime(date('Y-m-d'))) {
             echo "Error: No se pueden agendar citas en fechas pasadas";
             exit;
+        }
+
+        // Si es médico, verificar que solo pueda editar sus propias citas
+        if ($rolUsuario === 'medico' && $idMedicoSesion) {
+            // Verificar que la cita pertenezca al médico
+            $sqlVerificar = "SELECT IdCita FROM controlagenda WHERE IdCita = :idCita AND IdMedico = :idMedico";
+            $stmtVerificar = $pdo->prepare($sqlVerificar);
+            $stmtVerificar->bindParam(':idCita', $_POST['idCitaEditar']);
+            $stmtVerificar->bindParam(':idMedico', $idMedicoSesion, PDO::PARAM_INT);
+            $stmtVerificar->execute();
+            
+            if (!$stmtVerificar->fetch()) {
+                echo "Error: No tienes permisos para editar esta cita";
+                exit;
+            }
         }
 
         // aqui armo el update
@@ -201,6 +252,25 @@ try {
 
     // aqui borro una cita
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'eliminar') {
+        
+        // Verificar el rol del usuario
+        $rolUsuario = isset($_SESSION['rol']) ? strtolower($_SESSION['rol']) : '';
+        $idMedicoSesion = isset($_SESSION['id_medico']) ? $_SESSION['id_medico'] : null;
+        
+        // Si es médico, verificar que solo pueda eliminar sus propias citas
+        if ($rolUsuario === 'medico' && $idMedicoSesion) {
+            // Verificar que la cita pertenezca al médico
+            $sqlVerificar = "SELECT IdCita FROM controlagenda WHERE IdCita = :id AND IdMedico = :idMedico";
+            $stmtVerificar = $pdo->prepare($sqlVerificar);
+            $stmtVerificar->bindParam(':id', $_GET['id']);
+            $stmtVerificar->bindParam(':idMedico', $idMedicoSesion, PDO::PARAM_INT);
+            $stmtVerificar->execute();
+            
+            if (!$stmtVerificar->fetch()) {
+                echo "Error: No tienes permisos para eliminar esta cita";
+                exit;
+            }
+        }
         
         // consulta para borrar
         $sql = "DELETE FROM controlagenda WHERE IdCita = :id";
