@@ -1,11 +1,13 @@
 <?php
+// Iniciar sesión para obtener datos del usuario
+session_start();
+
 // se definen los datos para conectar a la base de datos
 $host = "localhost";
 $port = "3306";
 $dbname = "clinica";
 $user = "admin";
-$pass = "ca99bc649c71b2383154550b34e52d0bb17fe7183054c554"; // vacío
-
+$pass = "ca99bc649c71b2383154550b34e52d0bb17fe7183054c554";
 
 // iniciamos un bloque try para capturar errores
 try {
@@ -22,27 +24,58 @@ try {
     // validamos si llega una peticion get y si accion es lista
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'lista') {
         
-        // consulta sql para obtener todos los pacientes
-        $sql = "SELECT 
-                    IdPaciente,
-                    NombreCompleto,
-                    CURP,
-                    FechaNacimiento,
-                    Sexo,
-                    Telefono,
-                    CorreoElectronico,
-                    Direccion,
-                    ContactoEmergencia,
-                    TelefonoEmergencia,
-                    Alergias,
-                    AntecedentesMedicos,
-                    FechaRegistro,
-                    Estatus
-                FROM controlpacientes
-                ORDER BY IdPaciente DESC";
+        // Obtener rol e id del médico desde la sesión
+        $rolUsuario = isset($_SESSION['rol']) ? strtolower($_SESSION['rol']) : '';
+        $idMedicoSesion = isset($_SESSION['id_medico']) ? $_SESSION['id_medico'] : null;
         
-        // se ejecuta la consulta directamente porque no lleva parametros
-        $stmt = $pdo->query($sql);
+        // Si es médico, mostrar solo los pacientes que tienen citas con él
+        if ($rolUsuario === 'medico' && $idMedicoSesion) {
+            // Consulta que obtiene solo los pacientes que tienen citas con este médico
+            $sql = "SELECT DISTINCT
+                        p.IdPaciente,
+                        p.NombreCompleto,
+                        p.CURP,
+                        p.FechaNacimiento,
+                        p.Sexo,
+                        p.Telefono,
+                        p.CorreoElectronico,
+                        p.Direccion,
+                        p.ContactoEmergencia,
+                        p.TelefonoEmergencia,
+                        p.Alergias,
+                        p.AntecedentesMedicos,
+                        p.FechaRegistro,
+                        p.Estatus
+                    FROM controlpacientes p
+                    INNER JOIN controlagenda a ON p.IdPaciente = a.IdPaciente
+                    WHERE a.IdMedico = :idMedico
+                    ORDER BY p.IdPaciente DESC";
+            
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':idMedico', $idMedicoSesion, PDO::PARAM_INT);
+            $stmt->execute();
+        } else {
+            // Si es admin o secretaria, mostrar todos los pacientes
+            $sql = "SELECT 
+                        IdPaciente,
+                        NombreCompleto,
+                        CURP,
+                        FechaNacimiento,
+                        Sexo,
+                        Telefono,
+                        CorreoElectronico,
+                        Direccion,
+                        ContactoEmergencia,
+                        TelefonoEmergencia,
+                        Alergias,
+                        AntecedentesMedicos,
+                        FechaRegistro,
+                        Estatus
+                    FROM controlpacientes
+                    ORDER BY IdPaciente DESC";
+            
+            $stmt = $pdo->query($sql);
+        }
 
         // se obtienen todos los resultados como arreglo asociativo
         $pacientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -60,14 +93,31 @@ try {
     // aqui revisamos si quiere obtener un solo paciente por id
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'obtener') {
         
+        // Obtener rol e id del médico desde la sesión
+        $rolUsuario = isset($_SESSION['rol']) ? strtolower($_SESSION['rol']) : '';
+        $idMedicoSesion = isset($_SESSION['id_medico']) ? $_SESSION['id_medico'] : null;
+        
         // consulta con parametro
         $sql = "SELECT * FROM controlpacientes WHERE IdPaciente = :id";
+        
+        // Si es médico, verificar que el paciente tenga citas con él
+        if ($rolUsuario === 'medico' && $idMedicoSesion) {
+            $sql = "SELECT p.* 
+                    FROM controlpacientes p
+                    INNER JOIN controlagenda a ON p.IdPaciente = a.IdPaciente
+                    WHERE p.IdPaciente = :id AND a.IdMedico = :idMedico
+                    LIMIT 1";
+        }
 
         // preparamos la consulta
         $stmt = $pdo->prepare($sql);
 
         // vinculamos el parametro :id con el valor recibido por get
         $stmt->bindParam(':id', $_GET['id']);
+        
+        if ($rolUsuario === 'medico' && $idMedicoSesion) {
+            $stmt->bindParam(':idMedico', $idMedicoSesion, PDO::PARAM_INT);
+        }
 
         // ejecutamos la consulta
         $stmt->execute();
@@ -79,7 +129,7 @@ try {
         header('Content-Type: application/json');
 
         // imprimimos el json
-        echo json_encode($paciente);
+        echo json_encode($paciente ?: ['error' => 'Paciente no encontrado o sin permisos']);
 
         // terminamos
         exit;
@@ -124,6 +174,27 @@ try {
 
     // si es post y existe idpacienteEditar, entonces es un update
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idpacienteEditar'])) {
+        
+        // Obtener rol e id del médico desde la sesión
+        $rolUsuario = isset($_SESSION['rol']) ? strtolower($_SESSION['rol']) : '';
+        $idMedicoSesion = isset($_SESSION['id_medico']) ? $_SESSION['id_medico'] : null;
+        
+        // Si es médico, verificar que el paciente tenga citas con él antes de editar
+        if ($rolUsuario === 'medico' && $idMedicoSesion) {
+            $sqlVerificar = "SELECT COUNT(*) as total 
+                           FROM controlagenda 
+                           WHERE IdPaciente = :idPaciente AND IdMedico = :idMedico";
+            $stmtVerificar = $pdo->prepare($sqlVerificar);
+            $stmtVerificar->bindParam(':idPaciente', $_POST['idpacienteEditar']);
+            $stmtVerificar->bindParam(':idMedico', $idMedicoSesion, PDO::PARAM_INT);
+            $stmtVerificar->execute();
+            $resultado = $stmtVerificar->fetch(PDO::FETCH_ASSOC);
+            
+            if ($resultado['total'] == 0) {
+                echo "Error: No tienes permisos para editar este paciente";
+                exit;
+            }
+        }
         
         // consulta update
         $sql = "UPDATE controlpacientes SET
@@ -171,6 +242,27 @@ try {
 
     // aqui revisamos si se mando un get con accion eliminar
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'eliminar') {
+        
+        // Obtener rol e id del médico desde la sesión
+        $rolUsuario = isset($_SESSION['rol']) ? strtolower($_SESSION['rol']) : '';
+        $idMedicoSesion = isset($_SESSION['id_medico']) ? $_SESSION['id_medico'] : null;
+        
+        // Si es médico, verificar que el paciente tenga citas con él antes de eliminar
+        if ($rolUsuario === 'medico' && $idMedicoSesion) {
+            $sqlVerificar = "SELECT COUNT(*) as total 
+                           FROM controlagenda 
+                           WHERE IdPaciente = :id AND IdMedico = :idMedico";
+            $stmtVerificar = $pdo->prepare($sqlVerificar);
+            $stmtVerificar->bindParam(':id', $_GET['id']);
+            $stmtVerificar->bindParam(':idMedico', $idMedicoSesion, PDO::PARAM_INT);
+            $stmtVerificar->execute();
+            $resultado = $stmtVerificar->fetch(PDO::FETCH_ASSOC);
+            
+            if ($resultado['total'] == 0) {
+                echo "Error: No tienes permisos para eliminar este paciente";
+                exit;
+            }
+        }
         
         // consulta para borrar
         $sql = "DELETE FROM controlpacientes WHERE IdPaciente = :id";
