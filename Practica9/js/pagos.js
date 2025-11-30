@@ -142,9 +142,13 @@ function validarCita(id) {
         return;
     }
     
+    console.log('Validando cita ID:', id); // Debug
+    
     fetch(`php/pagos.php?accion=validarCita&id=${id}`)
         .then(response => response.json())
         .then(data => {
+            console.log('Respuesta validación cita:', data); // Debug
+            
             const input = document.getElementById('idCita');
             const mensajePrevio = input.parentElement.querySelector('.validacion-msg');
             if (mensajePrevio) mensajePrevio.remove();
@@ -154,7 +158,11 @@ function validarCita(id) {
             
             if (data.error) {
                 mensaje.className += ' text-danger';
-                mensaje.innerHTML = '<i class="fa-solid fa-circle-xmark me-1"></i>Cita no encontrada';
+                let textoError = '<i class="fa-solid fa-circle-xmark me-1"></i>Cita no encontrada';
+                if (data.total_encontradas !== undefined) {
+                    textoError += ` (Hay ${data.total_encontradas} citas en BD)`;
+                }
+                mensaje.innerHTML = textoError;
                 input.classList.add('is-invalid');
                 input.classList.remove('is-valid');
             } else {
