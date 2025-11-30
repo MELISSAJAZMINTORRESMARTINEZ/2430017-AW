@@ -97,7 +97,7 @@
         </div>
         <div>
             <h2 class="mb-1">¡Bienvenido(a), <?php echo htmlspecialchars($nombreUsuario); ?>!</h2>
-            <p class="mb-0">Nos alegra tenerte de vuelta. Aquí tienes un resumen general del sistema.</p>
+            <p class="mb-0">Holiii, que bueno verte por aqui, espero disfrutes la estancia en la pagina.</p>
         </div>
     </div>
 </div>
