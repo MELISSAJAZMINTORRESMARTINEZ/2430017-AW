@@ -9,7 +9,7 @@
     <title>Dashboard</title>
     <link rel="icon" type="image/png" href="images/New Patients.png">
     <link rel="stylesheet" href="css/dashboard.css">
-    <link rel="stylesheet" href="css/styleCA.css">
+    <link rel="stylesheet" href="css/styleP.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -97,7 +97,6 @@
             </div>
         </nav>
 
-        <!-- Tabla de pacientes -->
         <div class="card shadow-sm border-0">
             <div class="card-body">
                 <div class="table-responsive">
