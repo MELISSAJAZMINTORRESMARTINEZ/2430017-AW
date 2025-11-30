@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
         confirmButtonText: "Continuar",
         confirmButtonColor: "#3085d6",
       }).then(() => {
-        window.location.href = "dash.html";
+        window.location.href = "dash.php";
       });
     } else {
       alert("Correo o contraseña incorrectos. Intenta nuevamente.");

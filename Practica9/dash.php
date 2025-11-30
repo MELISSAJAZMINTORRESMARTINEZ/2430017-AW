@@ -89,7 +89,6 @@
             </div>
         </nav>
 
-        <!-- DASHBOARD BONITO Y SENCILLO -->
         <div class="container-fluid">
 
             <?php if (tienePermiso('reportes')): ?>

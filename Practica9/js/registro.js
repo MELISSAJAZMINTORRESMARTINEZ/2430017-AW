@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // limpiar y redirigir
     form.reset();
     setTimeout(() => {
-      window.location.href = "index.html";
+      window.location.href = "index.php";
     }, 2000);
   });
 });
