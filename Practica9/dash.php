@@ -1,4 +1,4 @@
-<?php require_once 'verificar_sesion.php'; ?>
+<?php require_once 'php/verificar_sesion.php'; ?>
 <!DOCTYPE html>
 <html lang="es">
 
