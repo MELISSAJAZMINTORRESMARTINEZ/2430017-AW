@@ -90,8 +90,8 @@
                 <span class="navbar-brand mb-0 h4 fw-bold text-secondary">
                     <i class="fa-solid fa-user-injured me-2"></i>Reportes
                 </span>
-                <button id="btnAgregarPaciente" class="btn btn-success text-white fw-semibold">
-                    <i class="fa-solid fa-user-plus me-2"></i>Agregar Reporte
+                <button class="btn btn-success text-white fw-semibold" data-bs-toggle="modal" style="background-color: #2c8888;" data-bs-target="#modalReportes">
+                    <i class="fa-solid fa-plus me-2"></i>Agregar Pago
                 </button>
             </div>
         </nav>
@@ -103,7 +103,7 @@
                     <table id="tablaReportes" class="table table-hover align-middle text-center">
                         <thead class="table-info">
                             <tr>
-                                <th>IdReportes</th>
+                                <th>IdReporte</th>
                                 <th>Tipo de Reporte</th>
                                 <th>Id Paciente</th>
                                 <th>Id Medico</th>
@@ -122,6 +122,71 @@
         </div>
     </div>
 
+         <!-- Modal Bootstrap -->
+  <div class="modal fade" id="modalReportes" tabindex="-1" aria-labelledby="modalPagosLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg">
+        <div class="modal-header text-white" style="background-color: #2c8888;">
+          <h5 class="modal-title" id="modalReportesLabel">
+            <i class="fa-solid fa-user-plus me-2"></i>Agregar Reporte
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+
+        <form id="formUsuarios">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="idReporte" class="form-label">Id Reporte</label>
+              <input type="number" class="form-control" id="idReporte" name="idReporte" required>
+            </div>
+            <div class="mb-3">
+              <label for="tipoReporte" class="form-label">Tipo de Reporte</label>
+              <select id="tipoReporte" name="tipoReporte" class="form-select" required>
+                <option value="">Selecciona Pago</option>
+                <option value="Diagnostico">Diagnóstico</option>
+                <option value="Tratamiento">Tratamiento</option>
+                <option value="Seguimiento">Seguimiento</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="idPaciente" class="form-label">Id Paciente</label>
+              <input type="number" class="form-control" id="idPaciente" name="idPaciente" required>
+            </div>
+            <div class="mb-3">
+              <label for="idMedico" class="form-label">Id Medico</label>
+              <input type="number" class="form-control" id="idMedico" name="idMedico" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="fechaGeneracion" class="form-label">Fecha de Generacion</label>
+              <input type="date" class="form-control" id="fechaGeneracion" name="fechaGeneracion">
+            </div>
+            <div class="mb-3">
+              <label for="ruta" class="form-label">Ruta Archivo</label>
+              <input type="text" class="form-control" id="ruta" name="ruta">
+            </div>
+             <div class="mb-3">
+              <label for="descripcion" class="form-label">Descripcion</label>
+              <input type="text" class="form-control" id="descripcion" name="descripcion">
+            </div>
+            <div class="mb-3">
+              <label for="generado" class="form-label">Generado por:</label>
+              <input type="text" class="form-control" id="generado" name="generado">
+            </div>
+
+          <!-- Botones dentro del form -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success">
+              <i class="fa-solid fa-save me-2"></i>Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+    
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/reportes.js"></script>
