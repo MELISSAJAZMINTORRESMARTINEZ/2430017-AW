@@ -133,36 +133,23 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="idBitacora" class="form-label">Id Bitacora</label>
-                            <input type="number" class="form-control" id="idTarifa" name="idTarifa" required>
+                            <input type="number" class="form-control" id="idBitacora" name="idBitacora" required>
                         </div>
                         <div class="mb-3">
-                            <label for="descripcionServicio" class="form-label">Descripción servicio</label>
-                            <input type="text" class="form-control" id="descripcionServicio" name="descripcionServicio" required>
+                            <label for="idUsuario" class="form-label">Id Usuario</label>
+                            <input type="text" class="form-control" id="idUsuario" name="idUsuario" required>
                         </div>
                         <div class="mb-3">
-                            <label for="costoBase" class="form-label">Costo Base</label>
-                            <input type="number" step="0.01" class="form-control" id="costoBase" name="costoBase" required>
+                            <label for="fechaAcceso" class="form-label">Fecha Acceso</label>
+                            <input type="date" class="form-control" id="fechaAcceso" name="fechaAcceso" required>
                         </div>
                         <div class="mb-3">
-                            <label for="especialidadId" class="form-label">Especialidad</label>
-                            <select id="especialidadId" name="especialidadId" class="form-select" required>
-                                <option value="">Selecciona Especialidad</option>
-                                <option value="1">Cardiología</option>
-                                <option value="2">Pediatría</option>
-                                <option value="3">Dermatología</option>
-                                <option value="4">Ginecología</option>
-                                <option value="5">Medicina General</option>
-                                <option value="6">Neurología</option>
-                            </select>
-                        </div>
+                            <label for="accionRealizada" class="form-label">Accion Realizada</label>
+                            <input type="text" class="form-control" id="accionRealizada" name="accionRealizada" required>
+                        </div>  
                         <div class="mb-3">
-                            <label for="estatus" class="form-label">Estatus</label>
-                            <select id="estatus" name="estatus" class="form-select" required>
-                                <option value="">Selecciona</option>
-                                <option value="1">Tarifa pagada</option>
-                                <option value="0">Tarifa no pagada</option>
-                            </select>
-                        </div>
+                            <label for="modulo" class="form-label">Modulo</label>
+                            <input type="text" class="form-control" id="modulo" name="modulo" required>             
                     </div>
 
                     <!-- Botones dentro del form -->
