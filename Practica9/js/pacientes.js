@@ -59,12 +59,14 @@ function cargarPacientes() { // aqui cargo todos los pacientes que estan guardad
                         </span>
                     </td>
                     <td>
-                        <button class="btn btn-warning btn-sm me-1" onclick="editarPaciente(${p.IdPaciente})">
-                            <i class="fa-solid fa-pen"></i>
-                        </button>
-                        <button class="btn btn-danger btn-sm" onclick="eliminarPaciente(${p.IdPaciente}, '${p.NombreCompleto}')">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
+                      <button class="btn-accion btn-editar me-1" onclick="editarPaciente(${p.IdPaciente})">
+    <i class="fa-solid fa-pen"></i>
+</button>
+
+<button class="btn-accion btn-eliminar" onclick="eliminarPaciente(${p.IdPaciente}, '${p.NombreCompleto}')">
+    <i class="fa-solid fa-trash"></i>
+</button>
+
                     </td>
                 </tr>`;
                 tbody.innerHTML += fila; // aqui voy agregando cada paciente a la tabla
