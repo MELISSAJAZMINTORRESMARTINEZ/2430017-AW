@@ -11,11 +11,11 @@ document.addEventListener("DOMContentLoaded", function () { // aqui espero a que
     document.getElementById('modalPaciente').addEventListener('hidden.bs.modal', function () {
         document.querySelector("#formPaciente").reset(); // limpio todo el formulario
         document.getElementById('modalpacientelabel').innerHTML = '<i class="fa-solid fa-user-plus me-2"></i>Agregar Paciente'; // pongo el titulo normal
-
+        
         // aqui quito el campo escondido si estaba editando antes
         const inputEditar = document.querySelector('input[name="idpacienteEditar"]');
         if (inputEditar) inputEditar.remove(); // lo borro
-
+        
         document.getElementById('idpaciente').disabled = false; // aqui vuelvo a activar el campo id
     });
 });
@@ -37,7 +37,7 @@ function cargarPacientes() { // aqui cargo todos los pacientes que estan guardad
                 // aqui formateo las fechas para quitar la hora
                 const fechaNacimiento = p.FechaNacimiento ? p.FechaNacimiento.split(' ')[0] : '';
                 const fechaRegistro = p.FechaRegistro ? p.FechaRegistro.split(' ')[0] : '';
-
+                
                 const fila = `
                 <tr>
                     <td>${p.IdPaciente}</td>
@@ -58,15 +58,13 @@ function cargarPacientes() { // aqui cargo todos los pacientes que estan guardad
                             ${p.Estatus}
                         </span>
                     </td>
-                    <td>
-                      <button class="btn-accion btn-editar me-1" onclick="editarPaciente(${p.IdPaciente})">
-    <i class="fa-solid fa-pen"></i>
-</button>
-
-<button class="btn-accion btn-eliminar" onclick="eliminarPaciente(${p.IdPaciente}, '${p.NombreCompleto}')">
-    <i class="fa-solid fa-trash"></i>
-</button>
-
+                     <td>
+                        <button class="btn btn-warning btn-sm me-1" onclick="editarPaciente(${p.IdPaciente})">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                         <button class="btn btn-danger btn-sm" onclick="eliminarPaciente(${p.IdPaciente}, '${p.NombreCompleto}')">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </td>
                 </tr>`;
                 tbody.innerHTML += fila; // aqui voy agregando cada paciente a la tabla
@@ -129,7 +127,7 @@ function editarPaciente(id) { // aqui cuando quiero editar un paciente
         .then(paciente => {
 
             document.getElementById('modalpacientelabel').innerHTML = '<i class="fa-solid fa-user-edit me-2"></i>editar paciente'; // cambio titulo
-
+            
             // aqui lleno todos los campos con los datos que ya tenia
             document.getElementById('idpaciente').value = paciente.IdPaciente;
             document.getElementById('idpaciente').disabled = true; // no dejo cambiar el id
@@ -146,7 +144,7 @@ function editarPaciente(id) { // aqui cuando quiero editar un paciente
             document.getElementById('antecedentesmedicos').value = paciente.AntecedentesMedicos;
             document.getElementById('fecharegistro').value = paciente.FechaRegistro;
             document.getElementById('estatus').value = paciente.Estatus;
-
+            
             // aqui pongo un campo escondido para saber que estaba editando
             let inputEditar = document.querySelector('input[name="idpacienteEditar"]');
             if (!inputEditar) {
@@ -156,7 +154,7 @@ function editarPaciente(id) { // aqui cuando quiero editar un paciente
                 document.getElementById('formPaciente').appendChild(inputEditar);
             }
             inputEditar.value = paciente.IdPaciente; // aqui le pongo el id
-
+            
             const modal = new bootstrap.Modal(document.getElementById('modalPaciente')); // muestro el modal
             modal.show();
         })
