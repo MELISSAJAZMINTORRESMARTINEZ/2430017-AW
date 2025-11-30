@@ -75,8 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         confirmButtonText: "Continuar"
                     }).then(() => {
                         formRegistro.reset();
-                        // Opcional: Cambiar al formulario de login si tienes tabs
-                        // document.getElementById("tab-login").click();
+
                     });
                 } else {
                     Swal.fire({

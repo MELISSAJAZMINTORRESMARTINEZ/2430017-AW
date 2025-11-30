@@ -2,10 +2,10 @@
 session_start();
 
 // Verificar si el usuario está logueado
-if (!isset($_SESSION['usuario_id'])) {
+/*if (!isset($_SESSION['usuario_id'])) {
     header("Location: index.php");
     exit();
-}
+}*/
 
 // Obtener información del usuario de la sesión
 //$nombreUsuario = $_SESSION['nombre_usuario'] ?? 'Usuario';
