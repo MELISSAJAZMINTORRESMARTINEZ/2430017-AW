@@ -1,3 +1,5 @@
+<?php require_once 'php/verificar_sesion.php'; ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
