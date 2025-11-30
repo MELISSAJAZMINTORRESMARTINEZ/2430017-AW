@@ -8,8 +8,8 @@ if (!isset($_SESSION['usuario_id'])) {
 }
 
 // Obtener información del usuario de la sesión
-$nombreUsuario = $_SESSION['nombre_usuario'] ?? 'Usuario';
-$rolUsuario = $_SESSION['rol'] ?? 'invitado';
+//$nombreUsuario = $_SESSION['nombre_usuario'] ?? 'Usuario';
+//$rolUsuario = $_SESSION['rol'] ?? 'invitado';
 
 // Definir permisos por rol
 $permisos = [
