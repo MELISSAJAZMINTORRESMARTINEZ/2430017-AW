@@ -36,7 +36,7 @@
       <button type="submit" class="btn-login">Entrar</button>
 
       <div class="text-center mt-3">
-        <a href="registro.html">Regístrate aquí</a>
+        <a href="registro.php">Regístrate aquí</a>
       </div>
     </form>
   </div>

@@ -231,7 +231,7 @@
                             <?php if (tienePermiso('especialidades')): ?>
                             <li class="list-group-item">
                                 <i class="fa-solid fa-check text-success me-2"></i> 
-                                Gestión de Especialidades Médicas
+                                Especialidades Médicas
                             </li>
                             <?php endif; ?>
                         </ul>
@@ -242,7 +242,7 @@
         </div>
 
         <footer class="mt-5 pt-4 border-top">
-            <p class="text-center text-muted small mb-0">&copy; Mi clínica :D</p>
+            <p class="text-center text-muted small mb-0">&copy; Mi clínica</p>
         </footer>
 
     </div>

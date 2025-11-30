@@ -44,7 +44,7 @@
       </div>
 
       <div class="text-center mt-3">
-        <a href="index.html">¿Ya tienes cuenta? Inicia sesión aquí</a>
+        <a href="index.php">¿Ya tienes cuenta? Inicia sesión aquí</a>
       </div>
     </form>
   </div>
