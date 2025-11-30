@@ -58,11 +58,11 @@ function cargarPacientes() { // aqui cargo todos los pacientes que estan guardad
                             ${p.Estatus}
                         </span>
                     </td>
-                     <td>
+                    <td>
                         <button class="btn btn-warning btn-sm me-1" onclick="editarPaciente(${p.IdPaciente})">
                             <i class="fa-solid fa-pen"></i>
                         </button>
-                         <button class="btn btn-danger btn-sm" onclick="eliminarPaciente(${p.IdPaciente}, '${p.NombreCompleto}')">
+                        <button class="btn btn-danger btn-sm" onclick="eliminarPaciente(${p.IdPaciente}, '${p.NombreCompleto}')">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>
