@@ -13,20 +13,20 @@ session_start();
 
 // Definir permisos por rol
 $permisos = [
-    'admin' => [
+    'super admin' => [
         'usuarios', 'pacientes', 'agenda', 'medicos', 'reportes', 
         'expedientes', 'pagos', 'tarifas', 'bitacoras', 'especialidades'
     ],
     'medico' => [
         'pacientes', 'agenda', 'expedientes', 'reportes'
     ],
-    'recepcionista' => [
+    'secretaria' => [
         'pacientes', 'agenda', 'pagos'
     ],
-    'enfermera' => [
-        'pacientes', 'agenda', 'expedientes'
+    'paciente' => [
+        // Definir permisos para paciente si es necesario, por ahora vacío o básico
     ],
-    'invitado' => []
+    'invitado' => []
 ];
 
 // Función para verificar si el usuario tiene un permiso específico
