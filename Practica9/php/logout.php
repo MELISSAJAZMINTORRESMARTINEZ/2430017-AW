@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'php/config/config.php';
+require_once 'config/config.php';
 
 // Registrar en bitácora antes de cerrar sesión
 if (isset($_SESSION['usuario_id'])) {
