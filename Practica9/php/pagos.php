@@ -3,8 +3,8 @@
 $host = "localhost";
 $port = "3306";
 $dbname = "clinica";
-$user = "admin";
-$pass = "ca99bc649c71b2383154550b34e52d0bb17fe7183054c554";
+$user = "root";
+$pass = "";
 
 // iniciamos un bloque try para capturar errores
 try {
@@ -84,66 +84,38 @@ try {
     // validar si existe un paciente
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'validarPaciente') {
         
-        $id = $_GET['id'];
-        
-        // Log para debug
-        error_log("Validando paciente ID: " . $id);
-        
         $sql = "SELECT IdPaciente, NombreCompleto FROM controlpacientes WHERE IdPaciente = :id";
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $_GET['id']);
         $stmt->execute();
         
         $paciente = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        // Log del resultado
-        error_log("Resultado paciente: " . json_encode($paciente));
-        
         header('Content-Type: application/json');
-        echo json_encode($paciente ?: ['error' => 'Paciente no encontrado', 'id_buscado' => $id]);
+        echo json_encode($paciente ?: ['error' => 'Paciente no encontrado']);
         exit;
     }
 
     // validar si existe una cita
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'validarCita') {
         
-        $id = $_GET['id'];
-        
-        // Log para debug
-        error_log("Validando cita ID: " . $id);
-        
-        // Primero verificar si la cita existe en la tabla
-        $sqlCheck = "SELECT COUNT(*) as total FROM controlagenda WHERE IdCita = :id";
-        $stmtCheck = $pdo->prepare($sqlCheck);
-        $stmtCheck->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmtCheck->execute();
-        $existe = $stmtCheck->fetch(PDO::FETCH_ASSOC);
-        
-        error_log("Citas encontradas: " . $existe['total']);
-        
-        $sql = "SELECT a.IdCita, a.FechaCita, a.MotivoConsulta, a.IdPaciente, p.NombreCompleto 
+        $sql = "SELECT a.IdCita, a.FechaCita, a.MotivoConsulta, p.NombreCompleto 
                 FROM controlagenda a 
                 LEFT JOIN controlpacientes p ON a.IdPaciente = p.IdPaciente
                 WHERE a.IdCita = :id";
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $_GET['id']);
         $stmt->execute();
         
         $cita = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        // Log del resultado
-        error_log("Resultado cita: " . json_encode($cita));
-        
         header('Content-Type: application/json');
-        echo json_encode($cita ?: ['error' => 'Cita no encontrada', 'id_buscado' => $id, 'total_encontradas' => $existe['total']]);
+        echo json_encode($cita ?: ['error' => 'Cita no encontrada']);
         exit;
     }
 
     // registrar un nuevo pago (POST sin idPagoEditar)
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['idPagoEditar'])) {
-        
-        // Log de los datos recibidos
-        error_log("POST recibido: " . json_encode($_POST));
         
         // validaciones
         if (empty($_POST['idPaciente']) || empty($_POST['idCita'])) {
@@ -156,51 +128,19 @@ try {
             exit;
         }
 
-        // validar que exista el paciente
-        $sqlValidarPaciente = "SELECT IdPaciente FROM controlpacientes WHERE IdPaciente = :id";
-        $stmtValidar = $pdo->prepare($sqlValidarPaciente);
-        $stmtValidar->bindParam(':id', $_POST['idPaciente'], PDO::PARAM_INT);
-        $stmtValidar->execute();
-        $pacienteExiste = $stmtValidar->fetch();
-        
-        error_log("Paciente existe: " . ($pacienteExiste ? 'SI' : 'NO'));
-        
-        if (!$pacienteExiste) {
-            echo "Error: El paciente con ID " . $_POST['idPaciente'] . " no existe";
-            exit;
-        }
-
-        // validar que exista la cita
-        $sqlValidarCita = "SELECT IdCita FROM controlagenda WHERE IdCita = :id";
-        $stmtValidar = $pdo->prepare($sqlValidarCita);
-        $stmtValidar->bindParam(':id', $_POST['idCita'], PDO::PARAM_INT);
-        $stmtValidar->execute();
-        $citaExiste = $stmtValidar->fetch();
-        
-        error_log("Cita existe: " . ($citaExiste ? 'SI' : 'NO'));
-        
-        if (!$citaExiste) {
-            // Mostrar cuántas citas hay en total para debug
-            $sqlCount = "SELECT COUNT(*) as total FROM controlagenda";
-            $stmtCount = $pdo->query($sqlCount);
-            $count = $stmtCount->fetch();
-            
-            echo "Error: La cita con ID " . $_POST['idCita'] . " no existe. Total de citas en BD: " . $count['total'];
-            exit;
-        }
-
-        // consulta insert (sin IdPago, dejar que sea autoincremental)
+        // consulta insert
         $sql = "INSERT INTO pagos
-                (IdCita, IdPaciente, Monto, MetodoPago, FechaPago, Referencia, EstatusPago)
+                (IdPago, IdCita, IdPaciente, Monto, MetodoPago, FechaPago, Referencia, EstatusPago)
                 VALUES 
-                (:idCita, :idPaciente, :monto, :metodoPago, :fechaPago, :referencia, :estatusPago)";
+                (:idPago, :idCita, :idPaciente, :monto, :metodoPago, :fechaPago, :referencia, :estatusPago)";
 
         // preparar consulta
         $stmt = $pdo->prepare($sql);
 
         // vincular parámetros
-        $stmt->bindParam(':idCita', $_POST['idCita'], PDO::PARAM_INT);
-        $stmt->bindParam(':idPaciente', $_POST['idPaciente'], PDO::PARAM_INT);
+        $stmt->bindParam(':idPago', $_POST['idPago']);
+        $stmt->bindParam(':idCita', $_POST['idCita']);
+        $stmt->bindParam(':idPaciente', $_POST['idPaciente']);
         $stmt->bindParam(':monto', $_POST['monto']);
         $stmt->bindParam(':metodoPago', $_POST['metodoPago']);
         $stmt->bindParam(':fechaPago', $_POST['fechaPago']);
@@ -214,7 +154,7 @@ try {
         $stmt->execute();
 
         // mensaje final
-        echo "OK - pago guardado con ID: " . $pdo->lastInsertId();
+        echo "OK - pago guardado";
         exit;
     }
 
@@ -229,26 +169,6 @@ try {
 
         if ($_POST['monto'] <= 0) {
             echo "Error: El monto debe ser mayor a 0";
-            exit;
-        }
-
-        // validar que exista el paciente
-        $sqlValidarPaciente = "SELECT IdPaciente FROM controlpacientes WHERE IdPaciente = :id";
-        $stmtValidar = $pdo->prepare($sqlValidarPaciente);
-        $stmtValidar->bindParam(':id', $_POST['idPaciente'], PDO::PARAM_INT);
-        $stmtValidar->execute();
-        if (!$stmtValidar->fetch()) {
-            echo "Error: El paciente no existe";
-            exit;
-        }
-
-        // validar que exista la cita
-        $sqlValidarCita = "SELECT IdCita FROM controlagenda WHERE IdCita = :id";
-        $stmtValidar = $pdo->prepare($sqlValidarCita);
-        $stmtValidar->bindParam(':id', $_POST['idCita'], PDO::PARAM_INT);
-        $stmtValidar->execute();
-        if (!$stmtValidar->fetch()) {
-            echo "Error: La cita no existe";
             exit;
         }
 
@@ -267,9 +187,9 @@ try {
         $stmt = $pdo->prepare($sql);
 
         // vincular parámetros
-        $stmt->bindParam(':idPago', $_POST['idPagoEditar'], PDO::PARAM_INT);
-        $stmt->bindParam(':idCita', $_POST['idCita'], PDO::PARAM_INT);
-        $stmt->bindParam(':idPaciente', $_POST['idPaciente'], PDO::PARAM_INT);
+        $stmt->bindParam(':idPago', $_POST['idPagoEditar']);
+        $stmt->bindParam(':idCita', $_POST['idCita']);
+        $stmt->bindParam(':idPaciente', $_POST['idPaciente']);
         $stmt->bindParam(':monto', $_POST['monto']);
         $stmt->bindParam(':metodoPago', $_POST['metodoPago']);
         $stmt->bindParam(':fechaPago', $_POST['fechaPago']);
@@ -296,7 +216,7 @@ try {
         $stmt = $pdo->prepare($sql);
 
         // vincular id
-        $stmt->bindParam(':id', $_GET['id'], PDO::PARAM_INT);
+        $stmt->bindParam(':id', $_GET['id']);
 
         // ejecutar
         $stmt->execute();
@@ -308,8 +228,7 @@ try {
 // captura errores de PDO
 } catch (PDOException $e) {
 
-    // imprime error con más detalle
-    error_log("Error PDO: " . $e->getMessage());
+    // imprime error
     echo "Error: " . $e->getMessage();
 }
 ?>
