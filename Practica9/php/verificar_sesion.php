@@ -46,7 +46,6 @@ if (strtolower($rolUsuario) === 'medico' && !isset($_SESSION['id_medico'])) {
     }
 }
 
-// Permisos por rol - Usando array() en lugar de []
 $permisos = array(
     'super admin' => array(
         'usuarios', 'pacientes', 'agenda', 'medicos', 'reportes', 
@@ -58,7 +57,9 @@ $permisos = array(
     'secretaria' => array(
         'pacientes', 'agenda', 'pagos'
     ),
-    'paciente' => array(),
+    'paciente' => array(
+        'agenda',
+    ),
     'invitado' => array()
 );
 
