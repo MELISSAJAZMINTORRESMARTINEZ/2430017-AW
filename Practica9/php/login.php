@@ -25,7 +25,7 @@ try {
                COALESCE(m.NombreCompleto, u.Usuario) as NombreCompleto
         FROM usuarios u
         LEFT JOIN controlmedicos m ON u.IdMedico = m.IdMedico
-        WHERE u.Usuario = :correo AND u.Activo = 1
+        WHERE u.Correo = :correo AND u.Activo = 1
     ");
     
     $stmt->execute(['correo' => $correo]);
