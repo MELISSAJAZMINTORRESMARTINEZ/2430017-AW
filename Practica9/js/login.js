@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // usuario por defecto
     const adminEmail = "admin@correo.com";
+
+    
     const adminPass = "admin";
 
     let usuarioValido = null;
