@@ -89,6 +89,20 @@
             </div>
         </nav>
 
+        <!-- Card de bienvenida -->
+<div class="welcome-card p-4 mb-4">
+    <div class="d-flex align-items-center gap-3">
+        <div class="welcome-icon">
+            <i class="fa-solid fa-hand-wave"></i>
+        </div>
+        <div>
+            <h2 class="mb-1">¡Bienvenido(a), <?php echo htmlspecialchars($nombreUsuario); ?>!</h2>
+            <p class="mb-0">Nos alegra tenerte de vuelta. Aquí tienes un resumen general del sistema.</p>
+        </div>
+    </div>
+</div>
+
+
         <div class="container-fluid">
 
             <?php if (tienePermiso('reportes')): ?>
@@ -240,10 +254,6 @@
             </div>
 
         </div>
-
-        <footer class="mt-5 pt-4 border-top">
-            <p class="text-center text-muted small mb-0">&copy; Mi clínica</p>
-        </footer>
 
     </div>
 

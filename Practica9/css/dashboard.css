@@ -125,13 +125,11 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
-/* Tarjetas y paneles laterales para que combinen con tu estilo */
 .card .fc-toolbar-title {
   color: #2c8888;
   font-weight: 700;
 }
 
-/* Ajustes para botones y inputs de FullCalendar */
 .fc .fc-button {
   border-radius: 12px;
   background: #2c8888;
@@ -144,19 +142,16 @@ body {
   background: #257070;
 }
 
-/* Lista de próximas citas */
 #upcomingList li {
   border-left: 3px solid rgba(44, 136, 136, 0.15);
   padding-left: 10px;
   margin-bottom: 8px;
 }
 
-/* Tarjetas internas */
 .card {
   border-radius: 12px;
 }
 
-/* Responsive: en pantallas pequeñas mostrar panel lateral abajo */
 @media (max-width: 991px) {
 
   .col-lg-9,
@@ -170,7 +165,114 @@ body {
   }
 }
 
-/* Mantener tipografía consistente */
 .swal2-popup {
   font-family: 'Poppins', sans-serif;
 }
+.dash-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.dash-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.12);
+}
+
+.dash-card .icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(44, 136, 136, 0.12);
+    color: #2c8888;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+}
+
+.dash-card h3 {
+    font-size: 28px;
+    margin: 0;
+    font-weight: 700;
+    color: #2c8888;
+}
+
+.dash-card p {
+    margin: 0;
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.dash-panel {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.dash-panel h5 {
+    font-weight: 600;
+    color: #2c8888;
+}
+
+
+
+.list-group-item {
+    border: none;
+    margin-bottom: 8px;
+    border-radius: 12px !important;
+    background: #f8f9fa;
+    padding: 14px 16px;
+    font-size: 15px;
+}
+
+.navbar {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 15px 20px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.content {
+    margin-left: 230px;
+    padding: 25px;
+}
+
+.card {
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    border: none !important;
+}
+
+/* ----  ---- */
+@media (max-width: 768px) {
+    .dash-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .content {
+        margin-left: 0;
+    }
+}
+.welcome-card {
+    background: linear-gradient(135deg, #2c8888, #53b3b3);
+    border-radius: 22px;
+    color: #ffffff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.welcome-card h2 {
+    font-weight: 700;
+}
+
+.welcome-card p {
+    opacity: 0.9;
+}
+
