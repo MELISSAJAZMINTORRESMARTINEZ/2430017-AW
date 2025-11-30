@@ -34,7 +34,7 @@ try {
                     pac.NombreCompleto as NombrePaciente,
                     a.FechaCita,
                     a.MotivoConsulta
-                FROM pagos p
+                FROM gestorpagos p
                 LEFT JOIN controlpacientes pac ON p.IdPaciente = pac.IdPaciente
                 LEFT JOIN controlagenda a ON p.IdCita = a.IdCita
                 ORDER BY p.FechaPago DESC";
@@ -58,7 +58,7 @@ try {
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'obtener') {
         
         // consulta con parámetro
-        $sql = "SELECT * FROM pagos WHERE IdPago = :id";
+        $sql = "SELECT * FROM gestorpagos WHERE IdPago = :id";
 
         // prepara la consulta
         $stmt = $pdo->prepare($sql);
@@ -149,7 +149,7 @@ try {
         }
 
         // consulta insert (sin IdPago, dejar que sea autoincremental)
-        $sql = "INSERT INTO pagos
+        $sql = "INSERT INTO gestorpagos
                 (IdCita, IdPaciente, Monto, MetodoPago, FechaPago, Referencia, EstatusPago)
                 VALUES 
                 (:idCita, :idPaciente, :monto, :metodoPago, :fechaPago, :referencia, :estatusPago)";
@@ -212,7 +212,7 @@ try {
         }
 
         // consulta update
-        $sql = "UPDATE pagos SET
+        $sql = "UPDATE gestorpagos SET
                 IdCita = :idCita,
                 IdPaciente = :idPaciente,
                 Monto = :monto,
@@ -249,7 +249,7 @@ try {
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'eliminar') {
         
         // consulta delete
-        $sql = "DELETE FROM pagos WHERE IdPago = :id";
+        $sql = "DELETE FROM gestorpagos WHERE IdPago = :id";
 
         // preparar consulta
         $stmt = $pdo->prepare($sql);
@@ -271,3 +271,4 @@ try {
     echo "Error: " . $e->getMessage();
 }
 ?>
+
