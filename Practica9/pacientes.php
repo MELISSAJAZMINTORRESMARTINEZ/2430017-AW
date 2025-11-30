@@ -21,28 +21,66 @@
 
 <body>
 
-    <!-- Sidebar -->
+   <!-- Sidebar -->
     <div class="sidebar">
         <h4 class="text-center">
             <img src="images/otrogatito (2).png" alt="Logo Clínica" width="60" height="60" class="rounded-circle mb-2">
             <br>Clínica
         </h4>
+        
+        <!-- Información del usuario -->
+        <div class="text-center mb-3 px-3">
+            <p class="text-white-50 small mb-1"><?php echo htmlspecialchars($nombreUsuario); ?></p>
+            <span class="badge bg-info text-dark"><?php echo ucfirst($rolUsuario); ?></span>
+        </div>
 
-        <a href="dash.php"><i class="fa-solid fa-house me-2"></i>Inicio</a>
-    <a href="usuarios.php"><i class="fa-solid fa-stethoscope me-2"></i>Usuario</a>
-    <a href="pacientes.php"><i class="fa-solid fa-user-injured me-2"></i>Control de pacientes</a>
-    <a href="controlAgenda.php" class="active"><i class="fa-solid fa-calendar-days me-2"></i>Control de agenda</a>
-    <a href="medicos.php"><i class="fa-solid fa-user-doctor me-2"></i>Control de médicos</a>
-    <a href="reportes.php"><i class="fa-solid fa-chart-line me-2"></i>Reportes</a>
-    <a href="expediente.php"><i class="fa-solid fa-file-medical me-2"></i>Expediente Clínico</a>
-    <a href="pagos.php"><i class="fa-solid fa-money-check-dollar me-2"></i>Pagos</a>
-    <a href="tarifas.php"><i class="fa-solid fa-file-invoice-dollar me-2"></i>Gestor de tarifas</a>
-    <a href="bitacora.php"><i class="fa-solid fa-book me-2"></i>Bitácoras de usuarios</a>
-    <a href="especialidades.php"><i class="fa-solid fa-stethoscope me-2"></i>Especialidades médicas</a>
+        <div class="sidebar-links">
+            <a href="dash.php" class="active"><i class="fa-solid fa-house me-2"></i>Inicio</a>
+            
+            <?php if (tienePermiso('usuarios')): ?>
+            <a href="usuarios.php"><i class="fa-solid fa-stethoscope me-2"></i>Usuario</a>
+            <?php endif; ?>
+            
+            <?php if (tienePermiso('pacientes')): ?>
+            <a href="pacientes.html"><i class="fa-solid fa-user-injured me-2"></i>Control de pacientes</a>
+            <?php endif; ?>
+            
+            <?php if (tienePermiso('agenda')): ?>
+            <a href="controlAgenda.php"><i class="fa-solid fa-calendar-days me-2"></i>Control de agenda</a>
+            <?php endif; ?>
+            
+            <?php if (tienePermiso('medicos')): ?>
+            <a href="medicos.php"><i class="fa-solid fa-user-doctor me-2"></i>Control de médicos</a>
+            <?php endif; ?>
+            
+            <?php if (tienePermiso('reportes')): ?>
+            <a href="reportes.php"><i class="fa-solid fa-chart-line me-2"></i>Reportes</a>
+            <?php endif; ?>
+            
+            <?php if (tienePermiso('expedientes')): ?>
+            <a href="expediente.php"><i class="fa-solid fa-notes-medical me-2"></i>Expediente Clínico</a>
+            <?php endif; ?>
+            
+            <?php if (tienePermiso('pagos')): ?>
+            <a href="pagos.php"><i class="fa-solid fa-money-check-dollar me-2"></i>Pagos</a>
+            <?php endif; ?>
+            
+            <?php if (tienePermiso('tarifas')): ?>
+            <a href="tarifas.php"><i class="fa-solid fa-file-invoice-dollar me-2"></i>Gestor de tarifas</a>
+            <?php endif; ?>
+            
+            <?php if (tienePermiso('bitacoras')): ?>
+            <a href="bitacora.php"><i class="fa-solid fa-book me-2"></i>Bitácoras de usuarios</a>
+            <?php endif; ?>
+            
+            <?php if (tienePermiso('especialidades')): ?>
+            <a href="especialidades.php"><i class="fa-solid fa-stethoscope me-2"></i>Especialidades médicas</a>
+            <?php endif; ?>
+        </div>
 
-    <hr>
-    <a href="index.php">Cerrar sesión</a>
-  </div>
+        <hr>
+        <a href="logout.php"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a>
+    </div>
 
 
     <!-- Contenido -->
