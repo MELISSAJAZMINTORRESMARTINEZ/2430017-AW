@@ -41,8 +41,8 @@
             <a href="usuarios.php"><i class="fa-solid fa-stethoscope me-2"></i>Usuario</a>
             <?php endif; ?>
             
-            <?php if (tienePermiso('pacientes')): ?>
-            <a href="pacientes.html"><i class="fa-solid fa-user-injured me-2"></i>Control de pacientes</a>
+             <?php if (tienePermiso('pacientes')): ?>
+            <a href="pacientes.php"><i class="fa-solid fa-user-injured me-2"></i>Control de pacientes</a>
             <?php endif; ?>
             
             <?php if (tienePermiso('agenda')): ?>
