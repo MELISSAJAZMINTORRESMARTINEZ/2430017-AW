@@ -137,60 +137,63 @@
         </div>
 
         <form id="formPagos">
-          <div class="modal-body">
-            <div class="mb-3">
-              <label for="idPago" class="form-label">Id Pago</label>
-              <input type="number" class="form-control" id="idPago" name="idPago" required>
-            </div>
-            <div class="mb-3">
-              <label for="idCita" class="form-label">Id Cita</label>
-              <input type="number" class="form-control" id="idCita" name="idCita" required>
-            </div>
-            <div class="mb-3">
-              <label for="idPaciente" class="form-label">Id Paciente</label>
-              <input type="number" class="form-control" id="idPaciente" name="idPaciente" required>
-            </div>
-            <div class="mb-3">
-              <label for="monto" class="form-label">Monto</label>
-              <input type="number" step="0.01" class="form-control" id="monto" name="monto" required>
-            </div>
-            <div class="mb-3">
-              <label for="metodoPago" class="form-label">Metodo Pago</label>
-              <select id="metodoPago" name="metodoPago" class="form-select" required>
-                <option value="">Selecciona Pago</option>
-                <option value="Efectivo">Efectivo</option>
-                <option value="Tarjeta">Tarjeta</option>
-                <option value="Transferencia">Transferencia</option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label for="fechaPago" class="form-label">Fecha Pago</label>
-              <input type="date" class="form-control" id="fechaPago" name="fechaPago">
-            </div>
-            <div class="mb-3">
-              <label for="referencia" class="form-label">Referencia</label>
-              <input type="text" class="form-control" id="referencia" name="referencia">
-            </div>
-            <div class="mb-3">
-              <label for="estatusPago" class="form-label">Estatus Pago</label>
-              <select id="estatusPago" name="estatusPago" class="form-select" required>
-                <option value="">Selecciona</option>
-                <option value="Pendiente">Pagado</option>
+  <div class="modal-body">
+    <!-- Se eliminó el campo IdPago ya que es autoincremental -->
+    
+    <div class="mb-3">
+      <label for="idCita" class="form-label">Id Cita <span class="text-danger">*</span></label>
+      <input type="number" class="form-control" id="idCita" name="idCita" required>
+    </div>
+    
+    <div class="mb-3">
+      <label for="idPaciente" class="form-label">Id Paciente <span class="text-danger">*</span></label>
+      <input type="number" class="form-control" id="idPaciente" name="idPaciente" required>
+    </div>
+    
+    <div class="mb-3">
+      <label for="monto" class="form-label">Monto <span class="text-danger">*</span></label>
+      <input type="number" step="0.01" class="form-control" id="monto" name="monto" required>
+    </div>
+    
+    <div class="mb-3">
+      <label for="metodoPago" class="form-label">Método de Pago <span class="text-danger">*</span></label>
+      <select id="metodoPago" name="metodoPago" class="form-select" required>
+        <option value="">Selecciona Pago</option>
+        <option value="Efectivo">Efectivo</option>
+        <option value="Tarjeta">Tarjeta</option>
+        <option value="Transferencia">Transferencia</option>
+      </select>
+    </div>
+    
+    <div class="mb-3">
+      <label for="fechaPago" class="form-label">Fecha Pago <span class="text-danger">*</span></label>
+      <input type="date" class="form-control" id="fechaPago" name="fechaPago" required>
+    </div>
+    
+    <div class="mb-3">
+      <label for="referencia" class="form-label">Referencia</label>
+      <input type="text" class="form-control" id="referencia" name="referencia">
+    </div>
+    
+    <div class="mb-3">
+      <label for="estatusPago" class="form-label">Estatus Pago <span class="text-danger">*</span></label>
+      <select id="estatusPago" name="estatusPago" class="form-select" required>
+        <option value="">Selecciona</option>
+        <option value="Pagado">Pagado</option>
+        <option value="Pendiente">Pendiente</option>
+        <option value="Cancelado">Cancelado</option>
+      </select>
+    </div>
+  </div>
 
-                <option value="Pendiente">Pendiente</option>
-                <option value="Cancelado">Cancelado</option>
-              </select>
-            </div>
-
-
-            <!-- Botones dentro del form -->
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-success">
-                <i class="fa-solid fa-save me-2"></i>Guardar
-              </button>
-            </div>
-        </form>
+  <!-- Botones dentro del form -->
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+    <button type="submit" class="btn btn-success">
+      <i class="fa-solid fa-save me-2"></i>Guardar
+    </button>
+  </div>
+</form>
       </div>
     </div>
   </div>

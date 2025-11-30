@@ -17,6 +17,28 @@ document.addEventListener("DOMContentLoaded", function () {
             });
             return;
         }
+
+        // validar que los campos tengan las clases correctas de validación
+        const idPaciente = document.getElementById('idPaciente');
+        const idCita = document.getElementById('idCita');
+
+        if (idPaciente.classList.contains('is-invalid') || !idPaciente.classList.contains('is-valid')) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Paciente inválido',
+                text: 'Por favor ingrese un ID de paciente válido'
+            });
+            return;
+        }
+
+        if (idCita.classList.contains('is-invalid') || !idCita.classList.contains('is-valid')) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Cita inválida',
+                text: 'Por favor ingrese un ID de cita válido'
+            });
+            return;
+        }
         
         guardarPago(new FormData(form));
     });
@@ -26,9 +48,21 @@ document.addEventListener("DOMContentLoaded", function () {
         validarPaciente(this.value);
     });
 
+    document.getElementById('idPaciente').addEventListener('input', function() {
+        if (this.value) {
+            validarPaciente(this.value);
+        }
+    });
+
     // validación en tiempo real del ID de cita
     document.getElementById('idCita').addEventListener('blur', function() {
         validarCita(this.value);
+    });
+
+    document.getElementById('idCita').addEventListener('input', function() {
+        if (this.value) {
+            validarCita(this.value);
+        }
     });
 
     // establecer fecha de hoy por defecto
@@ -43,10 +77,13 @@ document.addEventListener("DOMContentLoaded", function () {
         
         document.querySelectorAll('.text-danger, .text-success').forEach(el => el.remove());
         
+        // limpiar clases de validación
+        document.getElementById('idPaciente').classList.remove('is-valid', 'is-invalid');
+        document.getElementById('idCita').classList.remove('is-valid', 'is-invalid');
+        
         const inputEditar = document.querySelector('input[name="idPagoEditar"]');
         if (inputEditar) inputEditar.remove();
         
-        document.getElementById('idPago').disabled = false;
         document.getElementById('fechaPago').value = hoy;
     });
 });
@@ -54,7 +91,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // validar si existe el paciente
 function validarPaciente(id) {
-    if (!id) return;
+    if (!id) {
+        const input = document.getElementById('idPaciente');
+        input.classList.remove('is-valid', 'is-invalid');
+        const mensajePrevio = input.parentElement.querySelector('.validacion-msg');
+        if (mensajePrevio) mensajePrevio.remove();
+        return;
+    }
     
     fetch(`php/pagos.php?accion=validarPaciente&id=${id}`)
         .then(response => response.json())
@@ -64,7 +107,7 @@ function validarPaciente(id) {
             if (mensajePrevio) mensajePrevio.remove();
             
             const mensaje = document.createElement('small');
-            mensaje.className = 'validacion-msg';
+            mensaje.className = 'validacion-msg d-block mt-1';
             
             if (data.error) {
                 mensaje.className += ' text-danger';
@@ -79,13 +122,25 @@ function validarPaciente(id) {
             }
             
             input.parentElement.appendChild(mensaje);
+        })
+        .catch(error => {
+            console.error('Error validando paciente:', error);
+            const input = document.getElementById('idPaciente');
+            input.classList.add('is-invalid');
+            input.classList.remove('is-valid');
         });
 }
 
 
 // validar si existe la cita
 function validarCita(id) {
-    if (!id) return;
+    if (!id) {
+        const input = document.getElementById('idCita');
+        input.classList.remove('is-valid', 'is-invalid');
+        const mensajePrevio = input.parentElement.querySelector('.validacion-msg');
+        if (mensajePrevio) mensajePrevio.remove();
+        return;
+    }
     
     fetch(`php/pagos.php?accion=validarCita&id=${id}`)
         .then(response => response.json())
@@ -95,7 +150,7 @@ function validarCita(id) {
             if (mensajePrevio) mensajePrevio.remove();
             
             const mensaje = document.createElement('small');
-            mensaje.className = 'validacion-msg';
+            mensaje.className = 'validacion-msg d-block mt-1';
             
             if (data.error) {
                 mensaje.className += ' text-danger';
@@ -110,6 +165,12 @@ function validarCita(id) {
             }
             
             input.parentElement.appendChild(mensaje);
+        })
+        .catch(error => {
+            console.error('Error validando cita:', error);
+            const input = document.getElementById('idCita');
+            input.classList.add('is-invalid');
+            input.classList.remove('is-valid');
         });
 }
 
@@ -217,8 +278,6 @@ function editarPago(id) {
             document.getElementById('modalPagosLabel').innerHTML =
                 '<i class="fa-solid fa-edit me-2"></i>editar pago';
 
-            document.getElementById('idPago').value = pago.IdPago;
-            document.getElementById('idPago').disabled = true;
             document.getElementById('idCita').value = pago.IdCita;
             document.getElementById('idPaciente').value = pago.IdPaciente;
             document.getElementById('monto').value = pago.Monto;
@@ -226,6 +285,10 @@ function editarPago(id) {
             document.getElementById('fechaPago').value = pago.FechaPago;
             document.getElementById('referencia').value = pago.Referencia || '';
             document.getElementById('estatusPago').value = pago.EstatusPago;
+
+            // validar los IDs cargados
+            validarPaciente(pago.IdPaciente);
+            validarCita(pago.IdCita);
 
             // input oculto para edición
             let inputEditar = document.querySelector('input[name="idPagoEditar"]');
