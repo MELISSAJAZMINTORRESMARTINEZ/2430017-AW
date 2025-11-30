@@ -92,7 +92,7 @@
                 <span class="navbar-brand mb-0 h4 fw-bold text-secondary">
                     <i class="fa-solid fa-money-check-dollar me-2"></i>Pagos
                 </span>
-                 <button class="btn btn-success text-white fw-semibold" data-bs-toggle="modal" style="background-color: #2c8888;" data-bs-target="#modalPago">
+                 <button class="btn btn-success text-white fw-semibold" data-bs-toggle="modal" style="background-color: #2c8888;" data-bs-target="#modalPagos">
                     <i class="fa-solid fa-plus me-2"></i>Agregar Pago
                 </button>
             </div>
