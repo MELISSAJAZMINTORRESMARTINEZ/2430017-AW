@@ -39,7 +39,7 @@
             <?php endif; ?>
             
             <?php if (tienePermiso('pacientes')): ?>
-            <a href="pacientes.php"><i class="fa-solid fa-user-injured me-2"></i>Control de pacientes</a>
+            <a href="pacientes."><i class="fa-solid fa-user-injured me-2"></i>Control de pacientes</a>
             <?php endif; ?>
             
             <?php if (tienePermiso('agenda')): ?>
