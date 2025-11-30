@@ -1,54 +1,53 @@
 <?php
-session_start();
-
-// Verificar si el usuario está logueado
-if (!isset($_SESSION['usuario_id'])) {
-    header("Location: index.php");
-    exit();
+// Iniciar sesión si no está iniciada
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 
-// Obtener información del usuario de la sesión
-$nombreUsuario = $_SESSION['nombre_usuario'] ?? 'Usuario';
-$rolUsuario = $_SESSION['rol'] ?? 'invitado';
+// MODO DESARROLLO - Eliminar en producción
+if (!isset($_SESSION['usuario_id'])) {
+    $_SESSION['usuario_id'] = 1;
+    $_SESSION['nombre_usuario'] = 'Administrador';
+    $_SESSION['rol'] = 'super admin';
+}
 
-// Definir permisos por rol
-$permisos = [
-    'super admin' => [
+// Obtener información del usuario
+$nombreUsuario = isset($_SESSION['nombre_usuario']) ? $_SESSION['nombre_usuario'] : 'Usuario';
+$rolUsuario = isset($_SESSION['rol']) ? $_SESSION['rol'] : 'invitado';
+
+// Permisos por rol - Usando array() en lugar de []
+$permisos = array(
+    'super admin' => array(
         'usuarios', 'pacientes', 'agenda', 'medicos', 'reportes', 
         'expedientes', 'pagos', 'tarifas', 'bitacoras', 'especialidades'
-    ],
-    'medico' => [
+    ),
+    'medico' => array(
         'pacientes', 'agenda', 'expedientes', 'reportes'
-    ],
-    'secretaria' => [
+    ),
+    'secretaria' => array(
         'pacientes', 'agenda', 'pagos'
-    ],
-    'paciente' => [
-        // Definir permisos para paciente si es necesario, por ahora vacío o básico
-    ],
-    'invitado' => []
-];
+    ),
+    'paciente' => array(),
+    'invitado' => array()
+);
 
-// Función para verificar si el usuario tiene un permiso específico
+// Función para verificar permisos
 function tienePermiso($permiso) {
     global $permisos, $rolUsuario;
     
-    // Normalizar el rol a minúsculas
     $rol = strtolower($rolUsuario);
     
-    // Verificar si el rol existe en el array de permisos
     if (!isset($permisos[$rol])) {
         return false;
     }
     
-    // Verificar si el permiso está en la lista del rol
     return in_array($permiso, $permisos[$rol]);
 }
 
-// Función para verificar acceso a una página específica
+// Función para verificar acceso a una página
 function verificarAccesoAPagina($permisoRequerido) {
     if (!tienePermiso($permisoRequerido)) {
-        header("Location: dash.php?error=sin_permiso");
+        header("Location: /2430017-AW/Practica9/dash.php?error=sin_permiso");
         exit();
     }
 }
