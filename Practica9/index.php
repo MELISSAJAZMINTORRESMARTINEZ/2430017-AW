@@ -20,7 +20,7 @@
 
     <h3>Clínica</h3>
 
-    <form>
+    <form id="loginForm">
       <div class="mb-3">
         <label for="email" class="form-label">Correo electrónico</label>
         <input type="email" class="form-control" id="email" placeholder="pedrito@correo.com" required>
@@ -28,7 +28,7 @@
 
       <div class="mb-3">
         <label for="password" class="form-label">Contraseña</label>
-        <input type="password" class="form-control" id="password" placeholder="********" required>
+        <input type="password" class="form-control" id="password" placeholder="" required>
       </div>
       <p>Corre: admin@correo.com</p>
       <p>Contra: admin</p>

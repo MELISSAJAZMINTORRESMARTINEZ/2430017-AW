@@ -1,95 +1,69 @@
-// js/registro.js
 document.addEventListener("DOMContentLoaded", () => {
-    const formRegistro = document.getElementById("registro");
-    
-    if (formRegistro) {
-        formRegistro.addEventListener("submit", async (e) => {
+    const loginForm = document.getElementById("loginForm");
+
+    if (loginForm) {
+        loginForm.addEventListener("submit", async (e) => {
             e.preventDefault();
-            
-            const nombre = document.getElementById("nombreR").value.trim();
-            const correo = document.getElementById("correoR").value.trim();
-            const contrasena = document.getElementById("contraR").value.trim();
-            
-            // Validación básica
-            if (nombre === "" || correo === "" || contrasena === "") {
+
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            if (!email || !password) {
                 Swal.fire({
-                    title: "Campos incompletos",
-                    text: "Por favor, complete todos los campos",
+                    title: "Campos vacíos",
+                    text: "Por favor, ingrese su correo y contraseña",
                     icon: "warning",
                     confirmButtonText: "Aceptar"
                 });
                 return;
             }
-            
-            if (contrasena.length < 6) {
-                Swal.fire({
-                    title: "Contraseña débil",
-                    text: "La contraseña debe tener al menos 6 caracteres",
-                    icon: "warning",
-                    confirmButtonText: "Aceptar"
-                });
-                return;
-            }
-            
-            // Validar formato de correo
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(correo)) {
-                Swal.fire({
-                    title: "Correo inválido",
-                    text: "Por favor, ingrese un correo electrónico válido",
-                    icon: "warning",
-                    confirmButtonText: "Aceptar"
-                });
-                return;
-            }
-            
+
             // Mostrar loader
             Swal.fire({
-                title: 'Registrando usuario...',
+                title: 'Iniciando sesión...',
                 allowOutsideClick: false,
                 didOpen: () => {
                     Swal.showLoading();
                 }
             });
-            
+
             try {
-                const response = await fetch('registro.php', {
+                const response = await fetch('php/login.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        nombre: nombre,
-                        correo: correo,
-                        contrasena: contrasena
+                        correo: email,
+                        contrasena: password
                     })
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (data.success) {
                     Swal.fire({
-                        title: "¡Registro exitoso!",
-                        text: "Usuario creado correctamente. Ahora puedes iniciar sesión",
+                        title: "¡Bienvenido!",
+                        text: "Inicio de sesión exitoso",
                         icon: "success",
-                        confirmButtonText: "Continuar"
+                        timer: 1500,
+                        showConfirmButton: false
                     }).then(() => {
-                        formRegistro.reset();
-
+                        window.location.href = "dash.php";
                     });
                 } else {
                     Swal.fire({
-                        title: "Error al registrar",
-                        text: data.error || "No se pudo crear el usuario",
+                        title: "Error",
+                        text: data.error || "Credenciales incorrectas",
                         icon: "error",
-                        confirmButtonText: "Reintentar"
+                        confirmButtonText: "Intentar de nuevo"
                     });
                 }
             } catch (error) {
                 console.error('Error:', error);
                 Swal.fire({
-                    title: "Error",
-                    text: "Error al conectar con el servidor",
+                    title: "Error de conexión",
+                    text: "No se pudo conectar con el servidor",
                     icon: "error",
                     confirmButtonText: "Aceptar"
                 });
