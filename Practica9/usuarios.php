@@ -78,7 +78,7 @@
         </div>
 
         <hr>
-        <a href="php/logout.php"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a>
+        <a href="logout.php"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a>
     </div>
 
 

@@ -27,6 +27,6 @@ if (isset($_COOKIE[session_name()])) {
 session_destroy();
 
 // Redirigir al login
-header("Location: logout.php");
+header("Location: index.php");
 exit();
 ?>
