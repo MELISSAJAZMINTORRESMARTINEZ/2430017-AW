@@ -3,8 +3,8 @@
 $host = "localhost";
 $port = "3306";
 $dbname = "clinica";
-$user = "root";
-$pass = "";
+$user = "admin";
+$pass = "ca99bc649c71b2383154550b34e52d0bb17fe7183054c554";
 
 // iniciamos un bloque try para capturar errores
 try {
@@ -128,17 +128,36 @@ try {
             exit;
         }
 
-        // consulta insert
+        // validar que exista el paciente
+        $sqlValidarPaciente = "SELECT IdPaciente FROM controlpacientes WHERE IdPaciente = :id";
+        $stmtValidar = $pdo->prepare($sqlValidarPaciente);
+        $stmtValidar->bindParam(':id', $_POST['idPaciente']);
+        $stmtValidar->execute();
+        if (!$stmtValidar->fetch()) {
+            echo "Error: El paciente no existe";
+            exit;
+        }
+
+        // validar que exista la cita
+        $sqlValidarCita = "SELECT IdCita FROM controlagenda WHERE IdCita = :id";
+        $stmtValidar = $pdo->prepare($sqlValidarCita);
+        $stmtValidar->bindParam(':id', $_POST['idCita']);
+        $stmtValidar->execute();
+        if (!$stmtValidar->fetch()) {
+            echo "Error: La cita no existe";
+            exit;
+        }
+
+        // consulta insert (sin IdPago, dejar que sea autoincremental)
         $sql = "INSERT INTO pagos
-                (IdPago, IdCita, IdPaciente, Monto, MetodoPago, FechaPago, Referencia, EstatusPago)
+                (IdCita, IdPaciente, Monto, MetodoPago, FechaPago, Referencia, EstatusPago)
                 VALUES 
-                (:idPago, :idCita, :idPaciente, :monto, :metodoPago, :fechaPago, :referencia, :estatusPago)";
+                (:idCita, :idPaciente, :monto, :metodoPago, :fechaPago, :referencia, :estatusPago)";
 
         // preparar consulta
         $stmt = $pdo->prepare($sql);
 
         // vincular parámetros
-        $stmt->bindParam(':idPago', $_POST['idPago']);
         $stmt->bindParam(':idCita', $_POST['idCita']);
         $stmt->bindParam(':idPaciente', $_POST['idPaciente']);
         $stmt->bindParam(':monto', $_POST['monto']);
@@ -169,6 +188,26 @@ try {
 
         if ($_POST['monto'] <= 0) {
             echo "Error: El monto debe ser mayor a 0";
+            exit;
+        }
+
+        // validar que exista el paciente
+        $sqlValidarPaciente = "SELECT IdPaciente FROM controlpacientes WHERE IdPaciente = :id";
+        $stmtValidar = $pdo->prepare($sqlValidarPaciente);
+        $stmtValidar->bindParam(':id', $_POST['idPaciente']);
+        $stmtValidar->execute();
+        if (!$stmtValidar->fetch()) {
+            echo "Error: El paciente no existe";
+            exit;
+        }
+
+        // validar que exista la cita
+        $sqlValidarCita = "SELECT IdCita FROM controlagenda WHERE IdCita = :id";
+        $stmtValidar = $pdo->prepare($sqlValidarCita);
+        $stmtValidar->bindParam(':id', $_POST['idCita']);
+        $stmtValidar->execute();
+        if (!$stmtValidar->fetch()) {
+            echo "Error: La cita no existe";
             exit;
         }
 
