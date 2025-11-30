@@ -28,22 +28,22 @@
             <br>Clínica
         </h4>
 
-        <a href="dash.html"><i class="fa-solid fa-house me-2"></i>Inicio</a>
-        <a href="usuarios.html"><i class="fa-solid fa-stethoscope me-2"></i>Usuario</a>
+        <a href="dash.php"><i class="fa-solid fa-house me-2"></i>Inicio</a>
+    <a href="usuarios.php"><i class="fa-solid fa-stethoscope me-2"></i>Usuario</a>
+    <a href="pacientes.php"><i class="fa-solid fa-user-injured me-2"></i>Control de pacientes</a>
+    <a href="controlAgenda.php" class="active"><i class="fa-solid fa-calendar-days me-2"></i>Control de agenda</a>
+    <a href="medicos.php"><i class="fa-solid fa-user-doctor me-2"></i>Control de médicos</a>
+    <a href="reportes.php"><i class="fa-solid fa-chart-line me-2"></i>Reportes</a>
+    <a href="expediente.php"><i class="fa-solid fa-file-medical me-2"></i>Expediente Clínico</a>
+    <a href="pagos.php"><i class="fa-solid fa-money-check-dollar me-2"></i>Pagos</a>
+    <a href="tarifas.php"><i class="fa-solid fa-file-invoice-dollar me-2"></i>Gestor de tarifas</a>
+    <a href="bitacora.php"><i class="fa-solid fa-book me-2"></i>Bitácoras de usuarios</a>
+    <a href="especialidades.php"><i class="fa-solid fa-stethoscope me-2"></i>Especialidades médicas</a>
 
-        <a href="pacientes.html"><i class="fa-solid fa-user-injured me-2"></i>Control de pacientes</a>
-        <a href="controlAgenda.html"><i class="fa-solid fa-calendar-days me-2"></i>Control de agenda</a>
-        <a href="medicos.html"><i class="fa-solid fa-user-doctor me-2"></i>Control de médicos</a>
-        <a href="reportes.html"><i class="fa-solid fa-chart-line me-2"></i>Reportes</a>
-        <a href="expediente.html"><i class="fa-solid fa-notes-medical me-2"></i>Expediente Clínico</a>
-        <a href="pagos.html"><i class="fa-solid fa-money-check-dollar me-2"></i>Pagos</a>
-        <a href="tarifas.html"><i class="fa-solid fa-file-invoice-dollar me-2"></i>Gestor de tarifas</a>
-        <a href="bitacora.html"><i class="fa-solid fa-book me-2"></i>Bitácoras de usuarios</a>
-        <a href="especialidades.html"><i class="fa-solid fa-stethoscope me-2"></i>Especialidades médicas</a>
+    <hr>
+    <a href="index.php">Cerrar sesión</a>
+  </div>
 
-        <hr>
-        <a href="index.html">Cerrar sesión</a>
-    </div>
 
     <!-- Contenido -->
     <div class="content" style="margin-left: 230px; padding: 30px;">
