@@ -92,8 +92,8 @@
                 <span class="navbar-brand mb-0 h4 fw-bold text-secondary">
                     <i class="fa-solid fa-money-check-dollar me-2"></i>Pagos
                 </span>
-                <button id="btnAgregarPaciente" class="btn btn-success text-white fw-semibold">
-                    <i class="fa-solid fa-user-plus me-2"></i>Agregar Pago
+                 <button class="btn btn-success text-white fw-semibold" data-bs-toggle="modal" style="background-color: #2c8888;" data-bs-target="#modalPago">
+                    <i class="fa-solid fa-plus me-2"></i>Agregar Pago
                 </button>
             </div>
         </nav>
@@ -102,7 +102,7 @@
         <div class="card shadow-sm border-0">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="tablaPacientes" class="table table-hover align-middle text-center">
+                    <table id="tablaPagos" class="table table-hover align-middle text-center">
                         <thead class="table-info">
                             <tr>
                                 <th>Id Pago</th>
@@ -117,13 +117,80 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!--pacientes-->
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
+
+     <!-- Modal Bootstrap -->
+  <div class="modal fade" id="modalPagos" tabindex="-1" aria-labelledby="modalPagosLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg">
+        <div class="modal-header text-white" style="background-color: #2c8888;">
+          <h5 class="modal-title" id="modalPagosLabel">
+            <i class="fa-solid fa-user-plus me-2"></i>Agregar Pago
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+
+        <form id="formUsuarios">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="idPago" class="form-label">Id Pago</label>
+              <input type="number" class="form-control" id="idPago" name="idPago" required>
+            </div>
+            <div class="mb-3">
+              <label for="idCita" class="form-label">Id Cita</label>
+              <input type="number" class="form-control" id="idCita" name="idCita" required>
+            </div>
+            <div class="mb-3">
+              <label for="idPaciente" class="form-label">Id Paciente</label>
+              <input type="number" class="form-control" id="idPaciente" name="idPaciente" required>
+            </div>
+            <div class="mb-3">
+              <label for="monto" class="form-label">Monto</label>
+              <input type="number" step="0.01" class="form-control" id="monto" name="monto" required>
+            </div>
+            <div class="mb-3">
+              <label for="metodoPago" class="form-label">Metodo Pago</label>
+              <select id="metodoPago" name="metodoPago" class="form-select" required>
+                <option value="">Selecciona Pago</option>
+                <option value="Efectivo">Efectivo</option>
+                <option value="Tarjeta">Tarjeta</option>
+                <option value="Transferencia">Transferencia</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="fechaPago" class="form-label">Fecha Pago</label>
+              <input type="date" class="form-control" id="fechaPago" name="fechaPago">
+            </div>
+                  <div class="mb-3">
+              <label for="referencia" class="form-label">Referencia</label>
+              <input type="text" class="form-control" id="referencia" name="referencia">
+            </div>
+            <div class="mb-3">
+              <label for="estatusPago" class="form-label">Estatus Pago</label>
+              <select id="estatusPago" name="estatusPago" class="form-select" required>
+                <option value="">Selecciona</option>
+                <option value="Pendiente">Pendiente</option>
+                <option value="Cancelado">Cancelado</option>
+              </select>
+            </div>
+
+
+          <!-- Botones dentro del form -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success">
+              <i class="fa-solid fa-save me-2"></i>Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
