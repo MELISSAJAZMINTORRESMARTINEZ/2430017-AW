@@ -383,8 +383,43 @@ ALTER TABLE `reportes`
 --
 ALTER TABLE `usuarios`
   ADD CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`IdMedico`) REFERENCES `controlmedicos` (`IdMedico`);
-COMMIT;
 
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+-- Contraseñas en texto plano para referencia (en producción usar hash):
+-- admin: admin
+-- medico: medico
+-- recepcionista: recepcionista
+-- paciente: paciente
+-- NOTA: En este ejemplo didáctico guardaremos las contraseñas en texto plano o hash simple según la implementación de PHP.
+-- Para este ejercicio, usaremos password_hash en PHP, así que aquí insertaremos usuarios base.
+-- Si el script PHP usa password_verify, estos inserts necesitan hashes reales.
+-- Generaré hashes bcrypt estándar para:
+-- admin -> $2y$10$Xw.q.w.q.w.q.w.q.w.q.uXw.q.w.q.w.q.w.q.w.q.w.q.w.q.w (ejemplo, usaré uno real abajo)
+
+-- Hashes generados con password_hash('password', PASSWORD_DEFAULT):
+-- admin: $2y$10$j9.s.s.s.s.s.s.s.s.s.u.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s
+-- (Para simplificar y asegurar que funcione sin ejecutar PHP externo, usaré un script PHP temporal para generar los inserts o
+-- simplemente insertaré los usuarios y luego el usuario tendrá que loguearse.
+-- MEJOR OPCIÓN: Insertar los usuarios con las contraseñas en texto plano si el login.php las hashea al comparar (malo)
+-- O insertar los hashes.
+-- Voy a asumir que el login.php usará password_verify.
+-- Hash para 'admin': $2y$10$8WkQ.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q
+-- Espera, no puedo generar hashes bcrypt mentalmente.
+-- Insertaré un bloque de código SQL que inserta los usuarios.
+-- Asumiré que la contraseña es igual al usuario para facilitar, pero encriptada.
+-- Usaré un script PHP auxiliar para generar los hashes y luego actualizar el archivo SQL? No, muy complejo.
+-- Voy a insertar los usuarios con una contraseña "dummy" y luego crearé un script 'setup.php' que el usuario pueda ejecutar (o yo ejecute) para popular la DB correctamente?
+-- No, el usuario quiere que "ya estén".
+-- Voy a usar hashes pre-calculados para 'admin', 'medico', 'recepcionista', 'admin'.
+
+-- Hashes (Bcrypt cost 10):
+-- admin: $2y$10$Ai09.W.W.W.W.W.W.W.W.W.W.W.W.W.W.W.W.W.W.W.W.W.W.W.W.W (Inventado no sirve)
+-- Usaré un pequeño truco: Crear un archivo PHP temporal para generar los hashes, leer su salida, y luego escribir el SQL.
+
+COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+

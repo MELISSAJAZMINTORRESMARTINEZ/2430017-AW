@@ -7,8 +7,7 @@
     <title>Dashboard</title>
     <link rel="icon" type="image/png" href="images/New Patients.png">
     <link rel="stylesheet" href="css/dashboard.css">
-    <link rel="stylesheet" href="css/styleP.css">
-
+    <link rel="stylesheet" href="css/styleCA.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -51,31 +50,29 @@
         <nav class="navbar navbar-expand-lg navbar-light mb-4">
             <div class="container-fluid d-flex justify-content-between align-items-center">
                 <span class="navbar-brand mb-0 h4 fw-bold text-secondary">
-                    <i class="fa-solid fa-file-invoice-dollar me-2"></i>Gestor de Tarifas
+                    <i class="fa-solid fa-book me-2"></i>Bitacora de Usuarios
                 </span>
-                <button class="btn btn-success text-white fw-semibold" data-bs-toggle="modal" style="background-color: #2c8888;" data-bs-target="#modalTarifa">
-                    <i class="fa-solid fa-plus me-2"></i>Agregar Tarifa
+                <button class="btn btn-success text-white fw-semibold" data-bs-toggle="modal" style="background-color: #2c8888;" data-bs-target="#modalBitacora">
+                    <i class="fa-solid fa-plus me-2"></i>Agregar Bitacora
                 </button>
             </div>
         </nav>
 
-        <!-- Tabla de tarifas -->
+        <!-- Tabla de pacientes -->
         <div class="card shadow-sm border-0">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="tablaTarifas" class="table table-hover align-middle text-center">
+                    <table id="tablaPacientes" class="table table-hover align-middle text-center">
                         <thead class="table-info">
                             <tr>
-                                <th>Id Tarifa</th>
-                                <th>Descripción del servicio</th>
-                                <th>Costo Base</th>
-                                <th>Especialidad</th>
-                                <th>Estatus</th>
-                                <th>Acciones</th>
+                                <th>Id Bitacora</th>
+                                <th>Id Usuario</th>
+                                <th>Fecha Acceso</th>
+                                <th>Accion Realizada</th>
+                                <th>Modulo</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Las tarifas se cargan aquí dinámicamente con JavaScript -->
                         </tbody>
                     </table>
                 </div>
@@ -84,12 +81,12 @@
     </div>
 
     <!-- Modal Bootstrap -->
-    <div class="modal fade" id="modalTarifa" tabindex="-1" aria-labelledby="modalTarifaLabel" aria-hidden="true">
+    <div class="modal fade" id="modalBitacora" tabindex="-1" aria-labelledby="modalTarifaLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg">
                 <div class="modal-header text-white" style="background-color: #2c8888;">
-                    <h5 class="modal-title" id="modalTarifaLabel">
-                        <i class="fa-solid fa-file-invoice-dollar me-2"></i>Agregar Tarifa
+                    <h5 class="modal-title" id="modalBitacoraLabel">
+                        <i class="fa-solid fa-file-invoice-dollar me-2"></i>Agregar Bitacora
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
@@ -97,7 +94,7 @@
                 <form id="formTarifas">
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="idTarifa" class="form-label">Id Tarifa</label>
+                            <label for="idBitacora" class="form-label">Id Bitacora</label>
                             <input type="number" class="form-control" id="idTarifa" name="idTarifa" required>
                         </div>
                         <div class="mb-3">
@@ -142,7 +139,8 @@
 
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/gestortarifas.js"></script>
+    <script src="js/bitacora.js"></script>
+
 </body>
 
 </html>

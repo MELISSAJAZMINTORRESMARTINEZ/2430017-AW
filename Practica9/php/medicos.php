@@ -21,7 +21,7 @@ try {
     // validamos si llega una peticion GET y si accion es "lista"
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'lista') {
         
-        // consulta sql para obtener medicos y su especialidad con LEFT JOIN
+        // consulta sql p5ara obtener medicos y su especialidad con LEFT JOIN
         $sql = "SELECT 
                     cm.IdMedico,
                     cm.NombreCompleto,

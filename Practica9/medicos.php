@@ -8,7 +8,6 @@
   <link rel="icon" type="image/png" href="images/New Patients.png">
   <link rel="stylesheet" href="css/dashboard.css">
   <link rel="stylesheet" href="css/styleP.css">
-
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -20,6 +19,7 @@
 </head>
 
 <body>
+
   <!-- Sidebar -->
   <div class="sidebar">
     <h4 class="text-center">
@@ -28,12 +28,13 @@
     </h4>
 
     <a href="dash.html"><i class="fa-solid fa-house me-2"></i>Inicio</a>
-    <a href="usuarios.html" class="active"><i class="fa-solid fa-stethoscope me-2"></i>Usuario</a>
+    <a href="usuarios.html"><i class="fa-solid fa-stethoscope me-2"></i>Usuario</a>
+
     <a href="pacientes.html"><i class="fa-solid fa-user-injured me-2"></i>Control de pacientes</a>
     <a href="controlAgenda.html"><i class="fa-solid fa-calendar-days me-2"></i>Control de agenda</a>
     <a href="medicos.html"><i class="fa-solid fa-user-doctor me-2"></i>Control de médicos</a>
     <a href="reportes.html"><i class="fa-solid fa-chart-line me-2"></i>Reportes</a>
-    <a href="expediente.html"><i class="fa-solid fa-notes-medical me-2"></i>Expediente Clínico</a>
+        <a href="expediente.html"><i class="fa-solid fa-notes-medical me-2"></i>Expediente Clínico</a>
     <a href="pagos.html"><i class="fa-solid fa-money-check-dollar me-2"></i>Pagos</a>
     <a href="tarifas.html"><i class="fa-solid fa-file-invoice-dollar me-2"></i>Gestor de tarifas</a>
     <a href="bitacora.html"><i class="fa-solid fa-book me-2"></i>Bitácoras de usuarios</a>
@@ -49,35 +50,35 @@
     <nav class="navbar navbar-expand-lg navbar-light mb-4">
       <div class="container-fluid d-flex justify-content-between align-items-center">
         <span class="navbar-brand mb-0 h4 fw-bold text-secondary">
-          <i class="fa-solid fa-user-plus me-2"></i>Control de Usuarios
+          <i class="fa-solid fa-user-doctor me-2 text-info"></i></i>Control de Medicos
         </span>
         <button class="btn btn-success text-white fw-semibold" data-bs-toggle="modal" style="background-color: #2c8888;"
-          data-bs-target="#modalUsuario">
-          <i class="fa-solid fa-user-plus me-2"></i>Agregar Usuario
+          data-bs-target="#modalMedico">
+          <i class="fa-solid fa-user-plus me-2"></i>Agregar Medico
         </button>
       </div>
     </nav>
 
-    <!-- Tabla -->
+    <!-- Tabla de pacientes -->
     <div class="card shadow-sm border-0">
       <div class="card-body">
         <div class="table-responsive">
-          <table id="tablaUsuarios" class="table table-hover align-middle text-center">
+          <table id="tablaMedicos" class="table table-hover align-middle text-center">
             <thead class="table-info">
               <tr>
-                <th>IdUsuario</th>
-                <th>Usuario</th>
-                <th>Correo</th>
-                <th>Contraseña</th>
-                <th>Rol</th>
-                <th>Médico</th>
-                <th>Activo</th>
-                <th>Último Acceso</th>
+                <th>IdMedico</th>
+                <th>Nombre Completo</th>
+                <th>Cedula Profesional</th>
+                <th>Especialidad</th>
+                <th>Teléfono</th>
+                <th>Correo Electrónico</th>
+                <th>Horario de Atencion</th>
+                <th>Fecha Ingreso</th>
+                <th>Estatus</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
-              <!-- Los usuarios se cargan aquí dinámicamente -->
             </tbody>
           </table>
         </div>
@@ -85,81 +86,97 @@
     </div>
   </div>
 
-  <!-- Modal Bootstrap -->
-  <div class="modal fade" id="modalUsuario" tabindex="-1" aria-labelledby="modalUsuarioLabel" aria-hidden="true">
+  <!-- Modal Bootstrap: Agregar Médico -->
+  <div class="modal fade" id="modalMedico" tabindex="-1" aria-labelledby="modalMedicoLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content border-0 shadow-lg">
         <div class="modal-header text-white" style="background-color: #2c8888;">
-          <h5 class="modal-title" id="modalUsuarioLabel">
-            <i class="fa-solid fa-user-plus me-2"></i>Agregar Usuario
+          <h5 class="modal-title" id="modalMedicoLabel">
+            <i class="fa-solid fa-user-md me-2"></i>Agregar Médico
           </h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
 
-        <!-- FORMULARIO DENTRO DEL MODAL (SIN ACTION) -->
-        <form id="formUsuarios">
+        <!-- FORMULARIO DENTRO DEL MODAL -->
+        <form id="formMedicos" action="php/medicos.php" method="post">
           <div class="modal-body">
             <div class="mb-3">
-              <label for="idUsuario" class="form-label">Id Usuario</label>
-              <input type="number" class="form-control" id="idUsuario" name="idUsuario" required>
+              <label for="idMedico" class="form-label">Id Médico</label>
+              <input type="number" class="form-control" id="idMedico" name="idMedico" required>
             </div>
+
             <div class="mb-3">
-              <label for="usuario" class="form-label">Usuario</label>
-              <input type="text" class="form-control" id="usuario" name="usuario" required>
+              <label for="nombreCompleto" class="form-label">Nombre Completo</label>
+              <input type="text" class="form-control" id="nombreCompleto" name="nombreCompleto" required>
             </div>
+
             <div class="mb-3">
-              <label for="correo" class="form-label">Correo</label>
+              <label for="cedulaProfesional" class="form-label">Cédula Profesional</label>
+              <input type="text" class="form-control" id="cedulaProfesional" name="cedulaProfesional" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="especialidad" class="form-label">Especialidad</label>
+              <select id="especialidad" name="especialidad" class="form-select" required>
+                <option value="">Selecciona Especialidad</option>
+                <option value="1">Cardiología</option>
+                <option value="2">Pediatría</option>
+                <option value="3">Dermatología</option>
+                <option value="4">Ginecología</option>
+                <option value="5">Medicina General</option>
+                <option value="6">Neurología</option>
+              </select>
+
+            </div>
+
+            <div class="mb-3">
+              <label for="telefono" class="form-label">Teléfono</label>
+              <input type="tel" class="form-control" id="telefono" name="telefono" pattern="[0-9]{10}"
+                placeholder="10 dígitos" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="correo" class="form-label">Correo Electrónico</label>
               <input type="email" class="form-control" id="correo" name="correo" required>
             </div>
+
             <div class="mb-3">
-              <label for="contrasena" class="form-label">Contraseña</label>
-              <input type="password" class="form-control" id="contrasena" name="contrasena" required>
-              <small class="text-muted">Mínimo 6 caracteres</small>
+              <label for="horario" class="form-label">Horario de Atención</label>
+              <input type="text" class="form-control" id="horario" name="horario"
+                placeholder="Ej. Lunes a Viernes 9:00 - 17:00" required>
             </div>
+
             <div class="mb-3">
-              <label for="rol" class="form-label">Rol</label>
-              <select id="rol" name="rol" class="form-select" required>
-                <option value="">Selecciona Rol</option>
-                <option value="Super admin">Super admin</option>
-                <option value="Medico">Médico</option>
-                <option value="Paciente">Paciente</option>
-                <option value="Secretaria">Secretaria</option>
-              </select>
+              <label for="fechaIngreso" class="form-label">Fecha de Ingreso</label>
+              <input type="date" class="form-control" id="fechaIngreso" name="fechaIngreso" required>
             </div>
+
             <div class="mb-3">
-              <label for="idMedico" class="form-label">Id Médico (opcional)</label>
-              <input type="number" class="form-control" id="idMedico" name="idMedico">
-              <small class="text-muted">Solo si el usuario es médico</small>
-            </div>
-            <div class="mb-3">
-              <label for="activo" class="form-label">Activo</label>
-              <select id="activo" name="activo" class="form-select" required>
+              <label for="estatus" class="form-label">Estatus</label>
+              <select id="estatus" name="estatus" class="form-select" required>
                 <option value="">Selecciona</option>
-                <option value="1">Sí</option>
-                <option value="0">No</option>
+                <option value="1">Activo</option>
+                <option value="0">No Activo</option>
               </select>
-            </div>
-            <div class="mb-3">
-              <label for="ultimoAcceso" class="form-label">Último acceso (opcional)</label>
-              <input type="date" class="form-control" id="ultimoAcceso" name="ultimoAcceso">
             </div>
           </div>
 
           <!-- Botones dentro del form -->
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-success">
-              <i class="fa-solid fa-save me-2"></i>Guardar
-            </button>
+            <button type="submit" class="btn btn-success">Guardar</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- JS Bootstrap -->
+
+
+
+  <!-- JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/usuarios.js"></script>
+  <script src="js/medicos.js"></script>
 </body>
 
 </html>

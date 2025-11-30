@@ -20,8 +20,8 @@
 
     <form id="registroForm">
       <div class="mb-3">
-        <label for="nombre" class="form-label">Nombre completo</label>
-        <input type="text" class="form-control" id="nombre" placeholder="Ingrese su nombre" required>
+        <label for="usuario" class="form-label">Usuario</label>
+        <input type="text" class="form-control" id="usuario" placeholder="Ingrese su nombre" required>
       </div>
 
       <div class="mb-3">

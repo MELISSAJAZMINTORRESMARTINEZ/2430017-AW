@@ -1,4 +1,4 @@
-//login.js
+// login.js
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("form");
 
@@ -8,21 +8,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
 
-    // recupera los usuarios guardados en localStorage
-    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+    // usuario por defecto
+    const adminEmail = "admin@correo.com";
+    const adminPass = "admin";
 
-//busca si hay algun usuario que coincida con el correo y la contraseña ingresados
-    const usuarioValido =
-    //ponemos por defecto un usuario 
-      usuarios.find((u) => u.email === email && u.password === password) ||
-      (email === "admin@correo.com" && password === "admin" ? {nombre: "admin", email: "admin@correo.com"} : null);
+    let usuarioValido = null;
 
-
+    // validar
+    if (email === adminEmail && password === adminPass) {
+      usuarioValido = { nombre: "admin", email: adminEmail };
+    }
 
     if (usuarioValido) {
-      // guardamos al usuario 
-      localStorage.setItem("usuarioActivo", JSON.stringify(usuarioValido));
-
       // mostrar mensaje de bienvenida con SweetAlert
       Swal.fire({
         title: "¡Inicio de sesión exitoso!",
@@ -31,12 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
         confirmButtonText: "Continuar",
         confirmButtonColor: "#3085d6",
       }).then(() => {
-        //redirigimos a dash.html
         window.location.href = "dash.html";
       });
     } else {
-      alert(" Correo o contraseña incorrectos. Intenta nuevamente.");
+      alert("Correo o contraseña incorrectos. Intenta nuevamente.");
     }
   });
 });
-

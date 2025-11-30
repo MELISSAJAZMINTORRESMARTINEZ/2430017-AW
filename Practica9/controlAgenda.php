@@ -77,7 +77,6 @@
               aria-label="Cerrar"></button>
           </div>
 
-          <!-- FORMULARIO SIN ACTION -->
           <form id="formAgenda">
             <div class="modal-body">
               <div class="mb-3">

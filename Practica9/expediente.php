@@ -80,7 +80,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Los expedientes se cargan aquí dinámicamente -->
                         </tbody>
                     </table>
                 </div>
