@@ -32,10 +32,10 @@
         </div>
 
         <div class="sidebar-links">
-            <a href="dash.html" class="active"><i class="fa-solid fa-house me-2"></i>Inicio</a>
+            <a href="dash.php" class="active"><i class="fa-solid fa-house me-2"></i>Inicio</a>
             
             <?php if (tienePermiso('usuarios')): ?>
-            <a href="usuarios.html"><i class="fa-solid fa-stethoscope me-2"></i>Usuario</a>
+            <a href="usuarios.php"><i class="fa-solid fa-stethoscope me-2"></i>Usuario</a>
             <?php endif; ?>
             
             <?php if (tienePermiso('pacientes')): ?>
@@ -43,35 +43,35 @@
             <?php endif; ?>
             
             <?php if (tienePermiso('agenda')): ?>
-            <a href="controlAgenda.html"><i class="fa-solid fa-calendar-days me-2"></i>Control de agenda</a>
+            <a href="controlAgenda.php"><i class="fa-solid fa-calendar-days me-2"></i>Control de agenda</a>
             <?php endif; ?>
             
             <?php if (tienePermiso('medicos')): ?>
-            <a href="medicos.html"><i class="fa-solid fa-user-doctor me-2"></i>Control de médicos</a>
+            <a href="medicos.php"><i class="fa-solid fa-user-doctor me-2"></i>Control de médicos</a>
             <?php endif; ?>
             
             <?php if (tienePermiso('reportes')): ?>
-            <a href="reportes.html"><i class="fa-solid fa-chart-line me-2"></i>Reportes</a>
+            <a href="reportes.php"><i class="fa-solid fa-chart-line me-2"></i>Reportes</a>
             <?php endif; ?>
             
             <?php if (tienePermiso('expedientes')): ?>
-            <a href="expediente.html"><i class="fa-solid fa-notes-medical me-2"></i>Expediente Clínico</a>
+            <a href="expediente.php"><i class="fa-solid fa-notes-medical me-2"></i>Expediente Clínico</a>
             <?php endif; ?>
             
             <?php if (tienePermiso('pagos')): ?>
-            <a href="pagos.html"><i class="fa-solid fa-money-check-dollar me-2"></i>Pagos</a>
+            <a href="pagos.php"><i class="fa-solid fa-money-check-dollar me-2"></i>Pagos</a>
             <?php endif; ?>
             
             <?php if (tienePermiso('tarifas')): ?>
-            <a href="tarifas.html"><i class="fa-solid fa-file-invoice-dollar me-2"></i>Gestor de tarifas</a>
+            <a href="tarifas.php"><i class="fa-solid fa-file-invoice-dollar me-2"></i>Gestor de tarifas</a>
             <?php endif; ?>
             
             <?php if (tienePermiso('bitacoras')): ?>
-            <a href="bitacora.html"><i class="fa-solid fa-book me-2"></i>Bitácoras de usuarios</a>
+            <a href="bitacora.php"><i class="fa-solid fa-book me-2"></i>Bitácoras de usuarios</a>
             <?php endif; ?>
             
             <?php if (tienePermiso('especialidades')): ?>
-            <a href="especialidades.html"><i class="fa-solid fa-stethoscope me-2"></i>Especialidades médicas</a>
+            <a href="especialidades.php"><i class="fa-solid fa-stethoscope me-2"></i>Especialidades médicas</a>
             <?php endif; ?>
         </div>
 
