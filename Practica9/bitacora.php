@@ -120,7 +120,7 @@
     </div>
 
     <!-- Modal Bootstrap -->
-    <div class="modal fade" id="modalBitacora" tabindex="-1" aria-labelledby="modalBitacoraLabel" aria-hidden="true">
+<div class="modal fade" id="modalBitacora" tabindex="-1" aria-labelledby="modalBitacoraLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
             <div class="modal-header text-white" style="background-color: #2c8888;">
@@ -146,19 +146,9 @@
                     </div>
                     
                     <div class="mb-3">
-                        <label for="accionRealizada" class="form-label">Acción Realizada <span class="text-danger">*</span></label>
-                        <select id="accionRealizada" name="accionRealizada" class="form-select" required>
-                            <option value="">Selecciona una acción</option>
-                            <option value="Inicio de sesión">Inicio de sesión</option>
-                            <option value="Cierre de sesión">Cierre de sesión</option>
-                            <option value="Creación de registro">Creación de registro</option>
-                            <option value="Modificación de registro">Modificación de registro</option>
-                            <option value="Eliminación de registro">Eliminación de registro</option>
-                            <option value="Consulta de información">Consulta de información</option>
-                            <option value="Exportación de datos">Exportación de datos</option>
-                            <option value="Impresión de documento">Impresión de documento</option>
-                        </select>
-                    </div>
+              <label for="accionRealizada" class="form-label">Accion Realizada</label>
+              <input type="text" class="form-control" id="accionRealizada" name="accionRealizada" required>
+            </div>
                     
                     <div class="mb-3">
                         <label for="modulo" class="form-label">Módulo <span class="text-danger">*</span></label>
@@ -190,6 +180,7 @@
         </div>
     </div>
 </div>
+
 
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
