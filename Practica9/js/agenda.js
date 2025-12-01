@@ -1,16 +1,9 @@
 // variable global del calendario
 let calendar;
 
-// Variable para almacenar el rol del usuario (se pasa desde PHP)
-let rolUsuario = '';
-
 // inicializar cuando carga la página
 document.addEventListener('DOMContentLoaded', function () {
 
-    // Obtener el rol del usuario desde el atributo data del body o de una variable global
-    const bodyElement = document.querySelector('body');
-    rolUsuario = bodyElement.getAttribute('data-rol') || 'invitado';
-    
     // configurar el calendario
     const calendarEl = document.getElementById('calendar');
 
@@ -53,9 +46,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // click en un evento para ver detalles
         eventClick: function(info) {
-            // Determinar qué botones mostrar según el rol
-            const esPaciente = rolUsuario.toLowerCase() === 'paciente';
-            
             Swal.fire({
                 title: info.event.title,
                 html: `
@@ -66,14 +56,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     <p><strong>Fecha:</strong> ${info.event.start.toLocaleDateString('es-MX')}</p>
                 `,
                 showCancelButton: true,
-                showDenyButton: !esPaciente, // Pacientes no pueden eliminar
+                showDenyButton: true,
                 confirmButtonText: 'Editar',
                 denyButtonText: 'Eliminar',
                 cancelButtonText: 'Cerrar'
             }).then((result) => {
                 if (result.isConfirmed) {
                     editarCita(info.event.id);
-                } else if (result.isDenied && !esPaciente) {
+                } else if (result.isDenied) {
                     eliminarCita(info.event.id, info.event.extendedProps.paciente);
                 }
             });
@@ -99,14 +89,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Si es paciente, ocultar el campo IdPaciente y deshabilitarlo
-    const esPaciente = rolUsuario.toLowerCase() === 'paciente';
-    if (esPaciente) {
-        const idPacienteDiv = document.getElementById('idPaciente').closest('.mb-3');
-        if (idPacienteDiv) {
-            idPacienteDiv.style.display = 'none';
-        }
-    }
 
     // establecer fecha mínima de hoy
     const hoy = new Date().toISOString().split('T')[0];
@@ -124,9 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const inputEditar = document.querySelector('input[name="idCitaEditar"]');
         if (inputEditar) inputEditar.remove();
         
-        if (!esPaciente) {
-            document.getElementById('idCita').disabled = false;
-        }
+        document.getElementById('idCita').disabled = false;
         document.getElementById('fechaCita').value = hoy;
     });
 });
@@ -134,26 +114,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // validar formulario
 function validarFormulario() {
-    const esPaciente = rolUsuario.toLowerCase() === 'paciente';
     const idPaciente = document.getElementById('idPaciente').value;
     const idMedico = document.getElementById('idMedico').value;
     const fechaCita = document.getElementById('fechaCita').value;
     
-    // Si no es paciente, validar que tenga paciente
-    if (!esPaciente && !idPaciente) {
+    if (!idPaciente || !idMedico) {
         Swal.fire({
             icon: 'warning',
             title: 'campos requeridos',
-            text: 'debe ingresar un paciente válido'
-        });
-        return false;
-    }
-    
-    if (!idMedico) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'campos requeridos',
-            text: 'debe ingresar un médico válido'
+            text: 'debe ingresar un paciente y un médico válidos'
         });
         return false;
     }
@@ -244,8 +213,6 @@ function cargarProximasCitas() {
         .then(response => response.json())
         .then(data => {
             const lista = document.getElementById('upcomingList');
-            if (!lista) return; // Si no existe el elemento, salir
-            
             lista.innerHTML = "";
 
             // filtrar solo citas futuras y programadas
@@ -317,43 +284,21 @@ function guardarCita(formData) {
 
 // editar cita
 function editarCita(id) {
-    const esPaciente = rolUsuario.toLowerCase() === 'paciente';
-    
     fetch(`php/agenda.php?accion=obtener&id=${id}`)
         .then(response => response.json())
         .then(cita => {
-            if (cita.error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: cita.error
-                });
-                return;
-            }
-            
             document.getElementById('modalAgendaLabel').innerHTML =
                 '<i class="fa-solid fa-edit me-2"></i>editar cita';
 
-            if (!esPaciente) {
-                document.getElementById('idCita').value = cita.IdCita;
-                document.getElementById('idCita').disabled = true;
-            }
-            
+            document.getElementById('idCita').value = cita.IdCita;
+            document.getElementById('idCita').disabled = true;
             document.getElementById('idPaciente').value = cita.IdPaciente;
             document.getElementById('idMedico').value = cita.IdMedico;
             document.getElementById('fechaCita').value = cita.FechaCita;
             document.getElementById('motivoConsulta').value = cita.MotivoConsulta || '';
             document.getElementById('estatus').value = cita.EstadoCita;
             document.getElementById('observaciones').value = cita.Observaciones || '';
-            
-            if (document.getElementById('fechaRegistro')) {
-                document.getElementById('fechaRegistro').value = cita.FechaRegistro || '';
-            }
-
-            // Si es paciente, deshabilitar el campo de paciente
-            if (esPaciente) {
-                document.getElementById('idPaciente').disabled = true;
-            }
+            document.getElementById('fechaRegistro').value = cita.FechaRegistro || '';
 
             let inputEditar = document.querySelector('input[name="idCitaEditar"]');
             if (!inputEditar) {
@@ -372,17 +317,6 @@ function editarCita(id) {
 
 // eliminar cita
 function eliminarCita(id, paciente) {
-    const esPaciente = rolUsuario.toLowerCase() === 'paciente';
-    
-    if (esPaciente) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Acción no permitida',
-            text: 'Los pacientes no pueden eliminar citas. Contacte con la recepción para cancelar.'
-        });
-        return;
-    }
-    
     Swal.fire({
         title: 'estas seguro?',
         text: `se eliminara la cita del paciente: ${paciente}`,

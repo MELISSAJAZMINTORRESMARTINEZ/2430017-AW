@@ -24,7 +24,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 </head>
 
-<body data-rol="<?php echo htmlspecialchars(strtolower($rolUsuario)); ?>">
+<body>
+
  <!-- Sidebar -->
     <div class="sidebar">
         <h4 class="text-center">
@@ -59,7 +60,7 @@
             
             <?php if (tienePermiso('reportes')): ?>
             <a href="reportes.php"><i class="fa-solid fa-chart-line me-2"></i>Reportes</a>
-            <?php endif; ?>
+            <?php endif; ?>a
             
             <?php if (tienePermiso('expedientes')): ?>
             <a href="expediente.php"><i class="fa-solid fa-notes-medical me-2"></i>Expediente Clínico</a>

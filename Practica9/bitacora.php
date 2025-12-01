@@ -163,7 +163,6 @@
                                 <option value="Reportes">Reportes</option>
                                 <option value="Bitácoras">Bitácoras</option>
                                 <option value="Especialidades">Especialidades</option>
-                                <option value="Sistema">Sistema</option>
                             </select>
                         </div>
                     </div>

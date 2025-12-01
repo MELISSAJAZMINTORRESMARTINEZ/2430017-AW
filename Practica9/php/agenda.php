@@ -27,7 +27,6 @@ try {
         // Verificar el rol del usuario desde la sesión
         $rolUsuario = isset($_SESSION['rol']) ? strtolower($_SESSION['rol']) : '';
         $idMedicoSesion = isset($_SESSION['id_medico']) ? $_SESSION['id_medico'] : null;
-        $idPacienteSesion = isset($_SESSION['id_paciente']) ? $_SESSION['id_paciente'] : null;
         
         // Base de la consulta
         $sql = "SELECT 
@@ -45,37 +44,21 @@ try {
                 LEFT JOIN controlpacientes p ON a.IdPaciente = p.IdPaciente
                 LEFT JOIN controlmedicos m ON a.IdMedico = m.IdMedico";
         
-        $whereConditions = array();
-        $params = array();
-        
         // Si el usuario es médico, filtrar solo sus citas
         if ($rolUsuario === 'medico' && $idMedicoSesion) {
-            $whereConditions[] = "a.IdMedico = :idMedico";
-            $params[':idMedico'] = $idMedicoSesion;
-        }
-        
-        // Si el usuario es paciente, filtrar solo sus citas
-        if ($rolUsuario === 'paciente' && $idPacienteSesion) {
-            $whereConditions[] = "a.IdPaciente = :idPaciente";
-            $params[':idPaciente'] = $idPacienteSesion;
-        }
-        
-        // Agregar WHERE si hay condiciones
-        if (!empty($whereConditions)) {
-            $sql .= " WHERE " . implode(' AND ', $whereConditions);
+            $sql .= " WHERE a.IdMedico = :idMedico";
         }
         
         $sql .= " ORDER BY a.FechaCita DESC";
         
         // ejecuto la consulta
-        $stmt = $pdo->prepare($sql);
-        
-        // Vincular parámetros si existen
-        foreach ($params as $key => $value) {
-            $stmt->bindValue($key, $value, PDO::PARAM_INT);
+        if ($rolUsuario === 'medico' && $idMedicoSesion) {
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':idMedico', $idMedicoSesion, PDO::PARAM_INT);
+            $stmt->execute();
+        } else {
+            $stmt = $pdo->query($sql);
         }
-        
-        $stmt->execute();
 
         // aqui saco todos los resultados
         $citas = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -95,34 +78,23 @@ try {
         // Verificar el rol del usuario
         $rolUsuario = isset($_SESSION['rol']) ? strtolower($_SESSION['rol']) : '';
         $idMedicoSesion = isset($_SESSION['id_medico']) ? $_SESSION['id_medico'] : null;
-        $idPacienteSesion = isset($_SESSION['id_paciente']) ? $_SESSION['id_paciente'] : null;
         
         // consulta con parametro
         $sql = "SELECT a.* FROM controlagenda a WHERE a.IdCita = :id";
         
-        $whereConditions = array("a.IdCita = :id");
-        $params = array(':id' => $_GET['id']);
-        
         // Si es médico, verificar que la cita sea suya
         if ($rolUsuario === 'medico' && $idMedicoSesion) {
-            $whereConditions[] = "a.IdMedico = :idMedico";
-            $params[':idMedico'] = $idMedicoSesion;
+            $sql .= " AND a.IdMedico = :idMedico";
         }
-        
-        // Si es paciente, verificar que la cita sea suya
-        if ($rolUsuario === 'paciente' && $idPacienteSesion) {
-            $whereConditions[] = "a.IdPaciente = :idPaciente";
-            $params[':idPaciente'] = $idPacienteSesion;
-        }
-        
-        $sql = "SELECT a.* FROM controlagenda a WHERE " . implode(' AND ', $whereConditions);
 
         // preparo la consulta
         $stmt = $pdo->prepare($sql);
 
-        // vinculo los parámetros
-        foreach ($params as $key => $value) {
-            $stmt->bindValue($key, $value);
+        // vinculo el id que paso por GET
+        $stmt->bindParam(':id', $_GET['id']);
+        
+        if ($rolUsuario === 'medico' && $idMedicoSesion) {
+            $stmt->bindParam(':idMedico', $idMedicoSesion, PDO::PARAM_INT);
         }
 
         // la ejecuto
@@ -175,19 +147,6 @@ try {
     // aqui registro una nueva cita (POST sin idCitaEditar)
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['idCitaEditar'])) {
         
-        $rolUsuario = isset($_SESSION['rol']) ? strtolower($_SESSION['rol']) : '';
-        $idPacienteSesion = isset($_SESSION['id_paciente']) ? $_SESSION['id_paciente'] : null;
-        
-        // Si es paciente, solo puede crear citas para sí mismo
-        if ($rolUsuario === 'paciente') {
-            if (!$idPacienteSesion) {
-                echo "Error: No se pudo identificar tu cuenta de paciente";
-                exit;
-            }
-            // Forzar que el IdPaciente sea el del usuario logueado
-            $_POST['idPaciente'] = $idPacienteSesion;
-        }
-        
         // valido que paciente y medico no vengan vacios
         if (empty($_POST['idPaciente']) || empty($_POST['idMedico'])) {
             echo "Error: Paciente y Medico son obligatorios";
@@ -233,7 +192,6 @@ try {
         // Verificar el rol del usuario
         $rolUsuario = isset($_SESSION['rol']) ? strtolower($_SESSION['rol']) : '';
         $idMedicoSesion = isset($_SESSION['id_medico']) ? $_SESSION['id_medico'] : null;
-        $idPacienteSesion = isset($_SESSION['id_paciente']) ? $_SESSION['id_paciente'] : null;
         
         // validaciones basicas
         if (empty($_POST['idPaciente']) || empty($_POST['idMedico'])) {
@@ -248,6 +206,7 @@ try {
 
         // Si es médico, verificar que solo pueda editar sus propias citas
         if ($rolUsuario === 'medico' && $idMedicoSesion) {
+            // Verificar que la cita pertenezca al médico
             $sqlVerificar = "SELECT IdCita FROM controlagenda WHERE IdCita = :idCita AND IdMedico = :idMedico";
             $stmtVerificar = $pdo->prepare($sqlVerificar);
             $stmtVerificar->bindParam(':idCita', $_POST['idCitaEditar']);
@@ -258,23 +217,6 @@ try {
                 echo "Error: No tienes permisos para editar esta cita";
                 exit;
             }
-        }
-        
-        // Si es paciente, verificar que solo pueda editar sus propias citas
-        if ($rolUsuario === 'paciente' && $idPacienteSesion) {
-            $sqlVerificar = "SELECT IdCita FROM controlagenda WHERE IdCita = :idCita AND IdPaciente = :idPaciente";
-            $stmtVerificar = $pdo->prepare($sqlVerificar);
-            $stmtVerificar->bindParam(':idCita', $_POST['idCitaEditar']);
-            $stmtVerificar->bindParam(':idPaciente', $idPacienteSesion, PDO::PARAM_INT);
-            $stmtVerificar->execute();
-            
-            if (!$stmtVerificar->fetch()) {
-                echo "Error: No tienes permisos para editar esta cita";
-                exit;
-            }
-            
-            // Paciente no puede cambiar su propio ID
-            $_POST['idPaciente'] = $idPacienteSesion;
         }
 
         // aqui armo el update
@@ -314,10 +256,10 @@ try {
         // Verificar el rol del usuario
         $rolUsuario = isset($_SESSION['rol']) ? strtolower($_SESSION['rol']) : '';
         $idMedicoSesion = isset($_SESSION['id_medico']) ? $_SESSION['id_medico'] : null;
-        $idPacienteSesion = isset($_SESSION['id_paciente']) ? $_SESSION['id_paciente'] : null;
         
         // Si es médico, verificar que solo pueda eliminar sus propias citas
         if ($rolUsuario === 'medico' && $idMedicoSesion) {
+            // Verificar que la cita pertenezca al médico
             $sqlVerificar = "SELECT IdCita FROM controlagenda WHERE IdCita = :id AND IdMedico = :idMedico";
             $stmtVerificar = $pdo->prepare($sqlVerificar);
             $stmtVerificar->bindParam(':id', $_GET['id']);
@@ -328,12 +270,6 @@ try {
                 echo "Error: No tienes permisos para eliminar esta cita";
                 exit;
             }
-        }
-        
-        // Si es paciente, NO PUEDE eliminar citas (solo cancelar cambiando estado)
-        if ($rolUsuario === 'paciente') {
-            echo "Error: Los pacientes no pueden eliminar citas. Contacte con la recepción para cancelar.";
-            exit;
         }
         
         // consulta para borrar
