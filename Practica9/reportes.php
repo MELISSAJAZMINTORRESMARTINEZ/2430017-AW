@@ -20,6 +20,9 @@
 
     <!-- jsPDF para generar PDFs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <!-- jsPDF autoTable para tablas en PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 
     <!-- SheetJS para generar Excel -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -233,6 +236,24 @@
 
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Verificar que las librerías estén cargadas
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Verificando librerías...');
+            console.log('jsPDF disponible:', typeof window.jspdf !== 'undefined');
+            console.log('XLSX disponible:', typeof XLSX !== 'undefined');
+            
+            if (typeof window.jspdf === 'undefined') {
+                console.error('jsPDF NO está cargado. Verifica la conexión a internet o el CDN.');
+            }
+            
+            if (typeof XLSX === 'undefined') {
+                console.error('XLSX NO está cargado. Verifica la conexión a internet o el CDN.');
+            }
+        });
+    </script>
+    
     <script src="js/reportes.js"></script>
 
     <script>

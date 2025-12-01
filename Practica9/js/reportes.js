@@ -141,71 +141,115 @@ function generarPDF(filtros) {
                 return;
             }
 
-            // Importar jsPDF desde CDN
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-
-            // Título
-            doc.setFontSize(18);
-            doc.text('Reporte de Pagos', 105, 15, { align: 'center' });
-            
-            doc.setFontSize(10);
-            doc.text(`Fecha de generación: ${new Date().toLocaleDateString('es-MX')}`, 105, 22, { align: 'center' });
-
-            // Calcular totales
-            const totalMonto = data.reduce((sum, p) => sum + parseFloat(p.Monto), 0);
-
-            doc.setFontSize(12);
-            doc.text(`Total de pagos: ${data.length}`, 14, 35);
-            doc.text(`Monto total: $${totalMonto.toFixed(2)}`, 14, 42);
-
-            // Preparar datos para la tabla
-            let y = 50;
-            doc.setFontSize(9);
-
-            // Encabezados
-            doc.setFont(undefined, 'bold');
-            doc.text('ID', 14, y);
-            doc.text('Paciente', 30, y);
-            doc.text('Fecha', 90, y);
-            doc.text('Método', 120, y);
-            doc.text('Monto', 155, y);
-            doc.text('Médico', 180, y);
-            
-            y += 7;
-            doc.setFont(undefined, 'normal');
-
-            // Datos
-            data.forEach((pago, index) => {
-                if (y > 270) {
-                    doc.addPage();
-                    y = 20;
+            try {
+                // Verificar que jsPDF esté disponible
+                if (typeof window.jspdf === 'undefined') {
+                    throw new Error('jsPDF no está cargado');
                 }
 
-                doc.text(pago.IdPago.toString(), 14, y);
-                doc.text((pago.NombrePaciente || 'N/A').substring(0, 25), 30, y);
-                doc.text(pago.FechaPago, 90, y);
-                doc.text(pago.MetodoPago, 120, y);
-                doc.text(`$${parseFloat(pago.Monto).toFixed(2)}`, 155, y);
-                doc.text((pago.NombreMedico || 'N/A').substring(0, 15), 180, y);
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
 
-                y += 7;
-            });
+                // Título
+                doc.setFontSize(18);
+                doc.text('Reporte de Pagos', 105, 15, { align: 'center' });
+                
+                doc.setFontSize(10);
+                doc.text(`Fecha de generación: ${new Date().toLocaleDateString('es-MX')}`, 105, 22, { align: 'center' });
 
-            // Guardar PDF
-            const nombreArchivo = `reporte_pagos_${new Date().getTime()}.pdf`;
-            doc.save(nombreArchivo);
+                // Calcular totales
+                const totalMonto = data.reduce((sum, p) => sum + parseFloat(p.Monto), 0);
 
-            Swal.fire({
-                icon: 'success',
-                title: 'PDF Generado',
-                text: 'El reporte se ha descargado correctamente',
-                timer: 2000
-            });
+                doc.setFontSize(11);
+                doc.text(`Total de pagos: ${data.length}`, 14, 35);
+                doc.text(`Monto total: ${totalMonto.toFixed(2)}`, 14, 42);
+
+                // Preparar datos para autoTable
+                const tableData = data.map(pago => [
+                    pago.IdPago,
+                    (pago.NombrePaciente || 'N/A').substring(0, 25),
+                    pago.FechaPago,
+                    pago.MetodoPago,
+                    `${parseFloat(pago.Monto).toFixed(2)}`,
+                    (pago.NombreMedico || 'N/A').substring(0, 20)
+                ]);
+
+                // Crear tabla con autoTable si está disponible
+                if (typeof doc.autoTable === 'function') {
+                    doc.autoTable({
+                        startY: 50,
+                        head: [['ID', 'Paciente', 'Fecha', 'Método', 'Monto', 'Médico']],
+                        body: tableData,
+                        theme: 'striped',
+                        headStyles: { fillColor: [44, 136, 136] },
+                        styles: { fontSize: 9 },
+                        columnStyles: {
+                            0: { cellWidth: 15 },
+                            1: { cellWidth: 45 },
+                            2: { cellWidth: 25 },
+                            3: { cellWidth: 30 },
+                            4: { cellWidth: 25 },
+                            5: { cellWidth: 40 }
+                        }
+                    });
+                } else {
+                    // Fallback sin autoTable
+                    let y = 50;
+                    doc.setFontSize(9);
+
+                    // Encabezados
+                    doc.setFont(undefined, 'bold');
+                    doc.text('ID', 14, y);
+                    doc.text('Paciente', 30, y);
+                    doc.text('Fecha', 90, y);
+                    doc.text('Método', 120, y);
+                    doc.text('Monto', 155, y);
+                    doc.text('Médico', 180, y);
+                    
+                    y += 7;
+                    doc.setFont(undefined, 'normal');
+
+                    // Datos
+                    data.forEach((pago) => {
+                        if (y > 270) {
+                            doc.addPage();
+                            y = 20;
+                        }
+
+                        doc.text(pago.IdPago.toString(), 14, y);
+                        doc.text((pago.NombrePaciente || 'N/A').substring(0, 25), 30, y);
+                        doc.text(pago.FechaPago, 90, y);
+                        doc.text(pago.MetodoPago, 120, y);
+                        doc.text(`${parseFloat(pago.Monto).toFixed(2)}`, 155, y);
+                        doc.text((pago.NombreMedico || 'N/A').substring(0, 15), 180, y);
+
+                        y += 7;
+                    });
+                }
+
+                // Guardar PDF
+                const nombreArchivo = `reporte_pagos_${new Date().getTime()}.pdf`;
+                doc.save(nombreArchivo);
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'PDF Generado',
+                    text: 'El reporte se ha descargado correctamente',
+                    timer: 2000
+                });
+
+            } catch (error) {
+                console.error('Error generando PDF:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al generar PDF',
+                    text: error.message || 'No se pudo generar el PDF. Verifica la consola para más detalles.'
+                });
+            }
         })
         .catch(error => {
-            console.error('Error:', error);
-            Swal.fire('Error', 'No se pudo generar el PDF', 'error');
+            console.error('Error obteniendo datos:', error);
+            Swal.fire('Error', 'No se pudieron obtener los datos para el reporte', 'error');
         });
 }
 
@@ -260,69 +304,84 @@ function generarExcel(filtros) {
                 return;
             }
 
-            // Preparar datos para Excel
-            const datosExcel = data.map(pago => ({
-                'ID Pago': pago.IdPago,
-                'Paciente': pago.NombrePaciente || 'N/A',
-                'Teléfono': pago.TelefonoPaciente || 'N/A',
-                'Correo': pago.CorreoPaciente || 'N/A',
-                'Médico': pago.NombreMedico || 'N/A',
-                'Especialidad': pago.NombreEspecialidad || 'N/A',
-                'Fecha Cita': pago.FechaCita || 'N/A',
-                'Motivo': pago.MotivoConsulta || 'N/A',
-                'Monto': parseFloat(pago.Monto).toFixed(2),
-                'Método de Pago': pago.MetodoPago,
-                'Fecha de Pago': pago.FechaPago,
-                'Referencia': pago.Referencia || 'N/A',
-                'Estatus': pago.EstatusPago
-            }));
+            try {
+                // Verificar que XLSX esté disponible
+                if (typeof XLSX === 'undefined') {
+                    throw new Error('SheetJS (XLSX) no está cargado');
+                }
 
-            // Calcular totales
-            const totalMonto = data.reduce((sum, p) => sum + parseFloat(p.Monto), 0);
+                // Preparar datos para Excel
+                const datosExcel = data.map(pago => ({
+                    'ID Pago': pago.IdPago,
+                    'Paciente': pago.NombrePaciente || 'N/A',
+                    'Teléfono': pago.TelefonoPaciente || 'N/A',
+                    'Correo': pago.CorreoPaciente || 'N/A',
+                    'Médico': pago.NombreMedico || 'N/A',
+                    'Especialidad': pago.NombreEspecialidad || 'N/A',
+                    'Fecha Cita': pago.FechaCita || 'N/A',
+                    'Motivo': pago.MotivoConsulta || 'N/A',
+                    'Monto': parseFloat(pago.Monto).toFixed(2),
+                    'Método de Pago': pago.MetodoPago,
+                    'Fecha de Pago': pago.FechaPago,
+                    'Referencia': pago.Referencia || 'N/A',
+                    'Estatus': pago.EstatusPago
+                }));
 
-            // Agregar fila de totales
-            datosExcel.push({
-                'ID Pago': '',
-                'Paciente': '',
-                'Teléfono': '',
-                'Correo': '',
-                'Médico': '',
-                'Especialidad': '',
-                'Fecha Cita': '',
-                'Motivo': 'TOTAL',
-                'Monto': totalMonto.toFixed(2),
-                'Método de Pago': '',
-                'Fecha de Pago': '',
-                'Referencia': '',
-                'Estatus': ''
-            });
+                // Calcular totales
+                const totalMonto = data.reduce((sum, p) => sum + parseFloat(p.Monto), 0);
 
-            // Crear libro de Excel
-            const ws = XLSX.utils.json_to_sheet(datosExcel);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Pagos");
+                // Agregar fila de totales
+                datosExcel.push({
+                    'ID Pago': '',
+                    'Paciente': '',
+                    'Teléfono': '',
+                    'Correo': '',
+                    'Médico': '',
+                    'Especialidad': '',
+                    'Fecha Cita': '',
+                    'Motivo': 'TOTAL',
+                    'Monto': totalMonto.toFixed(2),
+                    'Método de Pago': '',
+                    'Fecha de Pago': '',
+                    'Referencia': '',
+                    'Estatus': ''
+                });
 
-            // Ajustar ancho de columnas
-            const colWidths = [
-                { wch: 10 }, { wch: 30 }, { wch: 15 }, { wch: 25 },
-                { wch: 25 }, { wch: 20 }, { wch: 12 }, { wch: 30 },
-                { wch: 12 }, { wch: 15 }, { wch: 12 }, { wch: 15 }, { wch: 12 }
-            ];
-            ws['!cols'] = colWidths;
+                // Crear libro de Excel
+                const ws = XLSX.utils.json_to_sheet(datosExcel);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Pagos");
 
-            // Descargar archivo
-            const nombreArchivo = `reporte_pagos_${new Date().getTime()}.xlsx`;
-            XLSX.writeFile(wb, nombreArchivo);
+                // Ajustar ancho de columnas
+                const colWidths = [
+                    { wch: 10 }, { wch: 30 }, { wch: 15 }, { wch: 25 },
+                    { wch: 25 }, { wch: 20 }, { wch: 12 }, { wch: 30 },
+                    { wch: 12 }, { wch: 15 }, { wch: 12 }, { wch: 15 }, { wch: 12 }
+                ];
+                ws['!cols'] = colWidths;
 
-            Swal.fire({
-                icon: 'success',
-                title: 'Excel Generado',
-                text: 'El reporte se ha descargado correctamente',
-                timer: 2000
-            });
+                // Descargar archivo
+                const nombreArchivo = `reporte_pagos_${new Date().getTime()}.xlsx`;
+                XLSX.writeFile(wb, nombreArchivo);
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Excel Generado',
+                    text: 'El reporte se ha descargado correctamente',
+                    timer: 2000
+                });
+
+            } catch (error) {
+                console.error('Error generando Excel:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al generar Excel',
+                    text: error.message || 'No se pudo generar el archivo Excel. Verifica la consola para más detalles.'
+                });
+            }
         })
         .catch(error => {
-            console.error('Error:', error);
-            Swal.fire('Error', 'No se pudo generar el Excel', 'error');
+            console.error('Error obteniendo datos:', error);
+            Swal.fire('Error', 'No se pudieron obtener los datos para el reporte', 'error');
         });
 }
