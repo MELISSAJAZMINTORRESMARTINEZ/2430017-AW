@@ -120,35 +120,43 @@
     </div>
 
     <!-- Modal Bootstrap -->
-    <div class="modal fade" id="modalBitacora" tabindex="-1" aria-labelledby="modalTarifaLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow-lg">
-                <div class="modal-header text-white" style="background-color: #2c8888;">
-                    <h5 class="modal-title" id="modalBitacoraLabel">
-                        <i class="fa-solid fa-file-invoice-dollar me-2"></i>Agregar Bitacora
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
+    <div class="modal fade" id="modalBitacora" tabindex="-1" aria-labelledby="modalBitacoraLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header text-white" style="background-color: #2c8888;">
+                <h5 class="modal-title" id="modalBitacoraLabel">
+                    <i class="fa-solid fa-book me-2"></i>Agregar Bitácora
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
 
-                <form id="formBitacora">
-                        <div class="mb-3">
-                            <label for="idUsuario" class="form-label">Id Usuario</label>
-                            <input type="text" class="form-control" id="idUsuario" name="idUsuario" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="fechaAcceso" class="form-label">Fecha Acceso</label>
-                            <input type="date" class="form-control" id="fechaAcceso" name="fechaAcceso" required>
-                        </div>
-                         <div class="mb-3">
+            <form id="formBitacora">
+                <div class="modal-body">
+                    <!-- Se eliminó el campo IdBitacora ya que es autoincremental -->
+                    
+                    <div class="mb-3">
+                        <label for="idUsuario" class="form-label">ID Usuario <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="idUsuario" name="idUsuario" required>
+                        <small class="text-muted">Ingrese el ID del usuario que realizó la acción</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="fechaAcceso" class="form-label">Fecha y Hora de Acceso <span class="text-danger">*</span></label>
+                        <input type="datetime-local" class="form-control" id="fechaAcceso" name="fechaAcceso" required>
+                    </div>
+                    
+                    <div class="mb-3">
                         <label for="accionRealizada" class="form-label">Acción Realizada <span class="text-danger">*</span></label>
                         <select id="accionRealizada" name="accionRealizada" class="form-select" required>
                             <option value="">Selecciona una acción</option>
                             <option value="Inicio de sesión">Inicio de sesión</option>
                             <option value="Cierre de sesión">Cierre de sesión</option>
-                            <option value="Creación de registro">Creación de registros</option>
-                            <option value="Modificación de registro">Modificación de registros</option>
-                            <option value="Eliminación de registro">Eliminación de registros</option>
+                            <option value="Creación de registro">Creación de registro</option>
+                            <option value="Modificación de registro">Modificación de registro</option>
+                            <option value="Eliminación de registro">Eliminación de registro</option>
+                            <option value="Consulta de información">Consulta de información</option>
                             <option value="Exportación de datos">Exportación de datos</option>
+                            <option value="Impresión de documento">Impresión de documento</option>
                         </select>
                     </div>
                     
@@ -166,22 +174,22 @@
                             <option value="Reportes">Reportes</option>
                             <option value="Bitácoras">Bitácoras</option>
                             <option value="Especialidades">Especialidades</option>
+                            <option value="Sistema">Sistema</option>
                         </select>
                     </div>
-                    <div class="mb-3">
-                            <label for="acciones" class="form-label">Acciones</label>
-                            <input type="text" class="form-control" id="acciones" name="acciones" required>             
-                    </div>
+                </div>
 
-                    <!-- Botones dentro del form -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-success">Guardar</button>
-                    </div>
-                </form>
-            </div>
+                <!-- Botones dentro del form -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa-solid fa-save me-2"></i>Guardar
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
