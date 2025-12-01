@@ -110,36 +110,6 @@
             </div>
         </nav>
 
-        <!-- Tarjetas de resumen -->
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body text-center">
-                        <i class="fa-solid fa-file-invoice-dollar fa-3x text-success mb-3"></i>
-                        <h3 class="fw-bold" id="totalPagos">0</h3>
-                        <p class="text-muted">Total de Pagos</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body text-center">
-                        <i class="fa-solid fa-dollar-sign fa-3x text-info mb-3"></i>
-                        <h3 class="fw-bold" id="montoTotal">$0.00</h3>
-                        <p class="text-muted">Monto Total</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body text-center">
-                        <i class="fa-solid fa-calendar-check fa-3x text-warning mb-3"></i>
-                        <h3 class="fw-bold" id="pagosMes">0</h3>
-                        <p class="text-muted">Pagos Este Mes</p>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- Tabla de reportes -->
         <div class="card shadow-sm border-0">
