@@ -139,13 +139,34 @@
                             <label for="fechaAcceso" class="form-label">Fecha Acceso</label>
                             <input type="date" class="form-control" id="fechaAcceso" name="fechaAcceso" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="accionRealizada" class="form-label">Accion Realizada</label>
-                            <input type="text" class="form-control" id="accionRealizada" name="accionRealizada" required>
-                        </div>  
-                        <div class="mb-3">
-                            <label for="modulo" class="form-label">Modulo</label>
-                            <input type="text" class="form-control" id="modulo" name="modulo" required>             
+                         <div class="mb-3">
+                        <label for="accionRealizada" class="form-label">Acción Realizada <span class="text-danger">*</span></label>
+                        <select id="accionRealizada" name="accionRealizada" class="form-select" required>
+                            <option value="">Selecciona una acción</option>
+                            <option value="Inicio de sesión">Inicio de sesión</option>
+                            <option value="Cierre de sesión">Cierre de sesión</option>
+                            <option value="Creación de registro">Creación de registros</option>
+                            <option value="Modificación de registro">Modificación de registros</option>
+                            <option value="Eliminación de registro">Eliminación de registros</option>
+                            <option value="Exportación de datos">Exportación de datos</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="modulo" class="form-label">Módulo <span class="text-danger">*</span></label>
+                        <select id="modulo" name="modulo" class="form-select" required>
+                            <option value="">Selecciona un módulo</option>
+                            <option value="Usuarios">Usuarios</option>
+                            <option value="Pacientes">Pacientes</option>
+                            <option value="Agenda">Agenda</option>
+                            <option value="Médicos">Médicos</option>
+                            <option value="Expedientes">Expedientes</option>
+                            <option value="Pagos">Pagos</option>
+                            <option value="Tarifas">Tarifas</option>
+                            <option value="Reportes">Reportes</option>
+                            <option value="Bitácoras">Bitácoras</option>
+                            <option value="Especialidades">Especialidades</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                             <label for="acciones" class="form-label">Acciones</label>
