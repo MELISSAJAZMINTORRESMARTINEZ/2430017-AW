@@ -118,6 +118,7 @@
                                 <th>Ruta Archivo</th>
                                 <th>Descripcion</th>
                                 <th>Generado por:</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -149,10 +150,8 @@
             <div class="mb-3">
               <label for="tipoReporte" class="form-label">Tipo de Reporte</label>
               <select id="tipoReporte" name="tipoReporte" class="form-select" required>
-                <option value="">Selecciona Pago</option>
-                <option value="Diagnostico">Diagnóstico</option>
-                <option value="Tratamiento">Tratamiento</option>
-                <option value="Seguimiento">Seguimiento</option>
+                <option value="">Selecciona</option>
+                <option value="Pagos">Pagos</option>
               </select>
             </div>
             <div class="mb-3">
