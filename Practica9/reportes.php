@@ -98,7 +98,7 @@
                         <i class="fa-solid fa-file-excel me-2"></i>Generar Excel
                     </button>
                 <button class="btn btn-success text-white fw-semibold" data-bs-toggle="modal" style="background-color: #2c8888;" data-bs-target="#modalReportes">
-                    <i class="fa-solid fa-plus me-2"></i>Agregar Pago
+                    <i class="fa-solid fa-plus me-2"></i>Agregar Reporte
                 </button>
             </div>
         </nav>
