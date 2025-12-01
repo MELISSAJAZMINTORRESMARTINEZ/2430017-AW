@@ -1,54 +1,46 @@
 document.addEventListener("DOMContentLoaded", function () { 
-    // espero a que la página termine de cargar antes de ejecutar algo
     
-    cargarTarifas(); // cargo la tabla de tarifas al iniciar
+    cargarTarifas(); 
 
-    const form = document.querySelector("#formTarifas"); // obtengo el formulario
+    const form = document.querySelector("#formTarifas");
     form.addEventListener("submit", function (e) { 
-        e.preventDefault(); // evito que la página se recargue
-        guardarTarifa(new FormData(form)); // envío los datos al PHP
+        e.preventDefault();
+        guardarTarifa(new FormData(form));
     });
 
-    // cuando se cierra el modal, limpio todo
     document.getElementById('modalTarifa').addEventListener('hidden.bs.modal', function () {
-        document.querySelector("#formTarifas").reset(); // limpiar formulario
+        document.querySelector("#formTarifas").reset();
         document.getElementById('modalTarifaLabel').innerHTML = 
             '<i class="fa-solid fa-file-invoice-dollar me-2"></i>agregar tarifa'; 
         
-        // si había un input oculto de edición, lo elimino
         const inputEditar = document.querySelector('input[name="idTarifaEditar"]');
         if (inputEditar) inputEditar.remove();
         
-        document.getElementById('idTarifa').disabled = false; // vuelvo a activar el campo ID
+        document.getElementById('idTarifa').disabled = false;
     });
 });
 
 
 // carga todas las tarifas en la tabla
 function cargarTarifas() {
-    fetch("php/gestortarifas.php?accion=lista") // pido la lista al PHP
-        .then(response => response.json()) // convierto respuesta en JSON
+    fetch("php/gestortarifas.php?accion=lista")
+        .then(response => response.json())
         .then(data => {
             const tbody = document.querySelector("#tablaTarifas tbody"); 
-            tbody.innerHTML = ""; // limpio la tabla
+            tbody.innerHTML = "";
 
             if (data.length === 0) { 
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">no hay tarifas registradas</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">no hay tarifas registradas</td></tr>';
                 return;
             }
 
-            data.forEach(t => { // recorro cada tarifa
+            data.forEach(t => {
                 const fila = `
                 <tr>
                     <td>${t.IdTarifa}</td>
                     <td>${t.DescripcionServicio}</td>
                     <td>$${parseFloat(t.CostoBase).toFixed(2)}</td>
                     <td>${t.NombreEspecialidad ?? "sin especialidad"}</td>
-                    <td>
-                        <span class="badge ${t.Estatus == 1 ? 'bg-success' : 'bg-warning'}">
-                            ${t.Estatus == 1 ? 'Pagada' : 'No pagada'}
-                        </span>
-                    </td>
                     <td>
                         <button class="btn btn-warning btn-sm me-1" onclick="editarTarifa(${t.IdTarifa})">
                             <i class="fa-solid fa-pen"></i>
@@ -58,7 +50,7 @@ function cargarTarifas() {
                         </button>
                     </td>
                 </tr>`;
-                tbody.innerHTML += fila; // agrego fila
+                tbody.innerHTML += fila;
             });
         })
         .catch(err => {
@@ -123,15 +115,12 @@ function editarTarifa(id) {
             document.getElementById('modalTarifaLabel').innerHTML =
                 '<i class="fa-solid fa-edit me-2"></i>editar tarifa';
 
-            // lleno los campos
             document.getElementById('idTarifa').value = tarifa.IdTarifa;
             document.getElementById('idTarifa').disabled = true;
             document.getElementById('descripcionServicio').value = tarifa.DescripcionServicio;
             document.getElementById('costoBase').value = tarifa.CostoBase;
             document.getElementById('especialidadId').value = tarifa.EspecialidadId;
-            document.getElementById('estatus').value = tarifa.Estatus;
 
-            // input oculto para indicar que es edición
             let inputEditar = document.querySelector('input[name="idTarifaEditar"]');
             if (!inputEditar) {
                 inputEditar = document.createElement('input');

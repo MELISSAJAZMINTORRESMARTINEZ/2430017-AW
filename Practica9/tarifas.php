@@ -108,7 +108,6 @@
                                 <th>Descripción del servicio</th>
                                 <th>Costo Base</th>
                                 <th>Especialidad</th>
-                                <th>Estatus</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -157,14 +156,7 @@
                                 <option value="6">Neurología</option>
                             </select>
                         </div>
-                        <div class="mb-3">
-                            <label for="estatus" class="form-label">Estatus</label>
-                            <select id="estatus" name="estatus" class="form-select" required>
-                                <option value="">Selecciona</option>
-                                <option value="1">Tarifa pagada</option>
-                                <option value="0">Tarifa no pagada</option>
-                            </select>
-                        </div>
+
                     </div>
 
                     <!-- Botones dentro del form -->
