@@ -24,8 +24,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 </head>
 
-<body>
-
+<body data-rol="<?php echo htmlspecialchars(strtolower($rolUsuario)); ?>">
  <!-- Sidebar -->
     <div class="sidebar">
         <h4 class="text-center">
