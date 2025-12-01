@@ -14,62 +14,6 @@
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    
-    <!-- Chart.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
-    
-    <style>
-        .chart-container {
-            position: relative;
-            height: 300px;
-            margin: 20px 0;
-        }
-        
-        .metric-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
-            padding: 20px;
-            color: white;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        
-        .metric-card.success {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        }
-        
-        .metric-card.warning {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
-        
-        .metric-card.info {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        }
-        
-        .metric-value {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin: 10px 0;
-        }
-        
-        .metric-label {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-        
-        .metric-change {
-            font-size: 0.85rem;
-            margin-top: 10px;
-        }
-        
-        .metric-change.positive {
-            color: #a8ffb8;
-        }
-        
-        .metric-change.negative {
-            color: #ffb8b8;
-        }
-    </style>
 </head>
 
 <body>
@@ -146,114 +90,68 @@
         </nav>
 
         <!-- Card de bienvenida -->
-        <div class="welcome-card p-4 mb-4">
-            <div class="d-flex align-items-center gap-3">
-                <div class="welcome-icon">
-                    <i class="fa-solid fa-hand-wave"></i>
-                </div>
-                <div>
-                    <h2 class="mb-1">¡Bienvenido(a), <?php echo htmlspecialchars($nombreUsuario); ?>!</h2>
-                    <p class="mb-0">Holiii, que bueno verte por aqui, espero disfrutes la estancia en la pagina.</p>
-                </div>
-            </div>
+<div class="welcome-card p-4 mb-4">
+    <div class="d-flex align-items-center gap-3">
+        <div class="welcome-icon">
+            <i class="fa-solid fa-hand-wave"></i>
         </div>
+        <div>
+            <h2 class="mb-1">¡Bienvenido(a), <?php echo htmlspecialchars($nombreUsuario); ?>!</h2>
+            <p class="mb-0">Holiii, que bueno verte por aqui, espero disfrutes la estancia en la pagina.</p>
+        </div>
+    </div>
+</div>
+
 
         <div class="container-fluid">
 
             <?php if (tienePermiso('reportes')): ?>
-            
-            <!-- Métricas principales con gradientes -->
+            <!-- Tarjetas principales -->
             <div class="row g-4 mb-4">
-                <div class="col-md-3">
-                    <div class="metric-card">
-                        <div class="metric-label">
-                            <i class="fa-solid fa-user-injured me-2"></i>Pacientes Activos
-                        </div>
-                        <div class="metric-value" id="pacientesActivos">120</div>
-                        <div class="metric-change positive">
-                            <i class="fa-solid fa-arrow-up me-1"></i>+12% vs mes anterior
+
+                <div class="col-md-4">
+                    <div class="dash-card">
+                        <div class="icon"><i class="fa-solid fa-user-injured"></i></div>
+                        <div>
+                            <h3 id="pacientesActivos">120</h3>
+                            <p>Pacientes activos</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-3">
-                    <div class="metric-card success">
-                        <div class="metric-label">
-                            <i class="fa-solid fa-calendar-check me-2"></i>Citas del Día
-                        </div>
-                        <div class="metric-value" id="citasDelDia">38</div>
-                        <div class="metric-change positive">
-                            <i class="fa-solid fa-arrow-up me-1"></i>+5 más que ayer
+                <div class="col-md-4">
+                    <div class="dash-card">
+                        <div class="icon"><i class="fa-solid fa-calendar-check"></i></div>
+                        <div>
+                            <h3 id="citasDelDia">38</h3>
+                            <p>Citas del día</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-3">
-                    <div class="metric-card warning">
-                        <div class="metric-label">
-                            <i class="fa-solid fa-user-doctor me-2"></i>Médicos Disponibles
-                        </div>
-                        <div class="metric-value" id="medicosDisponibles">12</div>
-                        <div class="metric-change">
-                            <i class="fa-solid fa-minus me-1"></i>Sin cambios
+                <div class="col-md-4">
+                    <div class="dash-card">
+                        <div class="icon"><i class="fa-solid fa-user-doctor"></i></div>
+                        <div>
+                            <h3 id="medicosDisponibles">12</h3>
+                            <p>Médicos disponibles</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-3">
-                    <div class="metric-card info">
-                        <div class="metric-label">
-                            <i class="fa-solid fa-money-bill-wave me-2"></i>Ingresos del Mes
-                        </div>
-                        <div class="metric-value">$45K</div>
-                        <div class="metric-change positive">
-                            <i class="fa-solid fa-arrow-up me-1"></i>+18% vs mes anterior
-                        </div>
-                    </div>
-                </div>
             </div>
 
-            <!-- Gráficas -->
-            <div class="row g-4 mb-4">
-                <!-- Gráfica de pastel: Estado de citas -->
-                <div class="col-lg-4">
-                    <div class="dash-panel">
-                        <h5><i class="fa-solid fa-chart-pie me-2"></i>Estado de Citas</h5>
-                        <div class="chart-container">
-                            <canvas id="chartEstadoCitas"></canvas>
-                        </div>
-                    </div>
-                </div>
+            <!-- Panel inferior -->
+            <div class="row g-4">
 
-                <!-- Gráfica de pastel: Distribución por especialidad -->
-                <div class="col-lg-4">
-                    <div class="dash-panel">
-                        <h5><i class="fa-solid fa-chart-pie me-2"></i>Citas por Especialidad</h5>
-                        <div class="chart-container">
-                            <canvas id="chartEspecialidades"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Gráfica de dona: Género de pacientes -->
-                <div class="col-lg-4">
-                    <div class="dash-panel">
-                        <h5><i class="fa-solid fa-chart-pie me-2"></i>Distribución por Género</h5>
-                        <div class="chart-container">
-                            <canvas id="chartGenero"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Gráfica de barras: Citas por día de la semana -->
-            <div class="row g-4 mb-4">
                 <div class="col-lg-8">
                     <div class="dash-panel">
-                        <h5><i class="fa-solid fa-chart-bar me-2"></i>Citas por Día de la Semana</h5>
-                        <div class="chart-container" style="height: 350px;">
-                            <canvas id="chartCitasSemana"></canvas>
-                        </div>
+                        <h5><i class="fa-solid fa-chart-line me-2"></i>Actividad reciente</h5>
+                        <ul class="recent-list">
+                            <li><i class="fa-solid fa-circle-check text-success"></i> Se registró un nuevo paciente.</li>
+                            <li><i class="fa-solid fa-circle-check text-success"></i> Se agregó una cita a la agenda.</li>
+                            <li><i class="fa-solid fa-circle-check text-success"></i> Se generó un nuevo expediente clínico.</li>
+                        </ul>
                     </div>
                 </div>
 
@@ -261,39 +159,12 @@
                     <div class="dash-panel">
                         <h5><i class="fa-solid fa-bell me-2"></i>Notificaciones</h5>
                         <div class="notif">
-                            <div class="alert alert-info mb-2">
-                                <i class="fa-solid fa-info-circle me-2"></i>
-                                <small>5 citas pendientes de confirmar</small>
-                            </div>
-                            <div class="alert alert-warning mb-2">
-                                <i class="fa-solid fa-exclamation-triangle me-2"></i>
-                                <small>2 pacientes sin expediente actualizado</small>
-                            </div>
-                            <div class="alert alert-success mb-0">
-                                <i class="fa-solid fa-check-circle me-2"></i>
-                                <small>Sistema funcionando correctamente</small>
-                            </div>
+                            <p>No hay notificaciones pendientes</p>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Panel inferior -->
-            <div class="row g-4">
-                <div class="col-lg-12">
-                    <div class="dash-panel">
-                        <h5><i class="fa-solid fa-chart-line me-2"></i>Actividad Reciente</h5>
-                        <ul class="recent-list">
-                            <li><i class="fa-solid fa-circle-check text-success"></i> Se registró un nuevo paciente: Juan Pérez</li>
-                            <li><i class="fa-solid fa-circle-check text-success"></i> Se agregó una cita para mañana a las 10:00 AM</li>
-                            <li><i class="fa-solid fa-circle-check text-success"></i> Se generó un nuevo expediente clínico</li>
-                            <li><i class="fa-solid fa-circle-info text-info"></i> Dr. García actualizó su disponibilidad</li>
-                            <li><i class="fa-solid fa-circle-check text-success"></i> Se procesó un pago de $1,200 MXN</li>
-                        </ul>
-                    </div>
-                </div>
             </div>
-            
             <?php else: ?>
             <!-- Mensaje de permisos limitados -->
             <div class="alert alert-warning">
@@ -388,142 +259,6 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-        // Configuración de colores
-        const colors = {
-            primary: ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#43e97b'],
-            success: ['#11998e', '#38ef7d'],
-            warning: ['#f093fb', '#f5576c'],
-            info: ['#4facfe', '#00f2fe']
-        };
-
-        // Gráfica de Estado de Citas (Pastel)
-        const ctxEstado = document.getElementById('chartEstadoCitas').getContext('2d');
-        new Chart(ctxEstado, {
-            type: 'pie',
-            data: {
-                labels: ['Confirmadas', 'Pendientes', 'Canceladas', 'Completadas'],
-                datasets: [{
-                    data: [45, 15, 8, 32],
-                    backgroundColor: [
-                        '#38ef7d',
-                        '#f5576c',
-                        '#ff6b6b',
-                        '#4facfe'
-                    ],
-                    borderWidth: 2,
-                    borderColor: '#fff'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
-
-        // Gráfica de Especialidades (Pastel)
-        const ctxEsp = document.getElementById('chartEspecialidades').getContext('2d');
-        new Chart(ctxEsp, {
-            type: 'pie',
-            data: {
-                labels: ['Cardiología', 'Pediatría', 'Dermatología', 'Traumatología', 'Otros'],
-                datasets: [{
-                    data: [25, 30, 15, 20, 10],
-                    backgroundColor: [
-                        '#667eea',
-                        '#764ba2',
-                        '#f093fb',
-                        '#4facfe',
-                        '#43e97b'
-                    ],
-                    borderWidth: 2,
-                    borderColor: '#fff'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
-
-        // Gráfica de Género (Dona)
-        const ctxGenero = document.getElementById('chartGenero').getContext('2d');
-        new Chart(ctxGenero, {
-            type: 'doughnut',
-            data: {
-                labels: ['Femenino', 'Masculino', 'Otro'],
-                datasets: [{
-                    data: [58, 40, 2],
-                    backgroundColor: [
-                        '#f093fb',
-                        '#4facfe',
-                        '#43e97b'
-                    ],
-                    borderWidth: 2,
-                    borderColor: '#fff'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
-
-        // Gráfica de Citas por Día (Barras)
-        const ctxSemana = document.getElementById('chartCitasSemana').getContext('2d');
-        new Chart(ctxSemana, {
-            type: 'bar',
-            data: {
-                labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                datasets: [{
-                    label: 'Citas',
-                    data: [45, 52, 38, 48, 55, 28],
-                    backgroundColor: 'rgba(102, 126, 234, 0.8)',
-                    borderColor: 'rgba(102, 126, 234, 1)',
-                    borderWidth: 2,
-                    borderRadius: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(0, 0, 0, 0.05)'
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
-    </script>
 
 </body>
 
