@@ -100,7 +100,7 @@
         <div class="card shadow-sm border-0">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="tablaPacientes" class="table table-hover align-middle text-center">
+                    <table id="tablaBitacora" class="table table-hover align-middle text-center">
                         <thead class="table-info">
                             <tr>
                                 <th>Id Bitacora</th>
@@ -108,6 +108,7 @@
                                 <th>Fecha Acceso</th>
                                 <th>Accion Realizada</th>
                                 <th>Modulo</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -129,12 +130,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
 
-                <form id="formTarifas">
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="idBitacora" class="form-label">Id Bitacora</label>
-                            <input type="number" class="form-control" id="idBitacora" name="idBitacora" required>
-                        </div>
+                <form id="formBitacora">
                         <div class="mb-3">
                             <label for="idUsuario" class="form-label">Id Usuario</label>
                             <input type="text" class="form-control" id="idUsuario" name="idUsuario" required>
@@ -150,6 +146,10 @@
                         <div class="mb-3">
                             <label for="modulo" class="form-label">Modulo</label>
                             <input type="text" class="form-control" id="modulo" name="modulo" required>             
+                    </div>
+                    <div class="mb-3">
+                            <label for="acciones" class="form-label">Acciones</label>
+                            <input type="text" class="form-control" id="acciones" name="acciones" required>             
                     </div>
 
                     <!-- Botones dentro del form -->
