@@ -86,113 +86,43 @@
     <div class="content" style="margin-left: 230px; padding: 30px;">
         <!-- Navbar superior -->
         <nav class="navbar navbar-expand-lg navbar-light mb-4">
-            <div class="container-fluid d-flex justify-content-between align-items-center">
+            <div class="container-fluid">
                 <span class="navbar-brand mb-0 h4 fw-bold text-secondary">
-                    <i class="fa-solid fa-user-injured me-2"></i>Reportes
+                    <i class="fa-solid fa-chart-line me-2"></i>Reportes del Sistema
                 </span>
-                 <div>
-                    <button class="btn btn-danger text-white fw-semibold me-2" onclick="generarReportePDF()">
-                        <i class="fa-solid fa-file-pdf me-2"></i>Generar PDF
-                    </button>
-                    <button class="btn btn-success text-white fw-semibold me-2" onclick="generarReporteExcel()">
-                        <i class="fa-solid fa-file-excel me-2"></i>Generar Excel
-                    </button>
-                <button class="btn btn-success text-white fw-semibold" data-bs-toggle="modal" style="background-color: #2c8888;" data-bs-target="#modalReportes">
-                    <i class="fa-solid fa-plus me-2"></i>Agregar Reporte
-                </button>
             </div>
         </nav>
 
-        <!-- Tabla de pacientes -->
-        <div class="card shadow-sm border-0">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table id="tablaReportes" class="table table-hover align-middle text-center">
-                        <thead class="table-info">
-                            <tr>
-                                <th>IdReporte</th>
-                                <th>Tipo de Reporte</th>
-                                <th>Id Paciente</th>
-                                <th>Id Medico</th>
-                                <th>Fecha de Generacion</th>
-                                <th>Ruta Archivo</th>
-                                <th>Descripcion</th>
-                                <th>Generado por:</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!---->
-                        </tbody>
-                    </table>
+        <!-- Card de Reporte -->
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header text-white text-center py-4" style="background: linear-gradient(135deg, #2c8888 0%, #1e6666 100%);">
+                        <i class="fa-solid fa-money-check-dollar fa-3x mb-3"></i>
+                        <h4 class="mb-0 fw-bold">Reporte de Pagos</h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <p class="text-muted text-center mb-4">
+                            Genera reportes detallados de todos los pagos registrados en el sistema, incluyendo fechas, montos, métodos de pago y estados de las transacciones.
+                        </p>
+                        <div class="d-grid gap-3">
+                            <button class="btn btn-danger btn-lg text-white fw-semibold py-3" onclick="generarReportePDF()">
+                                <i class="fa-solid fa-file-pdf me-2"></i>Generar Reporte PDF
+                            </button>
+                            <button class="btn btn-success btn-lg text-white fw-semibold py-3" onclick="generarReporteExcel()">
+                                <i class="fa-solid fa-file-excel me-2"></i>Generar Reporte Excel
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted text-center py-3" style="background-color: #f8f9fa;">
+                        <i class="fa-solid fa-info-circle me-1"></i>
+                        Los reportes se generan con la información más actualizada del sistema
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-         <!-- Modal Bootstrap -->
-  <div class="modal fade" id="modalReportes" tabindex="-1" aria-labelledby="modalPagosLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content border-0 shadow-lg">
-        <div class="modal-header text-white" style="background-color: #2c8888;">
-          <h5 class="modal-title" id="modalReportesLabel">
-            <i class="fa-solid fa-user-plus me-2"></i>Agregar Reporte
-          </h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-
-        <form id="formUsuarios">
-          <div class="modal-body">
-            <div class="mb-3">
-              <label for="idReporte" class="form-label">Id Reporte</label>
-              <input type="number" class="form-control" id="idReporte" name="idReporte" required>
-            </div>
-            <div class="mb-3">
-              <label for="tipoReporte" class="form-label">Tipo de Reporte</label>
-              <select id="tipoReporte" name="tipoReporte" class="form-select" required>
-                <option value="">Selecciona</option>
-                <option value="Pagos">Pagos</option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label for="idPaciente" class="form-label">Id Paciente</label>
-              <input type="number" class="form-control" id="idPaciente" name="idPaciente" required>
-            </div>
-            <div class="mb-3">
-              <label for="idMedico" class="form-label">Id Medico</label>
-              <input type="number" class="form-control" id="idMedico" name="idMedico" required>
-            </div>
-
-            <div class="mb-3">
-              <label for="fechaGeneracion" class="form-label">Fecha de Generacion</label>
-              <input type="date" class="form-control" id="fechaGeneracion" name="fechaGeneracion">
-            </div>
-            <div class="mb-3">
-              <label for="ruta" class="form-label">Ruta Archivo</label>
-              <input type="text" class="form-control" id="ruta" name="ruta">
-            </div>
-             <div class="mb-3">
-              <label for="descripcion" class="form-label">Descripcion</label>
-              <input type="text" class="form-control" id="descripcion" name="descripcion">
-            </div>
-            <div class="mb-3">
-              <label for="generado" class="form-label">Generado por:</label>
-              <input type="text" class="form-control" id="generado" name="generado">
-            </div>
-
-          <!-- Botones dentro del form -->
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-success">
-              <i class="fa-solid fa-save me-2"></i>Guardar
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-    
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/reportes.js"></script>
