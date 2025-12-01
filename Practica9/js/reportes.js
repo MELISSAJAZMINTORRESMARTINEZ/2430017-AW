@@ -207,19 +207,362 @@ function eliminarReporte(id) {
     });
 }
 
-// funciones vacías para los botones de PDF y Excel
+// generar reporte PDF de pagos
 function generarReportePDF() {
     Swal.fire({
-        icon: 'info',
-        title: 'Función no implementada',
-        text: 'La generación de PDF aún no está disponible'
+        title: 'generando reporte PDF...',
+        text: 'por favor espera',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
     });
+
+    fetch("php/reportes.php?accion=datosPagos")
+        .then(response => response.json())
+        .then(pagos => {
+            if (pagos.length === 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'sin datos',
+                    text: 'no hay pagos registrados para generar el reporte'
+                });
+                return;
+            }
+
+            // calcular totales
+            const totalPagos = pagos.reduce((sum, p) => sum + parseFloat(p.Monto), 0);
+            const pagosPagados = pagos.filter(p => p.EstatusPago === 'Pagado').length;
+            const pagosPendientes = pagos.filter(p => p.EstatusPago === 'Pendiente').length;
+
+            // crear ventana con contenido HTML para imprimir
+            const ventana = window.open('', '_blank');
+            ventana.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Reporte de Pagos</title>
+                    <style>
+                        body { 
+                            font-family: Arial, sans-serif; 
+                            margin: 20px;
+                            color: #333;
+                        }
+                        .header {
+                            text-align: center;
+                            margin-bottom: 30px;
+                            border-bottom: 3px solid #2c8888;
+                            padding-bottom: 15px;
+                        }
+                        .header h1 {
+                            color: #2c8888;
+                            margin: 0;
+                        }
+                        .fecha-reporte {
+                            color: #666;
+                            font-size: 14px;
+                            margin-top: 5px;
+                        }
+                        .resumen {
+                            background: #f8f9fa;
+                            padding: 15px;
+                            border-radius: 8px;
+                            margin-bottom: 20px;
+                            display: flex;
+                            justify-content: space-around;
+                            text-align: center;
+                        }
+                        .resumen-item {
+                            flex: 1;
+                        }
+                        .resumen-item h3 {
+                            margin: 0;
+                            color: #2c8888;
+                        }
+                        .resumen-item p {
+                            margin: 5px 0 0 0;
+                            font-size: 24px;
+                            font-weight: bold;
+                        }
+                        table { 
+                            width: 100%; 
+                            border-collapse: collapse;
+                            margin-top: 20px;
+                        }
+                        th, td { 
+                            border: 1px solid #ddd; 
+                            padding: 10px; 
+                            text-align: left;
+                            font-size: 12px;
+                        }
+                        th { 
+                            background-color: #2c8888; 
+                            color: white;
+                            font-weight: bold;
+                        }
+                        tr:nth-child(even) {
+                            background-color: #f8f9fa;
+                        }
+                        .badge {
+                            padding: 4px 8px;
+                            border-radius: 4px;
+                            font-size: 11px;
+                            font-weight: bold;
+                        }
+                        .badge-success { background: #28a745; color: white; }
+                        .badge-warning { background: #ffc107; color: #333; }
+                        .badge-danger { background: #dc3545; color: white; }
+                        .badge-info { background: #17a2b8; color: white; }
+                        .footer {
+                            margin-top: 30px;
+                            text-align: center;
+                            color: #666;
+                            font-size: 12px;
+                            border-top: 1px solid #ddd;
+                            padding-top: 15px;
+                        }
+                        @media print {
+                            .no-print { display: none; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>📊 Reporte de Pagos</h1>
+                        <p class="fecha-reporte">Generado: ${new Date().toLocaleString('es-MX')}</p>
+                    </div>
+
+                    <div class="resumen">
+                        <div class="resumen-item">
+                            <h3>Total Pagos</h3>
+                            <p>${pagos.length}</p>
+                        </div>
+                        <div class="resumen-item">
+                            <h3>Pagados</h3>
+                            <p style="color: #28a745;">${pagosPagados}</p>
+                        </div>
+                        <div class="resumen-item">
+                            <h3>Pendientes</h3>
+                            <p style="color: #ffc107;">${pagosPendientes}</p>
+                        </div>
+                        <div class="resumen-item">
+                            <h3>Monto Total</h3>
+                            <p style="color: #2c8888;">${totalPagos.toFixed(2)}</p>
+                        </div>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Paciente</th>
+                                <th>Fecha</th>
+                                <th>Monto</th>
+                                <th>Método</th>
+                                <th>Estado</th>
+                                <th>Referencia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${pagos.map(p => `
+                                <tr>
+                                    <td>${p.IdPago}</td>
+                                    <td>${p.NombrePaciente || 'N/A'}</td>
+                                    <td>${p.FechaPago}</td>
+                                    <td>${parseFloat(p.Monto).toFixed(2)}</td>
+                                    <td><span class="badge badge-info">${p.MetodoPago}</span></td>
+                                    <td>
+                                        <span class="badge ${
+                                            p.EstatusPago === 'Pagado' ? 'badge-success' :
+                                            p.EstatusPago === 'Pendiente' ? 'badge-warning' : 'badge-danger'
+                                        }">${p.EstatusPago}</span>
+                                    </td>
+                                    <td>${p.Referencia || '-'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+
+                    <div class="footer">
+                        <p><strong>Clínica</strong> - Sistema de Gestión de Pagos</p>
+                        <p>Este documento es un reporte generado automáticamente</p>
+                    </div>
+
+                    <div class="no-print" style="margin-top: 20px; text-align: center;">
+                        <button onclick="window.print()" style="
+                            background: #2c8888;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            border-radius: 5px;
+                            cursor: pointer;
+                            font-size: 16px;
+                            margin-right: 10px;
+                        ">🖨️ Imprimir / Guardar como PDF</button>
+                        <button onclick="window.close()" style="
+                            background: #6c757d;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            border-radius: 5px;
+                            cursor: pointer;
+                            font-size: 16px;
+                        ">✖️ Cerrar</button>
+                    </div>
+                </body>
+                </html>
+            `);
+            ventana.document.close();
+
+            Swal.close();
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'reporte generado',
+                text: 'el reporte PDF se ha abierto en una nueva ventana',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        })
+        .catch(error => {
+            console.error("error generando PDF:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'error',
+                text: 'no se pudo generar el reporte PDF'
+            });
+        });
 }
 
+// generar reporte Excel de pagos
 function generarReporteExcel() {
     Swal.fire({
-        icon: 'info',
-        title: 'Función no implementada',
-        text: 'La generación de Excel aún no está disponible'
+        title: 'generando reporte Excel...',
+        text: 'por favor espera',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
     });
+
+    fetch("php/reportes.php?accion=datosPagos")
+        .then(response => response.json())
+        .then(pagos => {
+            if (pagos.length === 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'sin datos',
+                    text: 'no hay pagos registrados para generar el reporte'
+                });
+                return;
+            }
+
+            // crear tabla HTML para Excel
+            let tablaExcel = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID Pago</th>
+                            <th>ID Cita</th>
+                            <th>ID Paciente</th>
+                            <th>Nombre Paciente</th>
+                            <th>Monto</th>
+                            <th>Método de Pago</th>
+                            <th>Fecha de Pago</th>
+                            <th>Referencia</th>
+                            <th>Estado</th>
+                            <th>Fecha Cita</th>
+                            <th>Motivo Consulta</th>
+                            <th>Médico</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            pagos.forEach(p => {
+                tablaExcel += `
+                    <tr>
+                        <td>${p.IdPago}</td>
+                        <td>${p.IdCita}</td>
+                        <td>${p.IdPaciente}</td>
+                        <td>${p.NombrePaciente || 'N/A'}</td>
+                        <td>${parseFloat(p.Monto).toFixed(2)}</td>
+                        <td>${p.MetodoPago}</td>
+                        <td>${p.FechaPago}</td>
+                        <td>${p.Referencia || '-'}</td>
+                        <td>${p.EstatusPago}</td>
+                        <td>${p.FechaCita || 'N/A'}</td>
+                        <td>${p.MotivoConsulta || 'N/A'}</td>
+                        <td>${p.NombreMedico || 'N/A'}</td>
+                    </tr>
+                `;
+            });
+
+            tablaExcel += `
+                    </tbody>
+                </table>
+            `;
+
+            // crear archivo Excel
+            const nombreArchivo = `Reporte_Pagos_${new Date().toISOString().split('T')[0]}.xls`;
+            const uri = 'data:application/vnd.ms-excel;base64,';
+            const template = `
+                <html xmlns:o="urn:schemas-microsoft-com:office:office" 
+                      xmlns:x="urn:schemas-microsoft-com:office:excel" 
+                      xmlns="http://www.w3.org/TR/REC-html40">
+                <head>
+                    <meta charset="UTF-8">
+                    <!--[if gte mso 9]>
+                    <xml>
+                        <x:ExcelWorkbook>
+                            <x:ExcelWorksheets>
+                                <x:ExcelWorksheet>
+                                    <x:Name>Reporte de Pagos</x:Name>
+                                    <x:WorksheetOptions>
+                                        <x:DisplayGridlines/>
+                                    </x:WorksheetOptions>
+                                </x:ExcelWorksheet>
+                            </x:ExcelWorksheets>
+                        </x:ExcelWorkbook>
+                    </xml>
+                    <![endif]-->
+                    <style>
+                        table { border-collapse: collapse; width: 100%; }
+                        th { background-color: #2c8888; color: white; font-weight: bold; border: 1px solid #000; padding: 8px; }
+                        td { border: 1px solid #000; padding: 8px; }
+                    </style>
+                </head>
+                <body>
+                    <h2>Reporte de Pagos - Clínica</h2>
+                    <p>Fecha de generación: ${new Date().toLocaleString('es-MX')}</p>
+                    ${tablaExcel}
+                </body>
+                </html>
+            `;
+
+            // descargar archivo
+            const link = document.createElement('a');
+            link.href = uri + btoa(unescape(encodeURIComponent(template)));
+            link.download = nombreArchivo;
+            link.click();
+
+            Swal.close();
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'reporte generado',
+                text: 'el archivo Excel se ha descargado correctamente',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        })
+        .catch(error => {
+            console.error("error generando Excel:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'error',
+                text: 'no se pudo generar el reporte Excel'
+            });
+        });
 }

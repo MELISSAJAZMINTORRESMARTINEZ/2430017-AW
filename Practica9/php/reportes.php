@@ -159,6 +159,37 @@ try {
         exit;
     }
 
+    // obtener datos de pagos para reporte
+    if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'datosPagos') {
+        
+        // consulta para obtener todos los pagos con detalles
+        $sql = "SELECT 
+                    p.IdPago,
+                    p.IdCita,
+                    p.IdPaciente,
+                    pac.NombreCompleto as NombrePaciente,
+                    p.Monto,
+                    p.MetodoPago,
+                    p.FechaPago,
+                    p.Referencia,
+                    p.EstatusPago,
+                    a.FechaCita,
+                    a.MotivoConsulta,
+                    m.NombreCompleto as NombreMedico
+                FROM gestorpagos p
+                LEFT JOIN controlpacientes pac ON p.IdPaciente = pac.IdPaciente
+                LEFT JOIN controlagenda a ON p.IdCita = a.IdCita
+                LEFT JOIN controlmedicos m ON a.IdMedico = m.IdMedico
+                ORDER BY p.FechaPago DESC";
+        
+        $stmt = $pdo->query($sql);
+        $pagos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        header('Content-Type: application/json');
+        echo json_encode($pagos);
+        exit;
+    }
+
 // captura errores de PDO
 } catch (PDOException $e) {
 
