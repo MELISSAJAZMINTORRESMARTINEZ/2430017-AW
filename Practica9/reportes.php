@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reportes</title>
+    <title>Dashboard</title>
     <link rel="icon" type="image/png" href="images/New Patients.png">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/styleP.css">
@@ -28,13 +28,14 @@
             <br>Clínica
         </h4>
         
+        <!-- Información del usuario -->
         <div class="text-center mb-3 px-3">
             <p class="text-white-50 small mb-1"><?php echo htmlspecialchars($nombreUsuario); ?></p>
             <span class="badge bg-info text-dark"><?php echo ucfirst($rolUsuario); ?></span>
         </div>
 
         <div class="sidebar-links">
-            <a href="dash.php"><i class="fa-solid fa-house me-2"></i>Inicio</a>
+            <a href="dash.php" class="active"><i class="fa-solid fa-house me-2"></i>Inicio</a>
             
             <?php if (tienePermiso('usuarios')): ?>
             <a href="usuarios.php"><i class="fa-solid fa-stethoscope me-2"></i>Usuario</a>
@@ -53,7 +54,7 @@
             <?php endif; ?>
             
             <?php if (tienePermiso('reportes')): ?>
-            <a href="reportes.php" class="active"><i class="fa-solid fa-chart-line me-2"></i>Reportes</a>
+            <a href="reportes.php"><i class="fa-solid fa-chart-line me-2"></i>Reportes</a>
             <?php endif; ?>
             
             <?php if (tienePermiso('expedientes')): ?>
@@ -87,82 +88,41 @@
         <nav class="navbar navbar-expand-lg navbar-light mb-4">
             <div class="container-fluid d-flex justify-content-between align-items-center">
                 <span class="navbar-brand mb-0 h4 fw-bold text-secondary">
-                    <i class="fa-solid fa-chart-line me-2"></i>Historial de Reportes
+                    <i class="fa-solid fa-user-injured me-2"></i>Reportes
                 </span>
-                <div>
+                 <div>
                     <button class="btn btn-danger text-white fw-semibold me-2" onclick="generarReportePDF()">
                         <i class="fa-solid fa-file-pdf me-2"></i>Generar PDF
                     </button>
-                    <button class="btn btn-success text-white fw-semibold" onclick="generarReporteExcel()">
+                    <button class="btn btn-success text-white fw-semibold me-2" onclick="generarReporteExcel()">
                         <i class="fa-solid fa-file-excel me-2"></i>Generar Excel
                     </button>
-                </div>
+                <button class="btn btn-success text-white fw-semibold" data-bs-toggle="modal" style="background-color: #2c8888;" data-bs-target="#modalReportes">
+                    <i class="fa-solid fa-plus me-2"></i>Agregar Reporte
+                </button>
             </div>
         </nav>
 
-        <!-- Filtros -->
-        <div class="card shadow-sm border-0 mb-4">
-            <div class="card-header" style="background-color: #2c8888;">
-                <h5 class="text-white mb-0">
-                    <i class="fa-solid fa-filter me-2"></i>Filtros de Búsqueda
-                </h5>
-            </div>
-            <div class="card-body">
-                <div class="row g-3">
-                    <div class="col-md-3">
-                        <label class="form-label fw-semibold">Tipo de Reporte</label>
-                        <select class="form-select" id="filtroTipo" onchange="filtrarReportes()">
-                            <option value="">Todos</option>
-                            <option value="Pagos">Pagos</option>
-                            <option value="Citas">Citas</option>
-                            <option value="Pacientes">Pacientes</option>
-                            <option value="Médicos">Médicos</option>
-                            <option value="Financiero">Financiero</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-semibold">Fecha Desde</label>
-                        <input type="date" class="form-control" id="filtroFechaDesde" onchange="filtrarReportes()">
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-semibold">Fecha Hasta</label>
-                        <input type="date" class="form-control" id="filtroFechaHasta" onchange="filtrarReportes()">
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-semibold">Generado Por</label>
-                        <input type="text" class="form-control" id="filtroGeneradoPor" placeholder="Nombre..." onkeyup="filtrarReportes()">
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-md-12 text-end">
-                        <button class="btn btn-secondary" onclick="limpiarFiltros()">
-                            <i class="fa-solid fa-eraser me-2"></i>Limpiar Filtros
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tabla de Historial -->
+        <!-- Tabla de pacientes -->
         <div class="card shadow-sm border-0">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="tablaReportes" class="table table-hover align-middle">
+                    <table id="tablaReportes" class="table table-hover align-middle text-center">
                         <thead class="table-info">
                             <tr>
-                                <th>ID</th>
+                                <th>IdReporte</th>
                                 <th>Tipo de Reporte</th>
-                                <th>ID Paciente</th>
-                                <th>ID Médico</th>
-                                <th>Fecha de Generación</th>
+                                <th>Id Paciente</th>
+                                <th>Id Medico</th>
+                                <th>Fecha de Generacion</th>
                                 <th>Ruta Archivo</th>
-                                <th>Descripción</th>
-                                <th>Generado por</th>
+                                <th>Descripcion</th>
+                                <th>Generado por:</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Los datos se cargarán dinámicamente -->
+                            <!---->
                         </tbody>
                     </table>
                 </div>
@@ -170,190 +130,72 @@
         </div>
     </div>
 
-    <!-- Modal para Editar Reporte (opcional) -->
-    <div class="modal fade" id="modalEditarReporte" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color: #2c8888;">
-                    <h5 class="modal-title text-white">
-                        <i class="fa-solid fa-edit me-2"></i>Editar Reporte
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="formEditarReporte">
-                        <input type="hidden" name="idReporteEditar" id="idReporteEditar">
-                        
-                        <div class="mb-3">
-                            <label for="editTipoReporte" class="form-label">Tipo de Reporte</label>
-                            <select id="editTipoReporte" name="tipoReporte" class="form-select" required>
-                                <option value="Pagos">Pagos</option>
-                                <option value="Citas">Citas</option>
-                                <option value="Pacientes">Pacientes</option>
-                                <option value="Médicos">Médicos</option>
-                                <option value="Financiero">Financiero</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="editIdPaciente" class="form-label">ID Paciente</label>
-                            <input type="number" class="form-control" id="editIdPaciente" name="idPaciente">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="editIdMedico" class="form-label">ID Médico</label>
-                            <input type="number" class="form-control" id="editIdMedico" name="idMedico">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="editFechaGeneracion" class="form-label">Fecha de Generación</label>
-                            <input type="date" class="form-control" id="editFechaGeneracion" name="fechaGeneracion">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="editRuta" class="form-label">Ruta Archivo</label>
-                            <input type="text" class="form-control" id="editRuta" name="ruta">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="editDescripcion" class="form-label">Descripción</label>
-                            <textarea class="form-control" id="editDescripcion" name="descripcion" rows="3"></textarea>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="editGenerado" class="form-label">Generado por</label>
-                            <input type="text" class="form-control" id="editGenerado" name="generado">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn text-white" style="background-color: #2c8888;" onclick="guardarEdicion()">
-                        <i class="fa-solid fa-save me-2"></i>Guardar Cambios
-                    </button>
-                </div>
-            </div>
+         <!-- Modal Bootstrap -->
+  <div class="modal fade" id="modalReportes" tabindex="-1" aria-labelledby="modalPagosLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg">
+        <div class="modal-header text-white" style="background-color: #2c8888;">
+          <h5 class="modal-title" id="modalReportesLabel">
+            <i class="fa-solid fa-user-plus me-2"></i>Agregar Reporte
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
-    </div>
 
+        <form id="formUsuarios">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="idReporte" class="form-label">Id Reporte</label>
+              <input type="number" class="form-control" id="idReporte" name="idReporte" required>
+            </div>
+            <div class="mb-3">
+              <label for="tipoReporte" class="form-label">Tipo de Reporte</label>
+              <select id="tipoReporte" name="tipoReporte" class="form-select" required>
+                <option value="">Selecciona</option>
+                <option value="Pagos">Pagos</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="idPaciente" class="form-label">Id Paciente</label>
+              <input type="number" class="form-control" id="idPaciente" name="idPaciente" required>
+            </div>
+            <div class="mb-3">
+              <label for="idMedico" class="form-label">Id Medico</label>
+              <input type="number" class="form-control" id="idMedico" name="idMedico" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="fechaGeneracion" class="form-label">Fecha de Generacion</label>
+              <input type="date" class="form-control" id="fechaGeneracion" name="fechaGeneracion">
+            </div>
+            <div class="mb-3">
+              <label for="ruta" class="form-label">Ruta Archivo</label>
+              <input type="text" class="form-control" id="ruta" name="ruta">
+            </div>
+             <div class="mb-3">
+              <label for="descripcion" class="form-label">Descripcion</label>
+              <input type="text" class="form-control" id="descripcion" name="descripcion">
+            </div>
+            <div class="mb-3">
+              <label for="generado" class="form-label">Generado por:</label>
+              <input type="text" class="form-control" id="generado" name="generado">
+            </div>
+
+          <!-- Botones dentro del form -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success">
+              <i class="fa-solid fa-save me-2"></i>Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+    
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/reportes.js"></script>
-    
-    <script>
-        // Variable global para almacenar todos los reportes
-        let todosLosReportes = [];
-
-        // Cargar reportes al iniciar
-        document.addEventListener('DOMContentLoaded', function() {
-            cargarReportes();
-        });
-
-        // Función de filtrado
-        function filtrarReportes() {
-            const tipo = document.getElementById('filtroTipo').value.toLowerCase();
-            const fechaDesde = document.getElementById('filtroFechaDesde').value;
-            const fechaHasta = document.getElementById('filtroFechaHasta').value;
-            const generadoPor = document.getElementById('filtroGeneradoPor').value.toLowerCase();
-
-            const tbody = document.querySelector("#tablaReportes tbody");
-            tbody.innerHTML = "";
-
-            const reportesFiltrados = todosLosReportes.filter(r => {
-                let cumpleTipo = !tipo || r.TipoReporte.toLowerCase().includes(tipo);
-                let cumpleFechaDesde = !fechaDesde || r.FechaGeneracion >= fechaDesde;
-                let cumpleFechaHasta = !fechaHasta || r.FechaGeneracion <= fechaHasta;
-                let cumpleGeneradoPor = !generadoPor || (r.GeneradoPor && r.GeneradoPor.toLowerCase().includes(generadoPor));
-
-                return cumpleTipo && cumpleFechaDesde && cumpleFechaHasta && cumpleGeneradoPor;
-            });
-
-            if (reportesFiltrados.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted">No se encontraron reportes con los filtros aplicados</td></tr>';
-                return;
-            }
-
-            reportesFiltrados.forEach(r => {
-                const colorBadge = {
-                    'Pagos': 'bg-success',
-                    'Citas': 'bg-primary',
-                    'Pacientes': 'bg-info',
-                    'Médicos': 'bg-warning',
-                    'Financiero': 'bg-danger'
-                };
-
-                const fila = `
-                <tr>
-                    <td>${r.IdReporte}</td>
-                    <td><span class="badge ${colorBadge[r.TipoReporte] || 'bg-secondary'}">${r.TipoReporte}</span></td>
-                    <td>${r.IdPaciente || '-'}</td>
-                    <td>${r.IdMedico || '-'}</td>
-                    <td>${r.FechaGeneracion}</td>
-                    <td>${r.RutaArchivo ? '<i class="fa-solid fa-file text-primary"></i> Disponible' : '<span class="text-muted">Sin ruta</span>'}</td>
-                    <td>${r.Descripcion || 'Sin descripción'}</td>
-                    <td>${r.GeneradoPor || 'No especificado'}</td>
-                    <td>
-                        ${r.RutaArchivo ? `<button class="btn btn-sm btn-outline-primary me-1" onclick="descargarReporte('${r.RutaArchivo}')" title="Descargar">
-                            <i class="fa-solid fa-download"></i>
-                        </button>` : ''}
-                        <button class="btn btn-sm btn-outline-warning me-1" onclick="editarReporte(${r.IdReporte})" title="Editar">
-                            <i class="fa-solid fa-pen"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger" onclick="eliminarReporte(${r.IdReporte})" title="Eliminar">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>`;
-                tbody.innerHTML += fila;
-            });
-        }
-
-        // Limpiar filtros
-        function limpiarFiltros() {
-            document.getElementById('filtroTipo').value = '';
-            document.getElementById('filtroFechaDesde').value = '';
-            document.getElementById('filtroFechaHasta').value = '';
-            document.getElementById('filtroGeneradoPor').value = '';
-            filtrarReportes();
-        }
-
-        // Función para descargar reporte
-        function descargarReporte(ruta) {
-            if (ruta) {
-                window.open(ruta, '_blank');
-            } else {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Sin archivo',
-                    text: 'Este reporte no tiene archivo asociado'
-                });
-            }
-        }
-
-        // Guardar edición
-        function guardarEdicion() {
-            const formData = new FormData(document.getElementById('formEditarReporte'));
-            guardarReporte(formData);
-        }
-
-        // Sobrescribir la función cargarReportes original para usar filtros
-        const cargarReportesOriginal = window.cargarReportes;
-        window.cargarReportes = function() {
-            fetch("php/reportes.php?accion=lista")
-                .then(response => response.json())
-                .then(data => {
-                    todosLosReportes = data;
-                    filtrarReportes();
-                })
-                .catch(err => {
-                    console.error("error cargando reportes:", err);
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error al cargar",
-                        text: "No se pudieron cargar los reportes"
-                    });
-                });
-        };
-    </script>
 </body>
+
 </html>
