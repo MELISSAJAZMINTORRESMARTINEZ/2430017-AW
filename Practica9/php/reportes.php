@@ -39,67 +39,68 @@ try {
         exit;
     }
 
-    // Obtener datos para generar reporte de pagos
-    if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'datosPagos') {
-        $idPaciente = isset($_GET['idPaciente']) ? $_GET['idPaciente'] : null;
-        $fechaInicio = isset($_GET['fechaInicio']) ? $_GET['fechaInicio'] : null;
-        $fechaFin = isset($_GET['fechaFin']) ? $_GET['fechaFin'] : null;
-        
-        $sql = "SELECT 
-                    p.IdPago,
-                    p.IdCita,
-                    p.Monto,
-                    p.MetodoPago,
-                    p.FechaPago,
-                    p.Referencia,
-                    p.EstatusPago,
-                    pac.NombreCompleto as NombrePaciente,
-                    pac.Telefono as TelefonoPaciente,
-                    pac.Correo as CorreoPaciente,
-                    a.FechaCita,
-                    a.MotivoConsulta,
-                    m.NombreCompleto as NombreMedico,
-                    e.NombreEspecialidad
-                FROM gestorpagos p
-                INNER JOIN controlpacientes pac ON p.IdPaciente = pac.IdPaciente
-                LEFT JOIN controlagenda a ON p.IdCita = a.IdCita
-                LEFT JOIN controlmedicos m ON a.IdMedico = m.IdMedico
-                LEFT JOIN especialidadesmedicas e ON m.IdEspecialidad = e.IdEspecialidad
-                WHERE p.EstatusPago = 'Pagado'";
-        
-        if ($idPaciente) {
-            $sql .= " AND p.IdPaciente = :idPaciente";
-        }
-        
-        if ($fechaInicio) {
-            $sql .= " AND p.FechaPago >= :fechaInicio";
-        }
-        
-        if ($fechaFin) {
-            $sql .= " AND p.FechaPago <= :fechaFin";
-        }
-        
-        $sql .= " ORDER BY p.FechaPago DESC";
-        
-        $stmt = $pdo->prepare($sql);
-        
-        if ($idPaciente) {
-            $stmt->bindParam(':idPaciente', $idPaciente);
-        }
-        if ($fechaInicio) {
-            $stmt->bindParam(':fechaInicio', $fechaInicio);
-        }
-        if ($fechaFin) {
-            $stmt->bindParam(':fechaFin', $fechaFin);
-        }
-        
-        $stmt->execute();
-        $datos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        header('Content-Type: application/json');
-        echo json_encode($datos);
-        exit;
+   // Obtener datos para generar reporte de pagos
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'datosPagos') {
+    $idPaciente = isset($_GET['idPaciente']) ? $_GET['idPaciente'] : null;
+    $fechaInicio = isset($_GET['fechaInicio']) ? $_GET['fechaInicio'] : null;
+    $fechaFin = isset($_GET['fechaFin']) ? $_GET['fechaFin'] : null;
+    
+    $sql = "SELECT 
+                p.IdPago,
+                p.IdCita,
+                p.IdPaciente,
+                p.Monto,
+                p.MetodoPago,
+                p.FechaPago,
+                p.Referencia,
+                p.EstatusPago,
+                pac.NombreCompleto as NombrePaciente,
+                pac.Telefono as TelefonoPaciente,
+                pac.Correo as CorreoPaciente,
+                a.FechaCita,
+                a.MotivoConsulta,
+                m.NombreCompleto as NombreMedico,
+                e.NombreEspecialidad
+            FROM gestorpagos p
+            LEFT JOIN controlpacientes pac ON p.IdPaciente = pac.IdPaciente
+            LEFT JOIN controlagenda a ON p.IdCita = a.IdCita
+            LEFT JOIN controlmedicos m ON a.IdMedico = m.IdMedico
+            LEFT JOIN especialidadesmedicas e ON m.IdEspecialidad = e.IdEspecialidad
+            WHERE p.EstatusPago = 'Pagado'";
+    
+    if ($idPaciente) {
+        $sql .= " AND p.IdPaciente = :idPaciente";
     }
+    
+    if ($fechaInicio) {
+        $sql .= " AND p.FechaPago >= :fechaInicio";
+    }
+    
+    if ($fechaFin) {
+        $sql .= " AND p.FechaPago <= :fechaFin";
+    }
+    
+    $sql .= " ORDER BY p.FechaPago DESC";
+    
+    $stmt = $pdo->prepare($sql);
+    
+    if ($idPaciente) {
+        $stmt->bindParam(':idPaciente', $idPaciente);
+    }
+    if ($fechaInicio) {
+        $stmt->bindParam(':fechaInicio', $fechaInicio);
+    }
+    if ($fechaFin) {
+        $stmt->bindParam(':fechaFin', $fechaFin);
+    }
+    
+    $stmt->execute();
+    $datos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    header('Content-Type: application/json');
+    echo json_encode($datos);
+    exit;
+}
 
     // Guardar registro de reporte generado
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion']) && $_POST['accion'] === 'registrar') {
