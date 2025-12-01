@@ -112,8 +112,6 @@
                             <tr>
                                 <th>IdReporte</th>
                                 <th>Tipo de Reporte</th>
-                                <th>Id Paciente</th>
-                                <th>Id Medico</th>
                                 <th>Fecha de Generacion</th>
                                 <th>Ruta Archivo</th>
                                 <th>Descripcion</th>
@@ -154,14 +152,7 @@
                 <option value="Pagos">Pagos</option>
               </select>
             </div>
-            <div class="mb-3">
-              <label for="idPaciente" class="form-label">Id Paciente</label>
-              <input type="number" class="form-control" id="idPaciente" name="idPaciente" required>
-            </div>
-            <div class="mb-3">
-              <label for="idMedico" class="form-label">Id Medico</label>
-              <input type="number" class="form-control" id="idMedico" name="idMedico" required>
-            </div>
+
 
             <div class="mb-3">
               <label for="fechaGeneracion" class="form-label">Fecha de Generacion</label>

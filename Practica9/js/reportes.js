@@ -385,8 +385,8 @@ function generarReportePDF() {
                     </table>
 
                     <div class="footer">
-                        <p><strong>Clínica</strong> - Sistema de Gestión de Pagos</p>
-                        <p>Este documento es un reporte generado automáticamente</p>
+                        <p><strong>Clínica Min</strong> - Sistema de Gestión de Pagos</p>
+                        <p>Este documento es un reporte</p>
                     </div>
 
                     <div class="no-print" style="margin-top: 20px; text-align: center;">
