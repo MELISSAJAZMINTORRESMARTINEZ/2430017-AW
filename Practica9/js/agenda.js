@@ -8,27 +8,34 @@ document.addEventListener('DOMContentLoaded', function () {
     const calendarEl = document.getElementById('calendar');
 
     calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        locale: 'es',
-        height: 'auto',
+        initialView: 'dayGridMonth', // vista inicial por mes
+        locale: 'es',                // idioma español
+        height: 'auto',              // altura automática del calendario
 
+        // configuración del header (menú superior)
         headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            left: 'prev,next today',                     // botones de navegación
+            center: 'title',                             // título (mes actual)
+            right: 'dayGridMonth,timeGridWeek,timeGridDay' // cambiar vista
         },
 
         // cargar eventos desde la base de datos
         events: function(info, successCallback, failureCallback) {
+            // llamada al servidor para obtener citas
             fetch('php/agenda.php?accion=lista')
-                .then(response => response.json())
+                .then(response => response.json()) // convertir la respuesta en JSON
                 .then(data => {
+                    // convertir cada cita en un evento del calendario
                     const eventos = data.map(cita => ({
-                        id: cita.IdCita,
-                        title: `${cita.NombrePaciente || 'Paciente'} - ${cita.NombreMedico || 'Médico'}`,
-                        start: cita.FechaCita,
+                        id: cita.IdCita, // ID único de la cita
+                        title: `${cita.NombrePaciente || 'Paciente'} - ${cita.NombreMedico || 'Médico'}`, // título que se muestra
+                        start: cita.FechaCita, // fecha del evento
+
+                        // color dependiendo del estado de la cita
                         backgroundColor: cita.EstadoCita === 'Programada' ? '#28a745' : 
                                        cita.EstadoCita === 'Atendida' ? '#007bff' : '#dc3545',
+
+                        // datos adicionales que usaremos en el modal
                         extendedProps: {
                             paciente: cita.NombrePaciente,
                             medico: cita.NombreMedico,
@@ -36,15 +43,17 @@ document.addEventListener('DOMContentLoaded', function () {
                             estatus: cita.EstadoCita
                         }
                     }));
+
+                    // enviar eventos al calendario
                     successCallback(eventos);
                 })
                 .catch(error => {
                     console.error('Error cargando eventos:', error);
-                    failureCallback(error);
+                    failureCallback(error); // reporta el error al calendario
                 });
         },
 
-        // click en un evento para ver detalles
+        // cuando se hace clic en un evento
         eventClick: function(info) {
             Swal.fire({
                 title: info.event.title,
@@ -55,14 +64,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     <p><strong>Estado:</strong> <span class="badge bg-info">${info.event.extendedProps.estatus}</span></p>
                     <p><strong>Fecha:</strong> ${info.event.start.toLocaleDateString('es-MX')}</p>
                 `,
-                showCancelButton: true,
-                showDenyButton: true,
+                showCancelButton: true,  // botón cerrar
+                showDenyButton: true,    // botón eliminar
                 confirmButtonText: 'Editar',
                 denyButtonText: 'Eliminar',
                 cancelButtonText: 'Cerrar'
             }).then((result) => {
+
+                // SI EDITA
                 if (result.isConfirmed) {
                     editarCita(info.event.id);
+
+                // SI ELIMINA
                 } else if (result.isDenied) {
                     eliminarCita(info.event.id, info.event.extendedProps.paciente);
                 }
@@ -70,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    calendar.render();
+    calendar.render(); // mostrar calendario
 
     // cargar lista de próximas citas
     cargarProximasCitas();
@@ -78,46 +91,48 @@ document.addEventListener('DOMContentLoaded', function () {
     // configurar el formulario del modal
     const form = document.querySelector("#modalAgenda form");
     if (form) {
-        // quitar el action
-        form.removeAttribute('action');
+        form.removeAttribute('action'); // se manejará solo con JS
         
         form.addEventListener("submit", function (e) { 
-            e.preventDefault(); 
+            e.preventDefault(); // evitar envío tradicional
+
             if (validarFormulario()) {
-                guardarCita(new FormData(form));
+                guardarCita(new FormData(form)); // enviar datos al backend
             }
         });
     }
 
-
-    // establecer fecha mínima de hoy
+    // establecer fecha mínima (hoy)
     const hoy = new Date().toISOString().split('T')[0];
     document.getElementById('fechaCita').setAttribute('min', hoy);
     document.getElementById('fechaCita').value = hoy;
 
-    // cuando se cierra el modal, limpio todo
+    // al cerrar el modal restaurar valores
     document.getElementById('modalAgenda').addEventListener('hidden.bs.modal', function () {
-        form.reset();
+
+        form.reset(); // limpiar formulario
         document.getElementById('modalAgendaLabel').innerHTML = 
             '<i class="fa-solid fa-calendar-plus me-2"></i>agregar agenda'; 
         
+        // eliminar mensajes de validación
         document.querySelectorAll('.text-danger, .text-success').forEach(el => el.remove());
         
         const inputEditar = document.querySelector('input[name="idCitaEditar"]');
-        if (inputEditar) inputEditar.remove();
-        
+        if (inputEditar) inputEditar.remove(); // quitar campo oculto
+
         document.getElementById('idCita').disabled = false;
         document.getElementById('fechaCita').value = hoy;
     });
 });
 
 
-// validar formulario
+// validar formulario antes de enviar
 function validarFormulario() {
     const idPaciente = document.getElementById('idPaciente').value;
     const idMedico = document.getElementById('idMedico').value;
     const fechaCita = document.getElementById('fechaCita').value;
     
+    // validar campos obligatorios
     if (!idPaciente || !idMedico) {
         Swal.fire({
             icon: 'warning',
@@ -127,7 +142,7 @@ function validarFormulario() {
         return false;
     }
 
-    // validar que la fecha no sea pasada
+    // validar fecha no pasada
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
     const fechaSeleccionada = new Date(fechaCita + 'T00:00:00');
@@ -145,7 +160,7 @@ function validarFormulario() {
 }
 
 
-// validar si existe el paciente
+// validar paciente por ID
 function validarPaciente(id) {
     if (!id) return;
     
@@ -153,6 +168,8 @@ function validarPaciente(id) {
         .then(response => response.json())
         .then(data => {
             const input = document.getElementById('idPaciente');
+
+            // eliminar mensaje previo
             const mensajePrevio = input.parentElement.querySelector('.validacion-msg');
             if (mensajePrevio) mensajePrevio.remove();
             
@@ -176,7 +193,7 @@ function validarPaciente(id) {
 }
 
 
-// validar si existe el médico
+// validar médico por ID
 function validarMedico(id) {
     if (!id) return;
     
@@ -207,7 +224,7 @@ function validarMedico(id) {
 }
 
 
-// cargar próximas citas en la lista lateral
+// cargar lista de próximas citas
 function cargarProximasCitas() {
     fetch("php/agenda.php?accion=lista")
         .then(response => response.json())
@@ -215,7 +232,7 @@ function cargarProximasCitas() {
             const lista = document.getElementById('upcomingList');
             lista.innerHTML = "";
 
-            // filtrar solo citas futuras y programadas
+            // filtrar citas futuras y solo programadas
             const proximasCitas = data
                 .filter(c => new Date(c.FechaCita) >= new Date() && c.EstadoCita === 'Programada')
                 .sort((a, b) => new Date(a.FechaCita) - new Date(b.FechaCita))
@@ -244,11 +261,12 @@ function cargarProximasCitas() {
 // guardar o actualizar cita
 function guardarCita(formData) {
     fetch("php/agenda.php", {
-        method: "POST",
-        body: formData
+        method: "POST",  // se envía POST
+        body: formData   // datos del formulario
     })
         .then(response => response.text())
         .then(respuesta => {
+
             if (respuesta.includes("OK")) {
                 Swal.fire({
                     icon: "success",
@@ -257,12 +275,14 @@ function guardarCita(formData) {
                     showConfirmButton: false
                 });
 
+                // cerrar el modal
                 const modal = bootstrap.Modal.getInstance(document.getElementById("modalAgenda"));
                 if (modal) modal.hide();
 
-                // recargar calendario y lista
+                // recargar calendario y listado
                 calendar.refetchEvents();
                 cargarProximasCitas();
+
             } else {
                 Swal.fire({
                     icon: "error",
@@ -282,14 +302,17 @@ function guardarCita(formData) {
 }
 
 
-// editar cita
+
+// cargar datos de cita para editar
 function editarCita(id) {
     fetch(`php/agenda.php?accion=obtener&id=${id}`)
         .then(response => response.json())
         .then(cita => {
+
             document.getElementById('modalAgendaLabel').innerHTML =
                 '<i class="fa-solid fa-edit me-2"></i>editar cita';
 
+            // llenar campos del formulario
             document.getElementById('idCita').value = cita.IdCita;
             document.getElementById('idCita').disabled = true;
             document.getElementById('idPaciente').value = cita.IdPaciente;
@@ -300,6 +323,7 @@ function editarCita(id) {
             document.getElementById('observaciones').value = cita.Observaciones || '';
             document.getElementById('fechaRegistro').value = cita.FechaRegistro || '';
 
+            // crear input oculto si no existe
             let inputEditar = document.querySelector('input[name="idCitaEditar"]');
             if (!inputEditar) {
                 inputEditar = document.createElement('input');
@@ -309,6 +333,7 @@ function editarCita(id) {
             }
             inputEditar.value = cita.IdCita;
 
+            // mostrar modal
             const modal = new bootstrap.Modal(document.getElementById('modalAgenda'));
             modal.show();
         });
@@ -322,15 +347,17 @@ function eliminarCita(id, paciente) {
         text: `se eliminara la cita del paciente: ${paciente}`,
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
+        confirmButtonColor: '#d33',   // rojo
+        cancelButtonColor: '#3085d6', // azul
         confirmButtonText: 'si, eliminar',
         cancelButtonText: 'cancelar'
     }).then((result) => {
+
         if (result.isConfirmed) {
             fetch(`php/agenda.php?accion=eliminar&id=${id}`)
                 .then(response => response.text())
                 .then(respuesta => {
+
                     if (respuesta.includes("OK")) {
                         Swal.fire({
                             icon: 'success',
@@ -340,8 +367,10 @@ function eliminarCita(id, paciente) {
                             showConfirmButton: false
                         });
 
+                        // recargar calendario y lista
                         calendar.refetchEvents();
                         cargarProximasCitas();
+
                     } else {
                         Swal.fire({
                             icon: 'error',
