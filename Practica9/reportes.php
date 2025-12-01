@@ -103,7 +103,7 @@
                     </div>
                     <div class="card-body p-4">
                         <p class="text-muted text-center mb-4">
-                            Genera reportes detallados de todos los pagos registrados en el sistema, incluyendo fechas, montos, métodos de pago y estados de las transacciones.
+                            Genera reportes detallados de todos los pagos registrados.
                         </p>
                         <div class="d-grid gap-3">
                             <button class="btn btn-danger btn-lg text-white fw-semibold py-3" onclick="generarReportePDF()">
