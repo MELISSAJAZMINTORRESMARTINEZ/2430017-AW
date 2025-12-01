@@ -329,7 +329,7 @@ function generarReportePDF() {
                 </head>
                 <body>
                     <div class="header">
-                        <h1>📊 Reporte de Pagos</h1>
+                        <h1>Reporte de Pagos</h1>
                         <p class="fecha-reporte">Generado: ${new Date().toLocaleString('es-MX')}</p>
                     </div>
 
@@ -399,7 +399,7 @@ function generarReportePDF() {
                             cursor: pointer;
                             font-size: 16px;
                             margin-right: 10px;
-                        ">🖨️ Imprimir / Guardar como PDF</button>
+                        ">Imprimir / Guardar como PDF</button>
                         <button onclick="window.close()" style="
                             background: #6c757d;
                             color: white;
@@ -408,7 +408,7 @@ function generarReportePDF() {
                             border-radius: 5px;
                             cursor: pointer;
                             font-size: 16px;
-                        ">✖️ Cerrar</button>
+                        "> Cerrar</button>
                     </div>
                 </body>
                 </html>
