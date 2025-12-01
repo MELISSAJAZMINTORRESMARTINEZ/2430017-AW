@@ -1,32 +1,41 @@
 <?php
+// se inicia la sesion para poder usar las variables de sesion
 session_start();
+
+// aqui se incluye el archivo de configuracion donde esta la conexion pdo
 require_once 'php/config/config.php';
 
-// Registrar en bitácora antes de cerrar sesión
+// antes de cerrar la sesion se registra en la bitacora que el usuario cerro sesion
+// esto solo se hace si existe un usuario logueado
 if (isset($_SESSION['usuario_id'])) {
     try {
+        // se prepara la consulta para insertar un registro en la bitacora
         $stmt = $pdo->prepare("
             INSERT INTO bitacoraacceso (IdUsuario, FechaAcceso, AccionRealizada, Modulo) 
-            VALUES (:id, NOW(), 'Cierre de sesión', 'Logout')
+            VALUES (:id, NOW(), 'Cierre de sesion', 'Logout')
         ");
+
+        // se ejecuta la consulta enviando el id del usuario que cerro sesion
         $stmt->execute(['id' => $_SESSION['usuario_id']]);
     } catch (PDOException $e) {
-        error_log("Error al registrar bitácora de logout: " . $e->getMessage());
+        // si hubo un error en la base de datos se guarda en el log del servidor
+        error_log("Error al registrar bitacora de logout " . $e->getMessage());
     }
 }
 
-// Destruir todas las variables de sesión
+// aqui se vacian todas las variables de sesion dejandolas en un arreglo vacio
 $_SESSION = array();
 
-// Destruir la cookie de sesión si existe
+// si existe una cookie de sesion se borra
 if (isset($_COOKIE[session_name()])) {
-    setcookie(session_name(), '', time()-3600, '/');
+    // se manda una cookie expirada para asegurar que se elimine
+    setcookie(session_name(), '', time() - 3600, '/');
 }
 
-// Destruir la sesión
+// ahora se destruye completamente la sesion en el servidor
 session_destroy();
 
-// Redirigir al login
+// despues de destruir la sesion se redirige al login
 header("Location: index.php");
 exit();
 ?>

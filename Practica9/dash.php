@@ -113,7 +113,7 @@
                     <div class="dash-card">
                         <div class="icon"><i class="fa-solid fa-user-injured"></i></div>
                         <div>
-                            <h3 id="pacientesActivos">120</h3>
+                            <h3 id="pacientesActivos">4</h3>
                             <p>Pacientes activos</p>
                         </div>
                     </div>
@@ -123,7 +123,7 @@
                     <div class="dash-card">
                         <div class="icon"><i class="fa-solid fa-calendar-check"></i></div>
                         <div>
-                            <h3 id="citasDelDia">38</h3>
+                            <h3 id="citasDelDia">3</h3>
                             <p>Citas del día</p>
                         </div>
                     </div>
@@ -133,7 +133,7 @@
                     <div class="dash-card">
                         <div class="icon"><i class="fa-solid fa-user-doctor"></i></div>
                         <div>
-                            <h3 id="medicosDisponibles">12</h3>
+                            <h3 id="medicosDisponibles">4</h3>
                             <p>Médicos disponibles</p>
                         </div>
                     </div>
