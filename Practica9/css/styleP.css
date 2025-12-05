@@ -215,71 +215,67 @@
 .modal.show .modal-dialog {
   transform: translateY(0);
 }
-/* ---- ESTILO MEJORADO PARA TABLAS ---- */
+/* TABLA SUPER MODERNA CON CURVAS SUAVES */
 
+/* Contenedor general */
+.table-container {
+    padding: 20px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    border: 1px solid rgba(255,255,255,0.4);
+}
+
+/* Hacemos que la tabla no sea cuadrada */
 .table {
     border-collapse: separate !important;
-    border-spacing: 0 10px !important;
+    border-spacing: 0 18px !important;
 }
 
-.table-hover tbody tr {
-    transition: all 0.3s ease;
-}
-
-/* Contenedor de cada fila (efecto "tarjeta") */
-.table tbody tr {
-    background: #ffffff;
-    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
-    border-radius: 12px;
-}
-
+/* Celdas */
 .table tbody tr td {
-    background: transparent !important;
-    padding: 15px 12px;
-    vertical-align: middle;
+    padding: 18px;
+    border-top-left-radius: 35px;
+    border-bottom-right-radius: 35px;
+    background: #ffffff;
+    border: none !important;
+    font-size: 15px;
+    transition: 0.35s ease;
+    box-shadow: 0px 4px 18px rgba(0,0,0,0.08);
 }
 
 /* Encabezado */
-.table-info th {
-    background: #2c8888 !important;
+.table thead th {
+    background: linear-gradient(135deg, #2c8888, #41aaaa);
     color: white !important;
-    font-weight: 600;
+    padding: 16px;
+    font-weight: bold;
+    border-top-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border: none !important;
+    letter-spacing: 1px;
     text-transform: uppercase;
-    letter-spacing: 0.8px;
-    padding: 14px;
 }
 
-/* Hover */
-.table-hover tbody tr:hover {
-    transform: scale(1.015);
-    box-shadow: 0px 6px 18px rgba(0,0,0,0.12);
+/* Hover: efecto glow */
+.table tbody tr:hover td {
+    transform: translateY(-4px);
+    box-shadow: 0px 8px 25px rgba(0,0,0,0.18);
+    background: #f9ffff !important;
 }
 
-/* Botones en acciones */
-.table .btn {
-    border-radius: 8px;
-    padding: 6px 12px;
-}
-
-/* Celdas con iconos */
+/* Iconos más elegantes */
 td i {
-    font-size: 1.1rem;
+    opacity: 0.8;
+    transition: 0.2s;
+}
+td i:hover {
+    opacity: 1;
 }
 
-/* Opcional: colores suaves para estado "Activo" */
-.badge-activo {
-    background-color: #28a745 !important;
-    padding: 6px 10px;
-    font-size: 0.85rem;
-    border-radius: 6px;
-    color: white;
-}
-
-.badge-inactivo {
-    background-color: #dc3545 !important;
-    padding: 6px 10px;
-    font-size: 0.85rem;
-    border-radius: 6px;
-    color: white;
+/* Redondear bordes invisibles */
+.table-hover tbody tr {
+    border-radius: 40px !important;
 }
 
