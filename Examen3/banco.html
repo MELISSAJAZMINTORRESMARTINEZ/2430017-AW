@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco</title>
+</head>
+
+<body>
+
+    <h2>Clientes</h2>
+    <form action="exa3_php.php" method="post">
+        <label>Id:</label>
+        <input type="number" name="id" id="id">
+        <br>
+        <br>
+
+        <label>RCF_Homoclave:</label>
+        <input type="number" name="rfc_homoclave" id="rfc_homoclave">
+
+        <br>
+        <br>
+        <label>Nombre:</label>
+        <input type="text" name="apellido" id="apellido">
+
+        <br>
+        <br>
+        <label>Direccion</label>
+        <input type="text" name="direccion" id="direccion">
+
+        <br>
+        <br>
+        <label>Clabe</label>
+        <input type="number" name="clabe" id="clabe">
+
+        <br>
+        <br>
+        <label for="banco_id">Banco:</label>
+        <select name="banco_id" id="banco_id">
+            <option value="BBVA">BBVA</option>
+            <option value="Banamex" id="Banamex" name="Banamex">Banamex</option>
+        </select>
+        <br>
+        <br>
+
+        <label for="saldo">Saldo:</label>
+        <input type="number" name="saldo" id="saldo" min="1">
+        <br>
+        <br>
+
+        <div>
+            <button type="submit">Guardar</button>
+        </div>
+    </form>
+
+</body>
+
+</html>

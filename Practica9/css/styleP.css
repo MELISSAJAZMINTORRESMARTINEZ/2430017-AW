@@ -215,3 +215,71 @@
 .modal.show .modal-dialog {
   transform: translateY(0);
 }
+/* ---- ESTILO MEJORADO PARA TABLAS ---- */
+
+.table {
+    border-collapse: separate !important;
+    border-spacing: 0 10px !important;
+}
+
+.table-hover tbody tr {
+    transition: all 0.3s ease;
+}
+
+/* Contenedor de cada fila (efecto "tarjeta") */
+.table tbody tr {
+    background: #ffffff;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+    border-radius: 12px;
+}
+
+.table tbody tr td {
+    background: transparent !important;
+    padding: 15px 12px;
+    vertical-align: middle;
+}
+
+/* Encabezado */
+.table-info th {
+    background: #2c8888 !important;
+    color: white !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 14px;
+}
+
+/* Hover */
+.table-hover tbody tr:hover {
+    transform: scale(1.015);
+    box-shadow: 0px 6px 18px rgba(0,0,0,0.12);
+}
+
+/* Botones en acciones */
+.table .btn {
+    border-radius: 8px;
+    padding: 6px 12px;
+}
+
+/* Celdas con iconos */
+td i {
+    font-size: 1.1rem;
+}
+
+/* Opcional: colores suaves para estado "Activo" */
+.badge-activo {
+    background-color: #28a745 !important;
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    color: white;
+}
+
+.badge-inactivo {
+    background-color: #dc3545 !important;
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    color: white;
+}
+
