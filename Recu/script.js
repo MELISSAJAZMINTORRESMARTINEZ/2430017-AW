@@ -33,6 +33,6 @@ function eliminarUsuario(id) {
         fetch("eliminar.php", {
             method: "POST",
             body: new URLSearchParams({ id })
-        }).then(() => cargarUsuarios());
+        }).then(() => cargarLibros());
     }
 }
