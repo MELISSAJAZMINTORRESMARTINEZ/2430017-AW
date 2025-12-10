@@ -11,7 +11,7 @@
 <h2>Agregar Usuario</h2>
 
 <form id="formCrear">
-    Nombre: <input type="text" name="nombre" id="nombre" required>
+    Nombre del usuario: <input type="text" name="nombre" id="nombre" required>
     Email: <input type="email" name="email" id="email" required>
     <button type="submit">Crear</button>
 </form>
