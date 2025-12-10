@@ -3,7 +3,6 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="estilos.css">
     <meta charset="UTF-8">
     <title>Biblioteca</title>
 </head>
