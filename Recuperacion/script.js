@@ -5,16 +5,18 @@ document.getElementById("formCrear").addEventListener("submit", function(e) {
 });
 
 function crear() {
-    let nombre = document.getElementById("titulo").value;
-    let email = document.getElementById("autor").value;
+    let nombre = document.getElementById("nombre").value;
+    let autor = document.getElementById("autor").value;
+    let categoria = document.getElementById("categoria").value;
+    let paginas = document.getElementById("paginas").value;
+    let editorial = document.getElementById("editorial").value;
 
     fetch("crear.php", {
         method: "POST",
-        body: new URLSearchParams({ nombre, email })
+        body: new URLSearchParams({ nombre, autor   , categoria, paginas, editorial  })
     })
     .then(() => {
         cargarUsuarios();
-        // Limpiar el formulario
         document.getElementById("formCrear").reset();
     });
 }
@@ -25,17 +27,6 @@ function cargarUsuarios() {
         .then(html => document.getElementById("lista").innerHTML = html);
 }
 
-function editar(id) {
-    let nombre = prompt("Nuevo nombre:");
-    let email = prompt("Nuevo email:");
-
-    if (nombre && email) {
-        fetch("actualizar.php", {
-            method: "POST",
-            body: new URLSearchParams({ id, nombre, email })
-        }).then(() => cargarUsuarios());
-    }
-}
 
 function eliminarUsuario(id) {
     if (confirm("¿Eliminar usuario?")) {
