@@ -11,7 +11,7 @@
 <h2>Agregar libro</h2>
 
 <form id="formLibros">
-    Titulo: <input type="text" name="titulo" id="nombre" required>
+    Titulo: <input type="text" name="titulo" id="titulo" required>
     Autor: <input type="text" name="autor" id="autor" required>
     año: <input type="date" name="año" id="año" required>
     Genero: <input type="text" name="genero" id="genero" required>
