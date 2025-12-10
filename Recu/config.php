@@ -1,5 +1,5 @@
 <?php
-$host = "localhost";
+$host = "206.189.218.112";
 $dbname = "recu_bd";
 $user = "admin";
 $password = "ca99bc649c71b2383154550b34e52d0bb17fe7183054c554";
