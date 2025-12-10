@@ -24,7 +24,6 @@ while ($fila = $stmt->fetch(PDO::FETCH_ASSOC)) {
             <td>{$editorial}</td>
 
 
-
             <td>
                 <button onclick='eliminarLibro({$id})'>Eliminar</button>
             </td>
