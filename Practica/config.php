@@ -1,6 +1,6 @@
 <?php
 $host = "localhost";
-$dbname = "crud_bd";
+$dbname = "biblioteca_bd";
 $user = "admin";
 $password = "ca99bc649c71b2383154550b34e52d0bb17fe7183054c554";
 
